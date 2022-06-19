@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body id="theBody">
+<body id="theBody" style="background-color: black">
 
 <div id="info" style="position:fixed;z-index:1001;" class="medium">
     <div class="showthat infoText">S<div class="showthis">
@@ -47,7 +47,7 @@
             <div class="button" onclick="game.cash+=.1">Beg for Money<br>(+$.1 for if you get stuck)</div><br>
             <div class="button" onclick="save()">Save</div><br>
             <div class="button" onclick="exportSave()">Export Save</div><br>
-            <div class="button" onclick="importSave()">Import Save</div> <textarea id="exportImportSave" class="listTextInput" style="width:80px;" onclick="this.select();"></textarea><br>
+            <div class="button" onclick="importSave()">Import Save</div> <textarea id="exportImportSave" class="listTextInput"></textarea><br>
         </div>
     </div></div>
     <div id="resources" class="infoText" style="padding:0 10px;">
@@ -67,19 +67,9 @@
 </div>
 
 
-<div id="mainContainer" style="position:absolute;width:2500px;height:900px;overflow:hidden;" class="small" oncontextmenu="return false;">
+<div id="mainContainer" class="small" oncontextmenu="return false;">
 
-    <div id="spaceTransition"></div>
-
-    <div id="spaceContainer">
-    </div>
-
-    <div id="cometsContainer" style="position:absolute;">
-    </div>
-
-    <canvas id="spaceCanvas" width="1000" height="900" style="position:absolute;left:1600px;"></canvas>
-
-    <div id="iceContainer" class="container showthat" style="left:0;top:35px;width:130px;">
+    <div id="iceContainer" class="container showthat" style="width:130px;">
         <div class="title">Ice</div>
         <div class="waterIcon showthat2"><img src='img/water.png' class='superLargeIcon'>
             <div class="showthis2">
@@ -87,17 +77,15 @@
             </div>
         </div>
         <div>Ice: <div id="ice"></div></div><br>
-        <input id="buyIceAmount" type="number" value="1000"><br>
         <div class="button" onclick="game.buyIce()">Buy Ice for $1</div><br>
         <div>Buyable Ice: <div id="buyableIce"></div></div><br>
         <div class="showthis">
             Ice melts at a rate of .1% per tick and becomes <img src='img/water.png' class='smallIcon'>.<br>
-            <label for="buyIceAmount">Set how much you want to buy with the input.</label><br>
             You can buy up to the max at a time, and it comes back at <div id="iceBuyerAmount"></div> per tick.
         </div>
     </div>
 
-    <div id="indoorWaterContainer" class="container showthat" style="left:0;top:210px;">
+    <div id="indoorWaterContainer" class="container showthat">
         <div class="title">Storage</div>
         <div class="waterIcon showthat2"><img src='img/water.png' class='superLargeIcon'>
             <div class="showthis2">
@@ -115,7 +103,7 @@
         </div>
     </div>
 
-    <div id="outdoorWaterContainer" class="container showthat" style="left:180px;top:265px;">
+    <div id="outdoorWaterContainer" class="container showthat">
         <div class="title">Lake</div>
         <div class="waterIcon showthat2"><img src='img/water.png' class='superLargeIcon'>
             <div class="showthis2">
@@ -131,7 +119,7 @@
         </div>
     </div>
 
-    <div id="cloudsContainer" class="container showthat" style="left:300px;top:20px;">
+    <div id="cloudsContainer" class="container showthat">
         <div class="title">Clouds</div>
         <div class="waterIcon showthat2"><img src='img/water.png' class='superLargeIcon'>
             <div class="showthis2">
@@ -149,7 +137,7 @@
             <canvas id='stormDurationProgress' class='progress-active' height='80px' width='80px'></canvas>
         </div><br>
         <div>Intensity: <div id="stormRate"></div></div><br>
-        <div class="verticalProgress" style="left:94px;top:88px;">
+        <div class="verticalProgress">
             <div class="verticalProgressInner" id="intensityPB"></div>
         </div>
         <div id="lightningContainer">
@@ -167,7 +155,7 @@
         </div>
     </div>
 
-    <div id="landContainer" class="container showthat" style="left:470px;top:245px;">
+    <div id="landContainer" class="container showthat">
         <div class="title">Land</div>
         <div class="waterIcon showthat2"><img src='img/water.png' class='superLargeIcon'>
             <div class="showthis2">
@@ -188,7 +176,7 @@
         </div>
     </div>
 
-    <div id="treesContainer" class="container showthat" style="left:760px;top:40px;">
+    <div id="treesContainer" class="container showthat">
         <div class="title">Forest</div>
         <div class="waterIcon showthat2"><img src='img/water.png' class='superLargeIcon'>
             <div class="showthis2">
@@ -235,7 +223,7 @@
         <div>Total Plants: <div id="totalPlants"></div></div><br>
         <div>Oxygen Produced: <div id="oxygenGain"></div></div><br>
 
-        <div class="showthis" style="width:300px;">
+        <div class="showthis">
             Total Plants equilibrium is equal to Soil amount.<br>
             Plants each take 1 water to grow.<br>
             If you have less equilibrium, smaller plants die first.<br>
@@ -244,7 +232,7 @@
         </div>
     </div>
 
-    <div id="foodContainer" class="container showthat" style="left:680px;top:210px;">
+    <div id="foodContainer" class="container showthat">
         <div class="title">Farm</div>
         <div class="waterIcon showthat2"><img src='img/water.png' class='superLargeIcon'>
             <div class="showthis2">
@@ -268,7 +256,7 @@
         </div>
     </div>
 
-    <div id="populationContainer" class="container showthat" style="left:920px;top:370px;">
+    <div id="populationContainer" class="container showthat">
         <div class="title">City</div>
         <div class="waterIcon showthat2"><img src='img/happy.jpg' class='superLargeIcon'>
             <div class="showthis2">
@@ -296,19 +284,19 @@
         </div>
     </div>
 
-    <div id="computerContainer" class="container" style="left:0;top:400px;">
+    <div id="computerContainer" class="container">
         <div class="title">Computer</div>
         <div id="unlockComputer" class="button" onclick="game.computer.unlockComputer()">Build Computer (1000 science)</div>
         <div id="unlockedComputer" style="display:none;">
             <div>Threads: <div id="freeThreads"></div>/<div id="threads"></div></div> Speed: <div id="speed"></div><br>
-            <div id="buyThread" class="button" onclick="game.computer.buyThread()">Research New Thread (+1 thread) for <div id="threadCost"></div> science</div><br>
-            <div id="buySpeed" class="button" onclick="game.computer.buySpeed()">Buy Processor (+1 speed) for <div id="speedCost"></div> cash</div><br>
+            <div id="buyThread" class="button" onclick="game.computer.buyThread()">Buy CPU (+1 thread) for <div id="threadCost"></div> cash</div><br>
+            <div id="buySpeed" class="button" onclick="game.computer.buySpeed()">Research New Cooling System (+1 speed) for <div id="speedCost"></div> science</div><br>
             <div id="computerRows" style="text-align:left;">
             </div>
         </div>
     </div>
 
-    <div id="robotsContainer" class="container" style="left:380px;top:515px;">
+    <div id="robotsContainer" class="container">
         <div class="title">Robots</div>
         <div id="unlockRobots" class="button" onclick="game.robots.unlockRobots()">Special deal! Buy first robot for $3000</div><br>
         <div id="failRobots" class="button" onclick="game.robots.failedRobots()">Buy robot for $1m</div>
@@ -320,7 +308,7 @@
         </div>
     </div>
 
-    <div id="energyContainer" class="container showthat" style="left:380px;top:365px;">
+    <div id="energyContainer" class="container showthat">
         <div class="title">Power Plant</div>
         <div id="unlockEnergy" class="button" onclick="game.energy.unlockEnergy()">Build lightning rod for 500 metal</div>
         <div id="unlockedEnergy">
@@ -335,7 +323,7 @@
         </div>
     </div>
 
-    <div id="spaceStationContainer" class="container showthat" style="left:1100px;top:30px;">
+    <div id="spaceStationContainer" class="container showthat">
         <div class="title">Space Station</div>
         <div id="unlockSpaceStation" class="button" onclick="game.spaceStation.unlockSpaceStation()">Build Space Station for 2000 metal, 20k wood</div>
         <div id="unlockedSpaceStation">
@@ -349,7 +337,7 @@
         </div>
     </div>
 
-    <div id="tractorBeamContainer" class="container showthat" style="left:1100px;top:140px;">
+    <div id="tractorBeamContainer" class="container showthat">
         <div class="title">Tractor Beam</div>
         <div id="unlockTractorBeam" class="button" onclick="game.tractorBeam.unlockTractorBeam()">Build Tractor Beam for 5m oxygen, 500k science</div>
         <div id="unlockedTractorBeam">
@@ -367,7 +355,7 @@
         </div>
     </div>
 
-    <div id="spaceDockContainer" class="container showthat" style="left:1420px;top:30px;">
+    <div id="spaceDockContainer" class="container showthat">
         <div class="title">Space Dock</div>
         <input id="buyBattleshipAmount" type="number" value="1"><br>
         <div class="button" onclick="game.buyBattleship()">Build Battleship for <br><div id="battleshipCost">30m oxygen, 15m science</div></div><br>
@@ -380,7 +368,7 @@
         </div>
     </div>
 
-    <div id="hangarContainer" class="container showthat" style="left:1460px;top:260px;">
+    <div id="hangarContainer" class="container showthat">
         <div class="title">Hangar 1</div>
         Sending <div id="hangar0Sending"></div>
         <div class="showthis">
@@ -393,11 +381,17 @@
         </div>
     </div>
 
-    <div id="shipSpawnSlidersContainer" style="left:1685px;top:220px;position:absolute;">
+    <div id="shipSpawnSlidersContainer">
         <div class="sliderWrapper">
             <input type="range" min="0" max="100" step="1" value="0" class="shipSpawnSlider" id="shipSpawnSlider1">
         </div><br>
     </div>
+
+    <div id="spaceContainer"></div>
+
+    <div id="cometsContainer" ></div>
+
+    <canvas id="spaceCanvas" width="1000" height="900" ></canvas>
 
 
 </div>
