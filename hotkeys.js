@@ -1,4 +1,21 @@
 var myKeyQueue = [];
+//TODO: Add multipliller
+export function keyMultiplier(){
+    let number = 1;
+    if (global.settings['mKeys']){
+        if (keyMap.x10){
+            number *= 10;
+        }
+        if (keyMap.x25){
+            number *= 25;
+        }
+        if (keyMap.x100){
+            number *= 100;
+        }
+    }
+    return number;
+}
+
 document.addEventListener("keydown", function(e) {
     var code = {key:(e.charCode !== 0 ? e.charCode : e.keyCode), shift:e.shiftKey};
     myKeyQueue.push(code);

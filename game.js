@@ -11,7 +11,6 @@ function Game() {
 
     this.tick = function() {
         this.ice.tick();
-
         this.robots.tick();
         this.computer.tick();
         this.farms.tick(this.land.transferWater());
@@ -23,11 +22,9 @@ function Game() {
         this.clouds.tick(this.water.transferWater());
         this.energy.tick();
         this.water.tick(this.ice.transferWater());
-
         this.tractorBeam.tick();
         this.spaceStation.tick();
         this.space.tick();
-
 
         this.oxygenLeak = this.oxygen / 100000;
         this.oxygen -= this.oxygenLeak;
@@ -71,14 +68,8 @@ function Game() {
         // game.space.spawnShip(new Ship("Battleship", 200, 1e9), 350);
     };
 
-    this.buyIce = function(toBuy) {
-        if(toBuy === undefined) {
-            toBuy = Number(document.getElementById('buyIceAmount').value);
-            var shouldUpdate = true;
-        }
-        if(toBuy > this.cash) {
-            toBuy = this.cash;
-        }
+    this.buyIce = function() {
+        var toBuy = this.cash;
         if(toBuy <= 0) {
             return;
         }
@@ -129,8 +120,8 @@ function Game() {
         if(toBuy <= 0) {
             return;
         }
-        this.oxygen -= 3e7;
-        this.science -= 1.5e7;
+        this.oxygen -= 3e7*toBuy;
+        this.science -= 1.5e7*toBuy;
         this.spaceDock.addBattleship(toBuy);
         view.update();
     };

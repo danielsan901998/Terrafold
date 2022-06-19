@@ -45,8 +45,8 @@ function Computer() {
 
     this.buyThread = function() {
         var threadCost = this.getThreadCost();
-        if(game.science >= threadCost) {
-            game.science -= threadCost;
+        if(game.cash >= threadCost) {
+            game.cash -= threadCost;
             this.threads++;
             this.freeThreads++;
         }
@@ -58,8 +58,8 @@ function Computer() {
 
     this.buySpeed = function() {
         var speedCost = this.getSpeedCost();
-        if(game.cash >= speedCost) {
-            game.cash -= speedCost;
+        if(game.science >= speedCost) {
+            game.science -= speedCost;
             this.speed++;
         }
         view.updateComputer();
@@ -99,7 +99,7 @@ function Computer() {
             threads: 0,
             cost:0,
             costType:"",
-            finish:function() { game.buyIce(10) },
+            finish:function() { game.buyIce(100) },
             showing: function() { return true; }
         },
         { //Sell Water
@@ -108,7 +108,7 @@ function Computer() {
             threads: 0,
             cost:0,
             costType:"",
-            finish:function() { game.water.sellWater(5) },
+            finish:function() { game.water.sellWater(50) },
             showing: function() { return true; }
         },
         { //Improve Farms
@@ -154,7 +154,7 @@ function Computer() {
             ticksNeeded: 20000,
             threads: 0,
             cost:10,
-            costType:"science",
+            costType:"wood",
             finish:function() { game.robots.gainStorage(5); this.cost = precision3(20*(this.completions+2 )+ Math.pow(this.completions, 2)); this.ticksNeeded+=2000; },
             showing: function() { return game.robots.unlocked; }
         },
@@ -163,10 +163,9 @@ function Computer() {
             ticksNeeded: 3000,
             threads: 0,
             cost:.5,
-            costType:"wood",
+            costType:"science",
             finish:function() { game.population.improveHouse(); this.ticksNeeded += 500; },
             showing: function() { return game.robots.unlocked; },
-            done:function() { return this.completions >= 100; }
         }
     ];
 }
@@ -179,11 +178,11 @@ var processesView = [
     },
     {
         text:"Buy Ice",
-        tooltip:"Buys up to 10 ice"
+        tooltip:"Buys up to 100 ice"
     },
     {
         text:"Sell Water",
-        tooltip:"Sells up to 5 water"
+        tooltip:"Sells up to 50 water"
     },
     {
         text:"Improve Farms",

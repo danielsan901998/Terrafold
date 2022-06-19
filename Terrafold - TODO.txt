@@ -1,23 +1,5 @@
-
-
-the space station gives me way less ice/dirt then it actually says it does
-
-1/10/100/custom options for threads and robots
-hover-over total water of different types
-
-
-
+- = done
 Computer
-	Optimize Land - as is
-	Modify Buy Ice 
-		Every 1000 bought, ticks += 4, ice bought += 1
-		Initial changed to 40
-	Remove sell water
-	Have better late-game scaling for find more ice sellers
-		Every 1000 bought, cost/ticks *= 4, gain *= 5
-	Find more Water Buyers
-		Quadratically scaling science cost
-		Shortish tick time
 	Modify Bigger Storms
 		Disappears when complete
 		Unlocks Targetted Sunlight
@@ -26,21 +8,10 @@ Computer
 			Unlocks Targetted Humidity
 				Grow ferns faster, 10% at a time up to 100%
 				Disappears when complete
-	Remove Build Robots
-	Remove More Robot Storage
 	Improve House Design Rework
-		Double happiness bonus, cost increase 10x, ticks increase 3x
-		Costs wood 
-	Improve Saws
-		Improve Cut Trees rate by 10%
-		Takes lots of ticks, tiny amount of metal
+	        -Costs wood
 
 Robots
-	Build Robots
-		requires 10 * # metal, 5k science * # of robots, linear tick increase
-	Cut Trees 
-		2 trees for 1 wood 
-	Remove Modify Expand indoor water storage
 	More Robot Storage - 
 		Costs 250 land, Metal
 		Stores 1 robot
@@ -57,16 +28,6 @@ Robots
 		Takes flat compacted ore #
 		Light on ticks, heavy on flat energy required
 		Produces little dirt, littler gems
-
-Tractor Beam
-	Uses flat 1 energy for 1 charge
-	At 100 charges, takes 1%+10 from passing objects,
-	takes 10% from 
-	has on/off switch
-
-Battleships
-	Rename Terraformers
-	cost -> 30m oxygen+100k*#, 3000+200*# metal
 
 
 Add planet graphics
@@ -91,7 +52,6 @@ Next Sector
 	powerMult is 3^sector
 	artifact gain is sector+1
 Killing bosses give void crystals
-Unused void crystals increase hangar capacity
 
 collect ships when sector is done
 	if target is home and fuel is positive,
@@ -100,8 +60,6 @@ collect ships when sector is done
 
 Potential later upgrades:
 	Increase max # of mines per planet, make it choosable down to 1
-
-
 
 
 400 ore per tick is reasonable to obtain -- 200 mines, 200 robots, etc.
@@ -145,7 +103,3 @@ Yea, end-game requires way too much water.
 
 game.hangars[0] should give you a report on your ship hangars
 game.hangars[0].sendRate=0 should stop sending the ships and killing your food
-
-
-
-
