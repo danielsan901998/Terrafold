@@ -74,9 +74,6 @@ function Game() {
             return;
         }
         this.cash -= this.ice.buyIce(toBuy);
-        if(shouldUpdate) {
-            view.update();
-        }
     };
 
     this.buyFarms = function() {
