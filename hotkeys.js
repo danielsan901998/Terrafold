@@ -98,8 +98,3 @@ backgroundGrid.onmouseup  = function(e) {
         return;
     }
 };
-
-
-document.getElementById('shipSpawnSlider1').oninput = function() {
-    game.hangars[0].y = (100 - this.value) * 3.5;
-};
