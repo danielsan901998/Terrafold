@@ -155,7 +155,7 @@ function Computer() {
             threads: 0,
             cost:10,
             costType:"wood",
-            finish:function() { game.robots.gainStorage(5); this.cost = precision3(20*(this.completions+2 )+ Math.pow(this.completions, 2)); this.ticksNeeded+=2000; },
+            finish:function() { game.robots.gainStorage(5); this.ticksNeeded+=2000; },
             showing: function() { return game.robots.unlocked; }
         },
         { //Improve House Design
