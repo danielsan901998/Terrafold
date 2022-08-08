@@ -1,6 +1,6 @@
 var myKeyQueue = [];
 //TODO: Add multipliller
-export function keyMultiplier(){
+function keyMultiplier(){
     let number = 1;
     if (global.settings['mKeys']){
         if (keyMap.x10){
