@@ -13,15 +13,17 @@ body {
     font-size:14px;
     height:100%;
     margin:0;
-    background-color: #ececec;
+    background-color: black;
     cursor:default;
 }
 
 .showthat:hover .showthis, .showthat2:hover .showthis2 {
     display:block;
+    background-color: #c3d2ff;
 }
 .showthis, .showthis2 {
     display:none;
+    position:absolute;
     background-color: #b4b3e4;
     border:1px solid;
     padding:3px 5px;
@@ -36,13 +38,6 @@ body {
     z-index:1000;
     min-width:200px;
 }
-
-.waterIcon {
-    position:absolute;
-    top:0;
-    right:0;
-}
-
 
 input {
     width:100px;
@@ -101,8 +96,9 @@ input, label {
 }
 
 .container {
+    position: relative;
     border:1px solid black;
-    margin:10px;
+    margin:2px 10px;
     padding:3px 8px;
     border-radius:5px;
     text-align:center;
@@ -203,18 +199,20 @@ input, label {
 }
 
 .verticalProgress {
-    width:20px;
-    height:45px;
-    background-color:grey;
     position: absolute;
+    width:10%;
+    height:30%;
+    bottom: 12%;
+    left: 45%;
+    background-color:grey;
 }
 
 .verticalProgressInner {
-    width: 18px;
-    background-color: black;
+    width: 20px;
     position: absolute;
     bottom: 0;
-    left: 1px;
+    left: 0;
+    background-color: black;
 }
 
 .fa.fa-arrow-right {
@@ -253,12 +251,12 @@ input, label {
 }
 
 .infoText {
-    background-color:white;
     border:1px solid;
     border-top:0;
     padding:0 5px;
     height:23px;
     vertical-align:top;
+    background-color: #c3d2ff;
 }
 
 .globalResourceInfo {
@@ -266,57 +264,7 @@ input, label {
     text-align:center;
 }
 
-#spaceTransition {
-    position:absolute;
-    left:1300px;
-    height:100%;
-    width:500px;
-    background: linear-gradient(to right, rgba(255,255,255,0), rgba(0,0,0,1));
-}
-
 #spaceContainer {
-    left:1800px;
-    width:700px;
-    position:absolute;
+    width:90%;
     background-color:black;
-    height:100%;
-}
-
-.sliderWrapper {
-    display: inline-block;
-    width: 20px;
-    padding: 0;
-}
-.sliderWrapper input {
-    width: 360px;
-    height: 1px;
-    margin: 0;
-    transform-origin: 75px 75px;
-    transform: rotate(-90deg);
-}
-.shipSpawnSlider {
-    -webkit-appearance: none;  /* Override default CSS styles */
-    appearance: none;
-    width: 100%; /* Full-width */
-    height: 25px; /* Specified height */
-    /*background: transparent; !* Grey background *!*/
-    outline: none; /* Remove outline */
-    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-    transition: opacity .2s;
-}
-
-.shipSpawnSlider:hover {
-    opacity: 1; /* Fully shown on mouse-over */
-}
-
-.shipSpawnSlider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
-    appearance: none;
-    width: 12px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: #ee8b44; /* Green background */
-    cursor: pointer; /* Cursor on hover */
-    border-bottom-left-radius:8px;
-    border-bottom-right-radius:8px;
 }

@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body id="theBody" style="background-color: black">
+<body id="theBody">
 
-<div id="info" style="position:fixed;z-index:1001;" class="medium">
+<div id="info" class="medium">
     <div class="showthat infoText">S<div class="showthis">
         Story<br>
         <div class="small">
@@ -132,17 +132,19 @@
             <div>Next Storm:<br><div id="stormTimer"></div></div><br>
             <canvas id='nextStormProgress' class='progress-active' height='80px' width='80px'></canvas>
         </div>
+        <div>
+            <div class="verticalProgress">
+                <div class="verticalProgressInner" id="intensityPB"></div>
+            </div>
+        </div>
+        <div id="lightningContainer">
+            <div>Lightning Chance: <div id="lightningChance"></div></div>%<br>
+        </div>
         <div class='progress-bar'>
             <div>Duration:<br><div id="stormDuration"></div></div><br>
             <canvas id='stormDurationProgress' class='progress-active' height='80px' width='80px'></canvas>
         </div><br>
         <div>Intensity: <div id="stormRate"></div></div><br>
-        <div class="verticalProgress">
-            <div class="verticalProgressInner" id="intensityPB"></div>
-        </div>
-        <div id="lightningContainer">
-            <div>Lightning Chance: <div id="lightningChance"></div></div>%<br>
-        </div>
         <div class="showthis">
             Rain falls on land, but only when storming.<br>
             Rain falls at a rate of (water / 500) * intensity.<br>
@@ -381,17 +383,13 @@
         </div>
     </div>
 
-    <div id="shipSpawnSlidersContainer">
-        <div class="sliderWrapper">
-            <input type="range" min="0" max="100" step="1" value="0" class="shipSpawnSlider" id="shipSpawnSlider1">
-        </div><br>
+    <br>
+    <div id="spaceContainer">
+        <canvas id="spaceCanvas" width="1000" height="900" ></canvas>
     </div>
-
-    <div id="spaceContainer"></div>
 
     <div id="cometsContainer" ></div>
 
-    <canvas id="spaceCanvas" width="1000" height="900" ></canvas>
 
 
 </div>
