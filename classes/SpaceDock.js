@@ -2,6 +2,7 @@ function SpaceDock() {
     this.battleships = 0;
     this.unlocked = 0;
     this.energy = 0;
+    this.sended = 0;
 
     this.tick = function() {
         if(!this.unlocked) {

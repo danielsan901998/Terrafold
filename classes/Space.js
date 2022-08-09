@@ -3,8 +3,15 @@ function Space() {
     this.ships = [];
     this.sector = 0;
     this.tick = function() {
+        var empty=true;
         for(var i = 0; i < this.planets.length; i++) {
             this.planets[i].tick();
+            if(this.planets[i].empty()==false)
+                empty=false;
+        }
+        if(empty){
+            this.planets=[];
+            this.newLevel();
         }
         for(i = 0; i < this.ships.length; i++) {
             this.ships[i].tick();

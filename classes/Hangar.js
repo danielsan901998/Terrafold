@@ -12,6 +12,7 @@ function Hangar(num) {
                 game.farms.food -= foodTaken;
                 game.space.spawnShip(new Ship("Battleship", this.sendRate, foodTaken), this.y);
                 game.spaceDock.battleships -= this.sendRate;
+                game.spaceDock.sended += this.sendRate;
                 this.timeRemaining = this.totalTime;
                 view.updateSpaceDock();
             } else {
@@ -28,5 +29,4 @@ function Hangar(num) {
             num:this.num
         }
     };
-
 }

@@ -93,6 +93,8 @@ function load() {
         row.isMoving = rowData.isMoving;
         row.completions = rowData.completions;
     }
+    game.spaceDock.battleships += game.spaceDock.sended;
+    game.spaceDock.sended = 0;
 
     document.getElementById('scienceSlider').value = game.population.scienceRatio;
 

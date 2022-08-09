@@ -72,6 +72,7 @@ function Ship(name, amount, foodAmount) {
     };
     this.returnHome = function() {
         game.spaceDock.battleships += this.amount;
+        game.spaceDock.sended -= this.amount;
         game.farms.food += this.foodAmount * foodPerShip;
         for(var i = game.space.ships.length-1; i >= 0; i--) {
             var ship = game.space.ships[i];
