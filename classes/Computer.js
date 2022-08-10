@@ -178,7 +178,7 @@ var processesView = [
     },
     {
         text:"Buy Ice",
-        tooltip:"Buys up to 100 ice"
+        tooltip:"Buy available ice"
     },
     {
         text:"Sell Water",
