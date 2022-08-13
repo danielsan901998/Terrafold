@@ -1,11 +1,7 @@
 var foodPerShip = 20;
-function Ship(name, amount, foodAmount) {
-    this.name = name;
+function Ship(amount, foodAmount) {
     this.amount = amount;
-    this.health = this.maxHealth = 20;
-    this.shield = this.maxShield = 10;
     this.foodAmount = foodAmount/foodPerShip;
-    this.shieldRegen = 1;
     this.actionRate = 1;
     this.actionSpeed = 40;
     this.actionCounter = 0;
@@ -26,7 +22,7 @@ function Ship(name, amount, foodAmount) {
         }
         for(var i = game.space.ships.length-1; i >= 0; i--) {
             var ship = game.space.ships[i];
-            if(ship === this || ship.name !== this.name || ship.isEmpty()) { //only join on same types
+            if(ship === this || ship.isEmpty()) { //only join on same types
                 continue;
             }
             if(withinDistance(this.x, this.y, ship.x, ship.y, 10)) {
@@ -92,7 +88,7 @@ function Ship(name, amount, foodAmount) {
         if(!this.target || (!this.target.isHome && this.target.doneBuilding())) {
             this.target = this.findClosestTarget();
         }
-        if(getDistance(this.x, this.y, this.target.x, this.target.y) < (this.target.isHome ? 5 : 40)) {
+        if(getDistance(this.x, this.y, this.target.x, this.target.y) <  40) {
             if(!this.target.isHome) {
                 this.engaged = true;
                 return;

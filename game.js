@@ -65,7 +65,6 @@ function Game() {
 
 
         this.space.newLevel();
-        // game.space.spawnShip(new Ship("Battleship", 200, 1e9), 350);
     };
 
     this.buyIce = function() {

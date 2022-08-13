@@ -7,12 +7,13 @@ function Hangar(num) {
     this.tick = function() {
         this.timeRemaining--;
         if(this.timeRemaining < 0) {
-            if (game.spaceDock.battleships >= this.sendRate) {
+            if (game.spaceDock.battleships > 0) {
+                var tosend=Math.min(this.sendRate,game.spaceDock.battleships);
                 var foodTaken = game.farms.food * .05; // Take 5% food per launch
                 game.farms.food -= foodTaken;
-                game.space.spawnShip(new Ship("Battleship", this.sendRate, foodTaken), this.y);
-                game.spaceDock.battleships -= this.sendRate;
-                game.spaceDock.sended += this.sendRate;
+                game.space.spawnShip(new Ship(tosend, foodTaken), this.y);
+                game.spaceDock.battleships -= tosend;
+                game.spaceDock.sended += tosend;
                 this.timeRemaining = this.totalTime;
                 view.updateSpaceDock();
             } else {
