@@ -242,58 +242,61 @@
                         .1% of Water per tick goes back to the Lake.<br>
                     </div>
                 </div>
-
             </div>
 
-            <div id="foodContainer" class="container showthat">
-                <div class="title">Farm</div>
-                <div class="waterIcon showthat2"><img src='img/water.png' class='superLargeIcon'>
-                    <div class="showthis2">
-                        <div>Food Eaten: <div id="farmFoodEaten"></div></div><br>
-                        <div>Receiving: <div id="farmReceived"></div> <img src='img/water.png' class='smallIcon'></div><br>
-                        <div>Water to Food: <div id="foodCreated"></div> <img src='img/water.png' class='smallIcon'></div><br>
-                        <div>Flowing to Lake: <div id="farmWaterToLake"></div> <img src='img/water.png' class='smallIcon'></div><br>
+            <div class="column">
+                <div id="foodContainer" class="container showthat">
+                    <div class="title">Farm</div>
+                    <div class="waterIcon showthat2"><img src='img/water.png' class='superLargeIcon'>
+                        <div class="showthis2">
+                            <div>Food Eaten: <div id="farmFoodEaten"></div></div><br>
+                            <div>Receiving: <div id="farmReceived"></div> <img src='img/water.png' class='smallIcon'></div><br>
+                            <div>Water to Food: <div id="foodCreated"></div> <img src='img/water.png' class='smallIcon'></div><br>
+                            <div>Flowing to Lake: <div id="farmWaterToLake"></div> <img src='img/water.png' class='smallIcon'></div><br>
+                        </div>
+                    </div>
+                    <div><img src='img/water.png' class='smallIcon'>: <div id="farmsWater"></div></div><br>
+                    <input id="buyFarmAmount" type="number" step="1" value="1"><br>
+                    <div class="button" onclick="game.buyFarms()">Buy Farm for 50 soil</div><br>
+                    <div>Farms: <div id="farms"></div></div><br>
+                    <div>Food: <div id="food"></div></div><br>
+                    <div class="showthis">
+                        <label for="buyFarmAmount">Set how much you want to buy with the input.</label><br>
+                        WARNING: using soil reduces trees.<br>
+                        One farm makes .01 food/tick, using water.<br>
+                        .1% of water per tick goes back to the lake.<br>
+                        <div>Farm Efficiency: <div id="efficiency"></div>%</div><br>
                     </div>
                 </div>
-                <div><img src='img/water.png' class='smallIcon'>: <div id="farmsWater"></div></div><br>
-                <input id="buyFarmAmount" type="number" step="1" value="1"><br>
-                <div class="button" onclick="game.buyFarms()">Buy Farm for 50 soil</div><br>
-                <div>Farms: <div id="farms"></div></div><br>
-                <div>Food: <div id="food"></div></div><br>
-                <div class="showthis">
-                    <label for="buyFarmAmount">Set how much you want to buy with the input.</label><br>
-                    WARNING: using soil reduces trees.<br>
-                    One farm makes .01 food/tick, using water.<br>
-                    .1% of water per tick goes back to the lake.<br>
-                    <div>Farm Efficiency: <div id="efficiency"></div>%</div><br>
-                </div>
-            </div>
 
-            <div id="populationContainer" class="container showthat">
-                <div class="title">City</div>
-                <div class="waterIcon showthat2"><img src='img/happy.jpg' class='superLargeIcon'>
-                    <div class="showthis2">
-                        <div>Food Eaten: <div id="foodEaten"></div></div><br>
-                        <div>Population Growth: <div id="populationGrowth"></div></div><br>
-                        <div>Dying from Starvation: <div id="starving"></div></div><br>
-                        <div>Base Happiness From House: <div id="happinessFromHouse"></div></div><br>
-                        <div>Happiness From Trees: <div id="happinessFromTrees"></div></div><br>
-                        <div>Happiness From Oxygen: <div id="happinessFromOxygen"></div></div><br>
+                <br>
+
+                <div id="populationContainer" class="container showthat">
+                    <div class="title">City</div>
+                    <div class="waterIcon showthat2"><img src='img/happy.jpg' class='superLargeIcon'>
+                        <div class="showthis2">
+                            <div>Food Eaten: <div id="foodEaten"></div></div><br>
+                            <div>Population Growth: <div id="populationGrowth"></div></div><br>
+                            <div>Dying from Starvation: <div id="starving"></div></div><br>
+                            <div>Base Happiness From House: <div id="happinessFromHouse"></div></div><br>
+                            <div>Happiness From Trees: <div id="happinessFromTrees"></div></div><br>
+                            <div>Happiness From Oxygen: <div id="happinessFromOxygen"></div></div><br>
+                        </div>
                     </div>
-                </div>
-                <div>Population: <div id="population"></div></div><br>
-                <div>Happiness: <div id="happiness"></div></div><br>
-                <div id="sliderContainer" style="width:150px;">
-                    <input type="range" min="0" max="100" value="0" class="slider" id="scienceSlider">
-                </div><br>
-                <div id="scienceRatio"></div><br>
-                <div>Science created: <div id="scienceDelta"></div></div><br>
-                <div>Cash created: <div id="cashDelta"></div></div><br>
-                <div class="showthis">
-                    One person eats .01 food / tick.<br>
-                    People die faster if there is 0 food.<br>
-                    People work harder if they are happier.<br>
-                    Choose whether people create science or cash.<br>
+                    <div>Population: <div id="population"></div></div><br>
+                    <div>Happiness: <div id="happiness"></div></div><br>
+                    <div id="sliderContainer" style="width:150px;">
+                        <input type="range" min="0" max="100" value="0" class="slider" id="scienceSlider">
+                    </div><br>
+                    <div id="scienceRatio"></div><br>
+                    <div>Science created: <div id="scienceDelta"></div></div><br>
+                    <div>Cash created: <div id="cashDelta"></div></div><br>
+                    <div class="showthis">
+                        One person eats .01 food / tick.<br>
+                        People die faster if there is 0 food.<br>
+                        People work harder if they are happier.<br>
+                        Choose whether people create science or cash.<br>
+                    </div>
                 </div>
             </div>
 
