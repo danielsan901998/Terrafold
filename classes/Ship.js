@@ -13,8 +13,7 @@ function Ship(amount, foodAmount) {
         this.moveToNearestTarget();
         this.checkJoinFleet();
         this.attackTarget();
-        this.construction();
-    };
+    }
 
     this.checkJoinFleet = function() {
         if(!this.engaged) {
@@ -30,7 +29,7 @@ function Ship(amount, foodAmount) {
                 game.space.ships.splice(i, 1);
             }
         }
-    };
+    }
 
     this.findClosestTarget = function() {
         var pos = 0;
@@ -50,7 +49,7 @@ function Ship(amount, foodAmount) {
             }
         }
         return targetPlanet ? targetPlanet : this.targetHome();
-    };
+    }
 
     this.checkEmpty = function() {
         this.foodAmount -= this.amount;
@@ -61,11 +60,11 @@ function Ship(amount, foodAmount) {
         this.speed = .05;
         this.target = this.targetHome();
         this.engaged = false;
-    };
+    }
 
     this.targetHome = function() {
         return game.hangars[0].getTarget();
-    };
+    }
     this.returnHome = function() {
         game.spaceDock.battleships += this.amount;
         game.spaceDock.sended -= this.amount;
@@ -78,11 +77,11 @@ function Ship(amount, foodAmount) {
             }
         }
         view.updateSpaceDock();
-    };
+    }
 
     this.isEmpty = function() {
         return this.foodAmount <= 0;
-    };
+    }
 
     this.moveToNearestTarget = function() {
         if(!this.target || (!this.target.isHome && this.target.doneBuilding())) {
@@ -107,33 +106,25 @@ function Ship(amount, foodAmount) {
         this.x = this.x + magnitude * Math.cos(direction); //||v||cos(theta)
         this.y = this.y + magnitude * Math.sin(direction);
         this.direction = direction;
-    };
+    }
 
     this.attackTarget = function() {
-        if(!this.target || this.target.isHome || !this.engaged || !this.target.alive()) { //if not attacking a valid target
-            return;
-        }
-        this.actionCounter++;
-        if(this.actionCounter >= this.actionSpeed) {
-            this.actionCounter = 0;
-            this.target.takeDamage(this.actionRate * this.amount);
-        }
-    };
-
-    this.construction = function() {
-        if(!this.target || this.target.isHome || !this.engaged || this.target.alive()) {
-            return;
-        }
-        this.actionCounter++;
-        if(this.actionCounter >= this.actionSpeed/2) {
-            this.actionCounter = 0;
-            this.target.workConstruction(this.amount);
-            if(this.target.doneBuilding()) {
-                this.engaged = false;
-                this.target = this.findClosestTarget();
+        if(this.target && !this.target.isHome && this.engaged) {
+            this.actionCounter++;
+            if(this.actionCounter >= this.actionSpeed) {
+                this.actionCounter = 0;
+                if(this.target.alive()){
+                    this.target.takeDamage(this.actionRate * this.amount);
+                }else{
+                    this.target.workConstruction(this.amount);
+                    if(this.target.doneBuilding()) {
+                        this.engaged = false;
+                        this.target = this.findClosestTarget();
+                    }
+                }
             }
         }
-    };
+    }
 }
 
 //Ship1 is the one not moving, ship2 is the one disappearing
