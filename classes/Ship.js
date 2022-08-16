@@ -87,6 +87,7 @@ function Ship(amount, foodAmount) {
     this.moveToNearestTarget = function() {
         if(!this.target || (!this.target.isHome && this.target.doneBuilding())) {
             this.target = this.findClosestTarget();
+            this.engaged = false;
         }
         if(getDistance(this.x, this.y, this.target.x, this.target.y) <  40) {
             if(!this.target.isHome) {
