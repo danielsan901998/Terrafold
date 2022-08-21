@@ -1,4 +1,3 @@
-
 function Planet() {
     this.isBoss = 0;
     this.view = {};
@@ -90,7 +89,8 @@ function Planet() {
 
     this.calcPower = function(difficulty) { //difficulty starts at 1
         this.power = difficulty * (this.isBoss?1.5:1);
-        this.atmo = this.maxAtmo = precision3((this.power*2)+100);
+        //limit max atmosphere to avoid drawing to become to too big
+        this.atmo = this.maxAtmo = Math.min(200,precision3((this.power*2)+100));
         this.health = this.maxHealth = precision3((this.power*20)+1000);
         this.dirt = precision3((this.power*200)+2000);
 
