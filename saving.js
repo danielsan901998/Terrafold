@@ -96,7 +96,8 @@ function load() {
     game.spaceDock.battleships += game.spaceDock.sended;
     game.spaceDock.sended = 0;
 
-    game.space.level=toLoad.game.space.level;
+    //-1 because newLevel increase it.
+    game.space.level=toLoad.game.space.level-1;
 
     document.getElementById('scienceSlider').value = game.population.scienceRatio;
 
