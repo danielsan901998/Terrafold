@@ -62,9 +62,6 @@ function Game() {
         for(i = 0; i < 1; i++) {
             this.hangars[i] = new Hangar(i);
         }
-
-
-        this.space.newLevel();
     };
 
     this.buyIce = function() {
