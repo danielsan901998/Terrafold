@@ -1,14 +1,13 @@
-
-
 function tick() {
     if(stop) {
         return;
     }
     timer++;
-    handleFPSDifference();
+    //handleFPSDifference();
 
     game.tick();
-    view.update();
+    if(!document.hidden)
+        view.update();
 
     if(timer % 100 === 0) {
         save();
