@@ -80,36 +80,37 @@ function toSuffix(value) {
     return shortValue+suffixes[suffixNum];
 }
 
+const format_symbol_table = [
+    { value: 1E63, symbol: "V" },
+    { value: 1E60, symbol: "Nd" },
+    { value: 1E57, symbol: "Od" },
+    { value: 1E54, symbol: "Sd" },
+    { value: 1E51, symbol: "sd" },
+    { value: 1E48, symbol: "Qd" },
+    { value: 1E45, symbol: "qd" },
+    { value: 1E42, symbol: "Td" },
+    { value: 1E39, symbol: "Dd" },
+    { value: 1E36, symbol: "Ud" },
+    { value: 1E33, symbol: "Dc" },
+    { value: 1E30, symbol: "N" },
+    { value: 1E27, symbol: "O" },
+    { value: 1E24, symbol: "Sp" },
+    { value: 1E21, symbol: "Sx" },
+    { value: 1E18, symbol: "Qi" },
+    { value: 1E15, symbol: "Qa" },
+    { value: 1E12, symbol: "T" },
+    { value: 1E9,  symbol: "B" },
+    { value: 1E6,  symbol: "M" },
+    { value: 1E3,  symbol: "K" }
+];
+const format_regex = /\.0+$|(\.[0-9]*[1-9])0+$/;
 function nFormatter(num, digits) {
-    var si = [
-        { value: 1E63, symbol: "V" },
-        { value: 1E60, symbol: "Nd" },
-        { value: 1E57, symbol: "Od" },
-        { value: 1E54, symbol: "Sd" },
-        { value: 1E51, symbol: "sd" },
-        { value: 1E48, symbol: "Qd" },
-        { value: 1E45, symbol: "qd" },
-        { value: 1E42, symbol: "Td" },
-        { value: 1E39, symbol: "Dd" },
-        { value: 1E36, symbol: "Ud" },
-        { value: 1E33, symbol: "Dc" },
-        { value: 1E30, symbol: "N" },
-        { value: 1E27, symbol: "O" },
-        { value: 1E24, symbol: "Sp" },
-        { value: 1E21, symbol: "Sx" },
-        { value: 1E18, symbol: "Qi" },
-        { value: 1E15, symbol: "Qa" },
-        { value: 1E12, symbol: "T" },
-        { value: 1E9,  symbol: "B" },
-        { value: 1E6,  symbol: "M" },
-        { value: 1E3,  symbol: "K" }
-    ], rx = /\.0+$|(\.[0-9]*[1-9])0+$/, i;
-    for (i = 0; i < si.length; i++) {
-        if ((num) >= si[i].value / 1.000501) { // /1.000501 to handle rounding
-            return (num / si[i].value).toPrecision(digits).replace(rx, "$1") + si[i].symbol;
+    for (let i = 0; i < format_symbol_table.length; i++) {
+        if ((num) >= format_symbol_table[i].value / 1.000501) { // /1.000501 to handle rounding
+            return (num / format_symbol_table[i].value).toPrecision(digits).replace(format_regex, "$1") + format_symbol_table[i].symbol;
         }
     }
-    return num.toPrecision(digits).replace(rx, "$1");
+    return num.toPrecision(digits).replace(format_regex, "$1");
 }
 
 var factorials = [];
