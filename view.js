@@ -408,9 +408,6 @@ function View() {
         var cometDiv = document.getElementById(cometDivName);
         if(cometDiv) {
             document.getElementById('cometsContainer').removeChild(cometDiv);
-        } else {
-            console.log('not found: '+cometData.id);
-        }
     };
 
     this.updateSpaceDock = function() {
