@@ -1,5 +1,4 @@
 function View() {
-
     this.update = function() {
         //should run no more than once per frame
         this.updateInfo();
@@ -406,7 +405,7 @@ function View() {
     this.removeComet = function(cometData) {
         var cometDivName = 'comet'+cometData.id;
         var cometDiv = document.getElementById(cometDivName);
-        if(cometDiv) {
+        if(cometDiv)
             document.getElementById('cometsContainer').removeChild(cometDiv);
     };
 
