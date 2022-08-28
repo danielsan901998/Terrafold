@@ -73,7 +73,6 @@ function TractorBeam() {
                 this.comets.splice(i, 1);
             }
         }
-        view.updateSpaceStation();
     };
 
     this.addComet = function() {
