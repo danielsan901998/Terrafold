@@ -76,7 +76,6 @@ function Ship(amount, foodAmount) {
                 break;
             }
         }
-        view.updateSpaceDock();
     }
 
     this.isEmpty = function() {

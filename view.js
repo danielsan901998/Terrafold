@@ -379,9 +379,9 @@ function View() {
     };
 
     this.drawComet = function(cometData) {
+        var cometDiv;
         var cometDivName = 'comet'+cometData.id;
-        var cometDiv = document.getElementById(cometDivName);
-        if(!cometDiv) {
+        if(!cometData.drawed){
             cometDiv = document.createElement("div");
             cometDiv.className = cometData.name.toLowerCase();
             cometDiv.id = cometDivName;
@@ -394,7 +394,10 @@ function View() {
             //y = mx + b, m = (y-b)/x
             cometData.slope = (0 - cometData.startingY) / (cometData.endingX);
             document.getElementById('cometsContainer').appendChild(cometDiv);
+            cometData.drawed=true;
         }
+        else
+            cometDiv = document.getElementById(cometDivName);
         cometData.left = (cometData.initialDuration - cometData.duration) / cometData.initialDuration * cometData.endingX;
         cometData.top = cometData.slope * cometData.left + cometData.startingY;
         cometDiv.style.left = cometData.left + "px";
@@ -407,6 +410,8 @@ function View() {
         var cometDiv = document.getElementById(cometDivName);
         if(cometDiv)
             document.getElementById('cometsContainer').removeChild(cometDiv);
+        else
+            console.log(cometDivName+"not found");
     };
 
     this.updateSpaceDock = function() {

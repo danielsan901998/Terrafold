@@ -69,7 +69,8 @@ function TractorBeam() {
             var comet = this.comets[i];
             comet.duration--;
             if(comet.duration < 0 || comet.amount < 1) {
-                view.removeComet(comet);
+                if(comet.drawed)
+                    view.removeComet(comet);
                 this.comets.splice(i, 1);
             }
         }
@@ -107,6 +108,7 @@ function TractorBeam() {
             };
         }
         comet.id = cometId++;
+        comet.drawed = false;
 
 
         this.comets.push(comet);

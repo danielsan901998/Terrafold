@@ -56,12 +56,10 @@ function Robots() {
     this.gainRobots = function(amount) {
         this.robots += amount;
         this.robotsFree += amount;
-        view.updateRobots();
     };
 
     this.gainStorage = function(amount) {
         this.robotMax += amount;
-        view.updateRobots();
     };
 
     this.unlockRobots = function() {

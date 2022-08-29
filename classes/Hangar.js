@@ -15,7 +15,6 @@ function Hangar(num) {
                 game.spaceDock.battleships -= tosend;
                 game.spaceDock.sended += tosend;
                 this.timeRemaining = this.totalTime;
-                view.updateSpaceDock();
             } else {
                 this.timeRemaining = 0;
             }
