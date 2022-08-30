@@ -93,6 +93,8 @@ function load() {
         row.isMoving = rowData.isMoving;
         row.completions = rowData.completions;
     }
+    for(let comet of game.tractorBeam.comets)
+        comet.drawed=false;
     game.spaceDock.battleships += game.spaceDock.sended;
     game.spaceDock.sended = 0;
 
