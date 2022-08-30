@@ -14,6 +14,7 @@ function View() {
         this.updateEnergy();
         this.updateSpaceStation();
         this.updateTractorBeam();
+        this.updateSpaceDock();
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
         updateSpace();
