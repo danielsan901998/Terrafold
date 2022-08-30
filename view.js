@@ -10,15 +10,16 @@ function View() {
         this.updateFarms();
         this.updatePopulation();
         this.updateComputerRowProgress();
+        this.updateRobots();
         this.updateRobotsRowProgress();
         this.updateEnergy();
         this.updateSpaceStation();
         this.updateTractorBeam();
         this.updateSpaceDock();
+        this.updateHangar();
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
         updateSpace();
-        this.updateHangar();
     };
 
     this.updateInfo = function() {
