@@ -80,7 +80,7 @@ function TractorBeam() {
             return;
         }
         var typeRoll = Math.random();
-        var amountRoll = Math.random() * 400 * game.space.level + 200;
+        var amountRoll = Math.random() * 100 * game.space.level + 200;
         var durationRoll = Math.floor(Math.random() * 750 + 250);
         var speedRoll = Math.random() * 2 + 1;
         var comet = {};
