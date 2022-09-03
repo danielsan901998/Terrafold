@@ -373,7 +373,7 @@
 
             <div id="spaceDockContainer" class="container showthat">
                 <div class="title">Space Dock</div>
-                <input id="buyBattleshipAmount" type="number" value="1"><br>
+                <input id="buyBattleshipAmount" type="number" step="1" value="1"><br>
                 <div class="button" onclick="game.buyBattleship()">Build Battleship for <br><div id="battleshipCost">30m oxygen, 15m science</div></div><br>
                 Battleships: <div id="battleships"></div><br>
                 Energy: <div id="spaceportEnergy"></div><br>
@@ -385,8 +385,10 @@
             </div>
 
             <div id="hangarContainer" class="container showthat">
-                <div class="title">Hangar 1</div>
-                Sending <div id="hangar0Sending"></div>
+                <div class="title">Hangar</div>
+                <input id="buyHangarAmount" type="number" step="1" value="1"><br>
+                <div class="button" onclick="game.buyHangar()">Increase hangar size for 1M soil</div><br>
+                Sending <div id="hangarSending"></div>
                 <div class="showthis">
                     Takes 5% of your current food. The more food a ship takes the longer it lasts<br>
                     When a ship is out of food it comes back to base.<br>

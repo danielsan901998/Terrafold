@@ -7,7 +7,6 @@ function Game() {
     this.wood = 0;
     this.metal = 0;
     this.power = 0;
-    this.hangars = [];
 
     this.tick = function() {
         this.ice.tick();
@@ -28,9 +27,7 @@ function Game() {
 
         this.oxygenLeak = this.oxygen / 100000;
         this.oxygen -= this.oxygenLeak;
-        for(var i = 0; i < this.hangars.length; i++) {
-            this.hangars[i].tick();
-        }
+        this.hangar.tick();
     };
 
     this.initialize = function() {
@@ -48,6 +45,7 @@ function Game() {
         this.spaceStation = new SpaceStation();
         this.tractorBeam = new TractorBeam();
         this.spaceDock = new SpaceDock();
+        this.hangar = new Hangar();
 
 
         for(var i = 0; i < this.computer.processes.length; i++) {
@@ -58,9 +56,6 @@ function Game() {
         for(i = 0; i < this.robots.jobs.length; i++) {
             view.addRobotRow(i);
             this.robots.jobs[i].completions = 0;
-        }
-        for(i = 0; i < 1; i++) {
-            this.hangars[i] = new Hangar(i);
         }
     };
 
@@ -116,6 +111,20 @@ function Game() {
         this.oxygen -= 3e7*toBuy;
         this.science -= 1.5e7*toBuy;
         this.spaceDock.addBattleship(toBuy);
+        view.update();
+    };
+
+    this.buyHangar = function() {
+        const cost=1000000;
+        var toBuy = Number(document.getElementById('buyHangarAmount').value);
+        if(toBuy * cost > this.land.soil) {
+            toBuy = Math.floor(this.land.soil/cost);
+        }
+        if(toBuy <= 0) {
+            return;
+        }
+        this.land.soil -= toBuy * cost;
+        this.hangar.sendRate+=toBuy;
         view.update();
     };
 

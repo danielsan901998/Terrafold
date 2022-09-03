@@ -63,7 +63,7 @@ function Ship(amount, foodAmount) {
     }
 
     this.targetHome = function() {
-        return game.hangars[0].getTarget();
+        return game.hangar.getTarget();
     }
     this.returnHome = function() {
         game.spaceDock.battleships += this.amount;

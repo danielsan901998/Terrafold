@@ -1,5 +1,4 @@
-function Hangar(num) {
-    this.num = num;
+function Hangar() {
     this.sendRate = 1;
     this.timeRemaining = this.totalTime = 40;
     this.y = 350;
@@ -26,7 +25,6 @@ function Hangar(num) {
             isHome:true,
             x:-125,
             y:this.y,
-            num:this.num
         }
     };
 }
