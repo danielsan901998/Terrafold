@@ -339,35 +339,37 @@
                 </div>
             </div>
 
-            <div id="spaceStationContainer" class="container showthat">
-                <div class="title">Space Station</div>
-                <div id="unlockSpaceStation" class="button" onclick="game.spaceStation.unlockSpaceStation()">Build Space Station for 2000 metal, 20k wood</div>
-                <div id="unlockedSpaceStation">
-                    <div>You have <div id="orbitingResources"></div></div> in orbit.<br>
-                    <div>Sending <div id="orbitSending"></div></div> to the planet.<br>
+            <div class="column">
+                <div id="spaceStationContainer" class="container showthat">
+                    <div class="title">Space Station</div>
+                    <div id="unlockSpaceStation" class="button" onclick="game.spaceStation.unlockSpaceStation()">Build Space Station for 2000 metal, 20k wood</div>
+                    <div id="unlockedSpaceStation">
+                        <div>You have <div id="orbitingResources"></div></div> in orbit.<br>
+                        <div>Sending <div id="orbitSending"></div></div> to the planet.<br>
+                    </div>
+
+                    <div class="showthis">
+                        Sends .01% of orbiting resources to the planet.<br>
+                        Dirt gets added to base land.<br>
+                    </div>
                 </div>
 
-                <div class="showthis">
-                    Sends .01% of orbiting resources to the planet.<br>
-                    Dirt gets added to base land.<br>
-                </div>
-            </div>
+                <br>
 
-            <div id="tractorBeamContainer" class="container showthat">
-                <div class="title">Tractor Beam</div>
-                <div id="unlockTractorBeam" class="button" onclick="game.tractorBeam.unlockTractorBeam()">Build Tractor Beam for 5m oxygen, 500k science</div>
-                <div id="unlockedTractorBeam">
-                    Energy: <div id="tractorBeamEnergy"></div> out of <div id="tractorBeamEnergyNeeded"></div><br><br>
+                <div id="tractorBeamContainer" class="container showthat">
+                    <div class="title">Tractor Beam</div>
+                    <div id="unlockTractorBeam" class="button" onclick="game.tractorBeam.unlockTractorBeam()">Build Tractor Beam for 5m oxygen, 500k science</div>
+                    <div id="unlockedTractorBeam">
+                        <div id="allPassing"></div>
+                    </div>
 
-                    <div id="allPassing"></div>
-                </div>
-
-                <div class="showthis">
-                    Charges using 1% energy from Power Plant per tick.<br>
-                    Pulls 1%+10 of passing debris into orbit when charged<br>
-                    2/3rd chance to find new comet per tick.<br>
-                    1/3rd chance to find new asteroid per tick.<br>
-                    Brought <div id="takeAmount"></div> into orbit last charge
+                    <div class="showthis">
+                        Using 1% energy from Power Plant per pull.<br>
+                        Pulls an amount of debris into orbit equal to the energy used.<br>
+                        2/3rd chance to find new comet per tick.<br>
+                        1/3rd chance to find new asteroid per tick.<br>
+                        Brought <div id="takeAmount"></div> into orbit last pull
+                    </div>
                 </div>
             </div>
 

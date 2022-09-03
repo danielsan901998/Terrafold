@@ -363,9 +363,6 @@ function View() {
 
 
     this.updateTractorBeam = function() {
-        document.getElementById('tractorBeamEnergy').innerHTML = intToString(game.tractorBeam.energy, 2);
-        document.getElementById('tractorBeamEnergyNeeded').innerHTML = intToString(game.tractorBeam.energyNeeded, 1);
-
         var container = document.getElementById("allPassing");
         var text = "";
         var comets = game.tractorBeam.comets;
