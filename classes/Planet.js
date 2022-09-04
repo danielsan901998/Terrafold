@@ -133,8 +133,10 @@ function Planet() {
     this.workOnMine = function(amount) {
         this.mineTicks += amount;
         if(this.mineTicks >= this.mineTicksMax) {
-            this.mines++;
-            this.mineTicks -= this.mineTicksMax;
+            var toAdd = Math.floor(this.mineTicks / this.mineTicksMax);
+            toAdd = Math.min(toAdd,this.maxMines-this.mines);
+            this.mines+=toAdd;
+            this.mineTicks -= toAdd * this.mineTicksMax;
         }
     };
     this.tickMines = function() {
@@ -166,9 +168,10 @@ function Planet() {
     this.solar = 0;
     this.workOnSolar = function(amount) {
         this.solarTicks += amount;
-        while(this.solarTicks >= this.solarTicksMax) {
-            this.solarTicks -= this.solarTicksMax;
-            this.solar++;
+        if(this.solarTicks >= this.solarTicksMax) {
+            const toAdd = Math.floor(this.solarTicks / this.solarTicksMax);
+            this.solar+=toAdd;
+            this.solarTicks -= toAdd * this.solarTicksMax;
         }
     };
     this.tickSolar = function() {
@@ -187,8 +190,9 @@ function Planet() {
     };
     this.tickCoilgun = function() {
         if(this.coilgunCharge >= this.coilgunChargeMax) {
-            this.coilgunCharge -= this.coilgunChargeMax;
-            var loadSize = 500;
+            const toAdd = Math.floor(this.coilgunCharge / this.coilgunChargeMax);
+            this.coilgunCharge -= toAdd * this.coilgunChargeMax;
+            var loadSize = 500 * toAdd;
             if(this.dirt <= loadSize) {
                 loadSize = this.dirt;
             }
