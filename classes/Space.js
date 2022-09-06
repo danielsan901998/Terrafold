@@ -12,6 +12,7 @@ function Space() {
         }
         if(empty){
             this.planets=[];
+            this.level++;
             this.newLevel();
         }
         for(i = 0; i < this.ships.length; i++) {
@@ -26,7 +27,6 @@ function Space() {
     };
 
     this.newLevel = function() {
-        this.level++;
         for(var i = 0; i < 10; i++) {
             this.planets.push(new Planet());
         }

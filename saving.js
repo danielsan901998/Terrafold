@@ -101,7 +101,7 @@ function load() {
     game.hangar.sendRate = toLoad.game.hangar.sendRate;
 
     //-1 because newLevel increase it.
-    game.space.level=toLoad.game.space.level-1;
+    game.space.level=toLoad.game.space.level;
 
     document.getElementById('scienceSlider').value = game.population.scienceRatio;
 
