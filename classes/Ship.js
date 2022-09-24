@@ -24,7 +24,7 @@ function Ship(amount, foodAmount) {
             if(ship === this || ship.isEmpty()) { //only join on same types
                 continue;
             }
-            if(withinDistance(this.x, this.y, ship.x, ship.y, 10)) {
+            if(withinDistance(this.x, this.y, ship.x, ship.y, 20)) {
                 combineShips(this, ship);
                 game.space.ships.splice(i, 1);
             }
