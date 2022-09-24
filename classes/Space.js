@@ -2,7 +2,6 @@ function Space() {
     this.planets = [];
     this.ships = [];
     this.sector = 0;
-    this.level = 0;
     this.tick = function() {
         var empty=true;
         for(var i = 0; i < this.planets.length; i++) {
@@ -12,7 +11,7 @@ function Space() {
         }
         if(empty){
             this.planets=[];
-            this.level++;
+            this.sector++;
             this.newLevel();
         }
         for(i = 0; i < this.ships.length; i++) {
@@ -34,7 +33,7 @@ function Space() {
         this.planets[this.planets.length - 1].isBoss = true; //rightmost planet
 
         for(i = 0; i < this.planets.length; i++) {
-            this.planets[i].calcPower(this.level);
+            this.planets[i].calcPower(this.sector);
         }
     };
 }

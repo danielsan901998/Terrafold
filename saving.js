@@ -45,63 +45,15 @@ function load() {
         return;
     }
     var toLoad = JSON.parse(decode(window.localStorage.terrafold2));
-    for(var property in toLoad.game) {
-        if (toLoad.game.hasOwnProperty(property) && typeof toLoad.game[property] !== 'object') {
-            game[property] = toLoad.game[property];
-        }
-    }
-    loadGameVar(toLoad, "ice");
-    loadGameVar(toLoad, "water");
-    loadGameVar(toLoad, "clouds");
-    loadGameVar(toLoad, "land");
-    loadGameVar(toLoad, "trees");
-    loadGameVar(toLoad, "farms");
-    loadGameVar(toLoad, "population");
-    loadGameVar(toLoad, "energy");
-    loadGameVar(toLoad, "spaceStation");
-    loadGameVar(toLoad, "tractorBeam");
-    loadGameVar(toLoad, "spaceDock");
+    copyObject(toLoad,game);
 
-    game.computer.unlocked = toLoad.game.computer.unlocked;
-    game.computer.threads = toLoad.game.computer.threads;
-    game.computer.freeThreads = toLoad.game.computer.freeThreads;
-    game.computer.speed = toLoad.game.computer.speed;
-    for(var i = 0; i < toLoad.game.computer.processes.length; i++) {
-        var rowData = toLoad.game.computer.processes[i];
-        var row = game.computer.processes[i];
-        row.currentTicks = rowData.currentTicks;
-        row.ticksNeeded = rowData.ticksNeeded;
-        row.threads = rowData.threads;
-        row.cost = rowData.cost;
-        row.isMoving = rowData.isMoving;
-        row.completions = rowData.completions;
-    }
-
-    game.robots.unlocked = toLoad.game.robots.unlocked;
-    game.robots.robots = toLoad.game.robots.robots;
-    game.robots.robotsFree = toLoad.game.robots.robotsFree;
-    game.robots.robotMax = toLoad.game.robots.robotMax;
-    game.robots.ore = toLoad.game.robots.ore;
-    game.robots.mines = toLoad.game.robots.mines;
-    for(i = 0; i < toLoad.game.robots.jobs.length; i++) {
-        rowData = toLoad.game.robots.jobs[i];
-        row = game.robots.jobs[i];
-        row.currentTicks = rowData.currentTicks;
-        row.ticksNeeded = rowData.ticksNeeded;
-        row.workers = rowData.workers;
-        row.cost = rowData.cost;
-        row.isMoving = rowData.isMoving;
-        row.completions = rowData.completions;
-    }
     for(let comet of game.tractorBeam.comets)
         comet.drawed=false;
     game.spaceDock.battleships += game.spaceDock.sended;
     game.spaceDock.sended = 0;
 
-    game.hangar.sendRate = toLoad.game.hangar.sendRate;
-
-    //-1 because newLevel increase it.
-    game.space.level=toLoad.game.space.level;
+    //-1 because create new planets increase it.
+    game.space.sector--;
 
     document.getElementById('scienceSlider').value = game.population.scienceRatio;
 
@@ -109,17 +61,24 @@ function load() {
     recalcInterval(10);
 }
 
-function loadGameVar(toLoad, theVar) {
-    for(var property in toLoad.game[theVar]) {
-        if (toLoad.game[theVar].hasOwnProperty(property)) {
-            game[theVar][property] = toLoad.game[theVar][property];
-        }
+function copyObject(object, toSave) {
+    for(var property in object) {
+        if(typeof toSave[property] === 'undefined')
+            toSave[property]={};
+        if(Array.isArray(object[property]))
+            copyObject(object[property], toSave[property]);
+        else if(typeof object[property] === 'object')
+            copyObject(object[property], toSave[property]);
+        else if(typeof object[property] !== 'function')
+            toSave[property] = object[property];
     }
 }
 
 function save() {
-    var toSave = {};
-    toSave.game = game;
+    var toSave={};
+    copyObject(game,toSave)
+    toSave.space.planets=[];
+    toSave.space.ships=[];
     window.localStorage.terrafold2 = encode(JSON.stringify(toSave));
 }
 
@@ -135,5 +94,14 @@ function importSave() {
     window.localStorage.terrafold2 = decode(document.getElementById("exportImportSave").value);
 
     load();
+}
+function cheat(){
+    game.ice.ice=100000000000
+    game.science=1000000000000
+    game.farms.farms=100000000000
+    game.cash=1000000000000
+    game.oxygen=100000000000000000
+    game.wood=100000000
+    game.metal=100000000
 }
 load();
