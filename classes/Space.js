@@ -9,7 +9,7 @@ function Space() {
             if(this.planets[i].empty()==false)
                 empty=false;
         }
-        if(empty){
+        if(empty && this.ships.length==0){
             this.planets=[];
             this.sector++;
             this.newLevel();
