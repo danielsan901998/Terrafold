@@ -140,12 +140,12 @@ function Planet() {
         }
     };
     this.tickMines = function() {
-        this.ore += Math.round(this.mines);
+        this.ore += this.mines;
     };
 
     this.bots = 0;
     this.tickBots = function() {
-        var botWork = Math.round(this.bots);
+        var botWork = this.bots;
         this.ore -= botWork;
         this.workOnSolar(botWork);
     };
@@ -175,7 +175,7 @@ function Planet() {
         }
     };
     this.tickSolar = function() {
-        this.coilgunCharge += Math.round(this.solar);
+        this.coilgunCharge += this.solar;
     };
 
     this.energy = 0;
