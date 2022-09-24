@@ -65,9 +65,7 @@ function copyObject(object, toSave) {
     for(var property in object) {
         if(typeof toSave[property] === 'undefined')
             toSave[property]={};
-        if(Array.isArray(object[property]))
-            copyObject(object[property], toSave[property]);
-        else if(typeof object[property] === 'object')
+        if(typeof object[property] === 'object')
             copyObject(object[property], toSave[property]);
         else if(typeof object[property] !== 'function')
             toSave[property] = object[property];
