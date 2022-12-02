@@ -159,8 +159,9 @@ function Planet() {
     };
     this.tickFactory = function() {
         if(this.ore >= 200) {
-            this.ore -= 200;
-            this.bots++;
+            const toAdd = Math.floor(this.ore / 200);
+            this.bots+=toAdd;
+            this.ore -= toAdd * 200;
         }
     };
 
