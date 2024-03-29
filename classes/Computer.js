@@ -153,7 +153,7 @@ function Computer() {
             currentTicks: 0,
             ticksNeeded: 20000,
             threads: 0,
-            cost:10,
+            cost:0.5,
             costType:"wood",
             finish:function() { game.robots.gainStorage(5); this.ticksNeeded+=2000; },
             showing: function() { return game.robots.unlocked; }
@@ -162,7 +162,7 @@ function Computer() {
             currentTicks: 0,
             ticksNeeded: 3000,
             threads: 0,
-            cost:.5,
+            cost:10,
             costType:"science",
             finish:function() { game.population.improveHouse(); this.ticksNeeded += 500; },
             showing: function() { return game.robots.unlocked; },
