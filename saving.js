@@ -11,8 +11,6 @@ var timer = 0;
 var stop = 0;
 var cometId = 0;
 
-var timeList = [];
-
 function clearSave() {
     window.localStorage.terrafold2 = "";
     load();
@@ -39,23 +37,20 @@ function setInitialView() {
 
 function load() {
     loadDefaults();
-    if (!window.localStorage.terrafold2) { //New players to the game
-        setInitialView();
-        recalcInterval(10);
-        return;
+    if (window.localStorage.terrafold2) { //existing savegame
+        var toLoad = JSON.parse(decode(window.localStorage.terrafold2));
+        copyObject(toLoad,game);
+
+        for(let comet of game.tractorBeam.comets)
+            comet.drawed=false;
+        game.spaceDock.battleships += game.spaceDock.sended;
+        game.spaceDock.sended = 0;
+
+        //-1 because create new planets increase it.
+        game.space.sector--;
+
+        document.getElementById('scienceSlider').value = game.population.scienceRatio;
     }
-    var toLoad = JSON.parse(decode(window.localStorage.terrafold2));
-    copyObject(toLoad,game);
-
-    for(let comet of game.tractorBeam.comets)
-        comet.drawed=false;
-    game.spaceDock.battleships += game.spaceDock.sended;
-    game.spaceDock.sended = 0;
-
-    //-1 because create new planets increase it.
-    game.space.sector--;
-
-    document.getElementById('scienceSlider').value = game.population.scienceRatio;
 
     setInitialView();
     recalcInterval(10);
