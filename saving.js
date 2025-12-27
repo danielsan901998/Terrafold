@@ -43,11 +43,6 @@ function load() {
 
         for(let comet of game.tractorBeam.comets)
             comet.drawed=false;
-        game.spaceDock.battleships += game.spaceDock.sended;
-        game.spaceDock.sended = 0;
-
-        //-1 because create new planets increase it.
-        game.space.sector--;
 
         document.getElementById('scienceSlider').value = game.population.scienceRatio;
     }
@@ -71,8 +66,6 @@ function copyObject(object, toSave) {
 function save() {
     var toSave={};
     copyObject(game,toSave)
-    toSave.space.planets=[];
-    toSave.space.ships=[];
     window.localStorage.terrafold2 = encode(JSON.stringify(toSave));
 }
 

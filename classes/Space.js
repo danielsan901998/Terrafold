@@ -5,8 +5,8 @@ function Space() {
     this.tick = function() {
         var empty=true;
         for(var i = 0; i < this.planets.length; i++) {
-            this.planets[i].tick();
-            if(this.planets[i].empty()==false)
+            PlanetManager.tick(this.planets[i]); // Use PlanetManager.tick
+            if(PlanetManager.empty(this.planets[i])==false) // Use PlanetManager.empty
                 empty=false;
         }
         if(empty && this.ships.length==0){
@@ -15,7 +15,7 @@ function Space() {
             this.newLevel();
         }
         for(i = 0; i < this.ships.length; i++) {
-            this.ships[i].tick();
+            ShipManager.tick(this.ships[i]); // Use ShipManager.tick
         }
     };
 
@@ -27,13 +27,14 @@ function Space() {
 
     this.newLevel = function() {
         for(var i = 0; i < 10; i++) {
-            this.planets.push(new Planet());
+            const newPlanet = new Planet();
+            this.planets.push(newPlanet);
         }
         sortArrayObjectsByValue(this.planets, "x");
         this.planets[this.planets.length - 1].isBoss = true; //rightmost planet
 
         for(i = 0; i < this.planets.length; i++) {
-            this.planets[i].calcPower(this.sector);
+            PlanetManager.calcPower(this.planets[i], this.sector); // Use PlanetManager.calcPower
         }
     };
 }

@@ -8,8 +8,6 @@
             *   Disappears when Complete
             *   Unlocks Targetted Humidity (Grow ferns faster, 10% at a time up to 100%)
                 *   Disappears when complete
-    *   Improve House Design Rework
-        *   Costs wood
 *   **Robots**
     *   More Robot Storage
         *   Costs 250 land, Metal
@@ -45,22 +43,12 @@
 *   Add ship laser animation
 
 ## Game Progression & Flow
-*   **Next System**
-    *   Enabled when boss planet has 0 health
-    *   10% difficulty increase to 1000%
-    *   Auto next when complete (Complete when all planets have 0 dirt and no ships or meteors exist)
 *   **Next Sector**
     *   Enabled when at least 5 systems have been completed
     *   Resets difficulty to 0
     *   powerMult is 3^sector
     *   artifact gain is sector+1
     *   Killing bosses give void crystals
-*   **Ship Collection**
-    *   Collect ships when sector is done
-        *   If target is home and fuel is positive, don't take fuel, hide the timer
-        *   Can't change sectors without having all ships collected
-*   **World Expansion Idea**
-    *   "Conquer the solar system" can use an improvement: Spread farms/etc to other planets. Real planets, that don't leak as much.
 
 ## Balance, Economy & Design Philosophy
 *   **Ore/Dirt Balance**

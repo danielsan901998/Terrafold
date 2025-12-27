@@ -2,15 +2,7 @@
 
 This plan outlines the steps to implement the potential improvements identified in the codebase analysis, focusing on fixing critical bugs, enhancing code structure, and modernizing practices.
 
-## 1. Fix Critical Data-Loss Bug (saving.js)
-
-*   **Goal:** Ensure all game state is correctly persisted to local storage.
-*   **Steps:**
-    *   Locate the `save()` function within `saving.js`.
-    *   Identify and remove the lines that explicitly clear `game.space.planets` and `game.space.ships` before writing to storage.
-    *   Thoroughly test the save and load functionality, specifically checking if planet and ship data is preserved.
-
-## 2. Modularize the Codebase (ES6 Modules)
+## Modularize the Codebase (ES6 Modules)
 
 *   **Goal:** Eliminate global scope pollution and improve code organization and maintainability by adopting ES6 modules.
 *   **Steps:**
@@ -20,7 +12,7 @@ This plan outlines the steps to implement the potential improvements identified 
     *   Pay close attention to the Web Worker (`driver.js`, `interval.js`) communication, ensuring it's integrated with the new module system.
     *   Start with less coupled modules or those with clear boundaries.
 
-## 3. Implement an Event-Driven System
+## Implement an Event-Driven System
 
 *   **Goal:** Decouple the game logic (model) from the user interface (view) by introducing an event-driven architecture.
 *   **Steps:**
@@ -29,7 +21,7 @@ This plan outlines the steps to implement the potential improvements identified 
     *   Update the `View` and its components to subscribe to these emitted events.
     *   Modify the `View` to react to these events by updating only the relevant parts of the DOM, rather than re-rendering everything.
 
-## 4. Refactor UI Components and DOM Manipulation
+## Refactor UI Components and DOM Manipulation
 
 *   **Goal:** Improve the efficiency and maintainability of the user interface by breaking down monolithic components and optimizing DOM operations.
 *   **Steps:**
@@ -39,7 +31,7 @@ This plan outlines the steps to implement the potential improvements identified 
     *   Replace all inline `onclick` attributes in `index.html` with `addEventListener` calls managed by the respective JavaScript modules.
     *   Address the use of parallel arrays (e.g., in `classes/Computer.js`) by refactoring to use more appropriate data structures, such as arrays of objects where each object contains all related data.
 
-## 5. Address Remaining Global Variables and Outdated Patterns
+## Address Remaining Global Variables and Outdated Patterns
 
 *   **Goal:** Further modernize the codebase and reduce complexity by eliminating remaining global dependencies and archaic patterns.
 *   **Steps:**
@@ -47,10 +39,9 @@ This plan outlines the steps to implement the potential improvements identified 
     *   Ensure data and functionality are passed as arguments or accessed via imports.
     *   Review other classes and functions for any other outdated patterns and refactor them accordingly.
 
-## 6. Testing and Verification
+## Testing and Verification
 
 *   **Goal:** Ensure the integrity and stability of the application throughout the refactoring process.
 *   **Steps:**
-    *   Perform manual testing after each major step (bug fix, module refactoring, event system implementation) to verify functionality.
+    *   Add testing to detect uncaught errors. Use playwright with page.on listener for console and pageerror
     *   Pay special attention to game state persistence, UI responsiveness, and the correct operation of core game mechanics.
-    *   If possible, consider introducing a simple testing framework or writing end-to-end tests to automate verification.
