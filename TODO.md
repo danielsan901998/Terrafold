@@ -3,7 +3,6 @@
 ## Core Game Mechanics & Systems
 *   **Computer**
     *   Modify Bigger Storms
-        *   Disappears when complete
         *   Unlocks Targetted Sunlight (Improves ice melting rate, 10% at a time up to 100%)
             *   Disappears when Complete
             *   Unlocks Targetted Humidity (Grow ferns faster, 10% at a time up to 100%)

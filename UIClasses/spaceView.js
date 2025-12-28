@@ -100,7 +100,7 @@ function drawPlanetTooltip(planet) {
     ctx.strokeStyle = "#ffe5d5";
     ctx.lineWidth = 1;
     ctx.strokeText("Atmosphere: " + intToString(planet.atmo, 2),-15,size);
-    ctx.strokeText("Reduction: "+intToString(planet.getShieldReduction()*100, 1)+"%",-15,size+10);
+    ctx.strokeText("Reduction: "+intToString(PlanetManager.getShieldReduction(planet)*100, 1)+"%",-15,size+10);
     ctx.strokeText("Health: "+intToString(planet.health, 1),-15,size+20);
     ctx.strokeText("Dirt: "+intToString(planet.dirt, 1),-15,size+30);
     ctx.strokeText("Ore: "+intToString(planet.ore, 1),-15,size+40);

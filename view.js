@@ -310,7 +310,6 @@ function View() {
     this.updateEnergy = function() {
         document.getElementById('energy').innerHTML = intToString(game.power);
         document.getElementById('battery').innerHTML = intToString(game.energy.battery, 1);
-        document.getElementById('spaceBattery').innerHTML = intToString(game.energy.battery, 1);
         document.getElementById('drain').innerHTML = intToString(game.energy.drain);
     };
 
