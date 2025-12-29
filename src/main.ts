@@ -17,6 +17,7 @@ import Hangar from './js/classes/Hangar';
 import View from './js/ui';
 import { decode, encode } from './js/utils';
 import { Game as IGame } from './js/types';
+import EventEmitter from './js/EventEmitter';
 
 // --- State ---
 export let game: Game | null = null;
@@ -58,6 +59,8 @@ class Game implements IGame {
     spaceDock!: SpaceDock;
     hangar!: Hangar;
 
+    events: EventEmitter;
+
     constructor() {
         this.totalLand = 1000;
         this.cash = 100; // Actual default: 100
@@ -66,6 +69,7 @@ class Game implements IGame {
         this.wood = 0;
         this.metal = 0;
         this.power = 0;
+        this.events = new EventEmitter();
     }
 
     tick() {
@@ -88,6 +92,8 @@ class Game implements IGame {
         this.oxygenLeak = this.oxygen / 100000;
         this.oxygen -= this.oxygenLeak;
         this.hangar.tick();
+
+        this.events.emit('tick');
     }
 
     initialize() {
@@ -109,7 +115,7 @@ class Game implements IGame {
 
         view?.clearComputerRows();
         for (let i = 0; i < this.computer.processes.length; i++) {
-            view?.addComputerRow(i);
+            view?.computerView.addComputerRow(i);
             const proc = this.computer.processes[i];
             if (proc) {
                 proc.isMoving = 0;
@@ -118,7 +124,7 @@ class Game implements IGame {
         }
         view?.clearRobotRows();
         for (let i = 0; i < this.robots.jobs.length; i++) {
-            view?.addRobotRow(i);
+            view?.robotsView.addRobotRow(i);
             const job = this.robots.jobs[i];
             if (job) {
                 job.completions = 0;
@@ -208,8 +214,6 @@ function tick() {
     incrementTimer();
 
     game?.tick();
-    if (!document.hidden)
-        view?.update();
 
     if (timer % 100 === 0) {
         save();
@@ -239,22 +243,22 @@ export async function clearSave() {
 }
 
 function loadDefaults() {
-    setView(new View());
     setGame(new Game());
+    setView(new View());
     game?.initialize();
 }
 
 function setInitialView() {
     if (!view) return;
-    view.checkSpaceDockUnlocked();
-    view.updateSpaceDock();
-    view.checkTractorBeamUnlocked();
-    view.checkSpaceStationUnlocked();
-    view.checkEnergyUnlocked();
-    view.updateComputer();
-    view.checkComputerUnlocked();
-    view.updateRobots();
-    view.checkRobotsUnlocked();
+    view.spaceDockView.checkUnlocked();
+    view.spaceDockView.update();
+    view.tractorBeamView.checkUnlocked();
+    view.spaceStationView.checkUnlocked();
+    view.energyView.checkUnlocked();
+    view.computerView.update();
+    view.computerView.checkUnlocked();
+    view.robotsView.update();
+    view.robotsView.checkUnlocked();
 }
 
 

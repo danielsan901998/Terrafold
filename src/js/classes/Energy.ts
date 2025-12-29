@@ -1,4 +1,4 @@
-import { game, view } from '../../main';
+import { game } from '../../main';
 
 export default class Energy {
     unlocked: number;
@@ -14,10 +14,9 @@ export default class Energy {
         if (game && game.metal >= 500) {
             game.metal -= 500;
             this.unlocked = 1;
-            view?.checkEnergyUnlocked();
-            view?.checkSpaceStationUnlocked();
+            game.events.emit('energy:unlocked');
         }
-        view?.updateEnergy();
+        game?.events.emit('energy:updated');
     }
 
     tick() {

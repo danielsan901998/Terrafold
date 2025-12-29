@@ -1,4 +1,4 @@
-import { game, view, incrementCometId } from '../../main';
+import { game, incrementCometId } from '../../main';
 import { intToString } from '../utils';
 import { Comet } from '../types';
 
@@ -34,11 +34,11 @@ export default class TractorBeam {
             game.science -= 5e5;
             game.oxygen -= 2e6;
             this.unlocked = 1;
-            view?.checkTractorBeamUnlocked();
+            game.events.emit('tractorBeam:unlocked');
             game.spaceDock.unlocked = 1;
-            view?.checkSpaceDockUnlocked();
+            game.events.emit('spaceDock:unlocked');
         }
-        view?.updateTractorBeam();
+        game.events.emit('tractorBeam:updated');
     }
 
     pullIntoOrbit(energy: number): number {
@@ -81,7 +81,7 @@ export default class TractorBeam {
             comet.duration--;
             if (comet.duration < 0 || comet.amount < 1) {
                 if (comet.drawed)
-                    view?.removeComet(comet);
+                    game?.events.emit('tractorBeam:removeComet', comet);
                 this.comets.splice(i, 1);
             }
         }

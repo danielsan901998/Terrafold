@@ -1,4 +1,4 @@
-import { game, view } from '../../main';
+import { game } from '../../main';
 import { OrbitingResource } from '../types';
 
 export default class SpaceStation {
@@ -24,10 +24,9 @@ export default class SpaceStation {
             game.metal -= 2000;
             game.wood -= 20000;
             this.unlocked = 1;
-            view?.checkSpaceStationUnlocked();
-            view?.checkTractorBeamUnlocked();
+            game.events.emit('spaceStation:unlocked');
         }
-        view?.updateSpaceStation();
+        game?.events.emit('spaceStation:updated');
     }
 
     tick() {

@@ -1,7 +1,9 @@
-import { game, view } from '../../main';
+import { game } from '../../main';
 import { precision2, precision3 } from '../utils';
 
 export interface Process {
+    text: string;
+    tooltip: string;
     currentTicks: number;
     ticksNeeded: number;
     threads: number;
@@ -30,6 +32,8 @@ export default class Computer {
         this.processes = [
             {
                 // Optimize Land
+                text: "Optimize Land",
+                tooltip: "Improve 1% of unimproved land.<br>Max to improve to is ( 10 x base land )<br>Percent Optimized: <div id='landOptimized'></div>",
                 currentTicks: 0,
                 ticksNeeded: 600,
                 threads: 0,
@@ -45,6 +49,8 @@ export default class Computer {
             },
             {
                 // Buy Ice
+                text: "Buy Ice",
+                tooltip: "Buy available ice",
                 currentTicks: 0,
                 ticksNeeded: 50,
                 threads: 0,
@@ -59,6 +65,8 @@ export default class Computer {
             },
             {
                 // Sell Water
+                text: "Sell Water",
+                tooltip: "Sells up to 50 water",
                 currentTicks: 0,
                 ticksNeeded: 50,
                 threads: 0,
@@ -73,6 +81,8 @@ export default class Computer {
             },
             {
                 // Improve Farms
+                text: "Improve Farms",
+                tooltip: "Farm efficiency increases by 2%",
                 currentTicks: 0,
                 ticksNeeded: 40,
                 threads: 0,
@@ -90,6 +100,8 @@ export default class Computer {
             },
             {
                 // Find more Ice Sellers
+                text: "Find more Ice Sellers",
+                tooltip: "Gain 200 buyable ice and 1 more per tick",
                 currentTicks: 0,
                 ticksNeeded: 2000,
                 threads: 0,
@@ -104,6 +116,8 @@ export default class Computer {
             },
             {
                 // Bigger Storms
+                text: "Bigger Storms",
+                tooltip: "Storms last 5 more ticks. Max 300 duration.",
                 currentTicks: 0,
                 ticksNeeded: 600,
                 threads: 0,
@@ -123,6 +137,8 @@ export default class Computer {
             },
             {
                 // Build Robots
+                text: "Build Robots",
+                tooltip: "Builds a robot",
                 currentTicks: 0,
                 ticksNeeded: 10000,
                 threads: 0,
@@ -140,6 +156,8 @@ export default class Computer {
             },
             {
                 // More Robot Storage
+                text: "More Robot Storage",
+                tooltip: "Can hold 5 more robots",
                 currentTicks: 0,
                 ticksNeeded: 20000,
                 threads: 0,
@@ -155,6 +173,8 @@ export default class Computer {
             },
             {
                 // Improve House Design
+                text: "Improve House Design",
+                tooltip: "Improves base happiness modifier by .1",
                 currentTicks: 0,
                 ticksNeeded: 3000,
                 threads: 0,
@@ -190,7 +210,7 @@ export default class Computer {
                 this.freeThreads += row.threads;
                 row.threads = 0;
             }
-            view?.updateComputer();
+            game?.events.emit('computer:updated');
             return;
         }
         row.isMoving = 1;
@@ -218,9 +238,9 @@ export default class Computer {
         if (game.science >= 1000) {
             game.science -= 1000;
             this.unlocked = 1;
-            view?.checkComputerUnlocked();
+            game.events.emit('computer:unlocked');
         }
-        view?.updateComputer();
+        game.events.emit('computer:updated');
     }
 
     buyThread() {
@@ -230,8 +250,8 @@ export default class Computer {
             game.cash -= threadCost;
             this.threads++;
             this.freeThreads++;
+            game.events.emit('computer:updated');
         }
-        view?.updateComputer();
     }
 
     getThreadCost() {
@@ -244,8 +264,8 @@ export default class Computer {
         if (game.science >= speedCost) {
             game.science -= speedCost;
             this.speed++;
+            game.events.emit('computer:updated');
         }
-        view?.updateComputer();
     }
 
     getSpeedCost() {
@@ -258,8 +278,8 @@ export default class Computer {
         if (proc) {
             proc.threads += numAdding;
             this.freeThreads -= numAdding;
+            game?.events.emit('computer:updated');
         }
-        view?.updateComputer();
     }
 
     removeThread(dataPos: number, numRemoving: number) {
@@ -268,48 +288,7 @@ export default class Computer {
             numRemoving = Math.min(numRemoving, proc.threads);
             proc.threads -= numRemoving;
             this.freeThreads += numRemoving;
+            game?.events.emit('computer:updated');
         }
-        view?.updateComputer();
     }
 }
-
-// Not saved, keep parity with processes
-export const processesView = [
-    {
-        text: "Optimize Land",
-        tooltip:
-            "Improve 1% of unimproved land.<br>Max to improve to is ( 10 x base land )<br>Percent Optimized: <div id='landOptimized'></div>",
-    },
-    {
-        text: "Buy Ice",
-        tooltip: "Buy available ice",
-    },
-    {
-        text: "Sell Water",
-        tooltip: "Sells up to 50 water",
-    },
-    {
-        text: "Improve Farms",
-        tooltip: "Farm efficiency increases by 2%",
-    },
-    {
-        text: "Find more Ice Sellers",
-        tooltip: "Gain 200 buyable ice and 1 more per tick",
-    },
-    {
-        text: "Bigger Storms",
-        tooltip: "Storms last 5 more ticks. Max 300 duration.",
-    },
-    {
-        text: "Build Robots",
-        tooltip: "Builds a robot",
-    },
-    {
-        text: "More Robot Storage",
-        tooltip: "Can hold 5 more robots",
-    },
-    {
-        text: "Improve House Design",
-        tooltip: "Improves base happiness modifier by .1",
-    },
-];

@@ -1,6 +1,8 @@
-import { game, view } from '../../main';
+import { game } from '../../main';
 
 export interface Job {
+    text: string;
+    tooltip: string;
     workers: number;
     currentTicks?: number;
     ticksNeeded?: number;
@@ -35,11 +37,15 @@ export default class Robots {
 
         this.jobs = [
             { // Cut Trees
+                text: "Cut Trees",
+                tooltip: "Cut down 2 trees for 1 wood",
                 workers: 0,
                 finish: function () { if (game) game.robots.cutTrees(this.workers); },
                 showing: function () { return true; }
             },
             { // Expand indoor water storage
+                text: "Expand indoor water storage",
+                tooltip: "Gives 50 more max indoor water.<br>Cost increases by 1",
                 currentTicks: 0,
                 ticksNeeded: 3000,
                 workers: 0,
@@ -52,6 +58,8 @@ export default class Robots {
                 showing: function () { return true; }
             },
             { // Build Mines
+                text: "Build Mines",
+                tooltip: "Build up to (total land / 1000) mines",
                 currentTicks: 0,
                 ticksNeeded: 300,
                 workers: 0,
@@ -67,16 +75,22 @@ export default class Robots {
                 showing: function () { return true; }
             },
             { // Mine Ore
+                text: "Mine Ore",
+                tooltip: "Get (mines / 100) ore per tick",
                 workers: 0,
                 finish: function () { if (game) game.robots.mineOre(this.workers); },
                 showing: function () { return true; }
             },
             { // Smelt Ore
+                text: "Smelt Ore",
+                tooltip: "Each tick costs 5 wood, 1 ore, and 1000 oxygen<br>Gain 1 metal",
                 workers: 0,
                 finish: function () { if (game) game.robots.smeltOre(this.workers); },
                 showing: function () { return true; }
             },
             { // Turn ore into dirt
+                text: "Turn ore into dirt",
+                tooltip: "Each tick costs 1 energy and 1000 ore<br>Gain 5 Base Land<br>Total land gained: <div id='totalDirtFromOre'></div>",
                 currentTicks: 0,
                 ticksNeeded: 1000,
                 workers: 0,
@@ -156,11 +170,11 @@ export default class Robots {
         if (game.cash >= 3000) {
             game.cash -= 3000;
             this.unlocked = 1;
-            view?.checkRobotsUnlocked();
+            game.events.emit('robots:unlocked');
             this.gainRobots(1);
         }
-        view?.updateComputer();
-        view?.updateRobots();
+        game.events.emit('computer:updated');
+        game.events.emit('robots:updated');
     }
 
     failedRobots() {
@@ -168,10 +182,10 @@ export default class Robots {
         if (game.cash >= 1e6) {
             game.cash -= 1e6;
             this.failed = 0;
-            view?.checkRobotsUnlocked();
+            game.events.emit('robots:unlocked');
             this.gainRobots(1);
         }
-        view?.updateRobots();
+        game.events.emit('robots:updated');
     }
 
     addWorker(dataPos: number, numAdding: number) {
@@ -181,7 +195,7 @@ export default class Robots {
             job.workers += numAdding;
             this.robotsFree -= numAdding;
         }
-        view?.updateRobots();
+        game?.events.emit('robots:updated');
     }
 
     removeWorker(dataPos: number, numRemoving: number) {
@@ -191,7 +205,7 @@ export default class Robots {
             job.workers -= numRemoving;
             this.robotsFree += numRemoving;
         }
-        view?.updateRobots();
+        game?.events.emit('robots:updated');
     }
 
     cutTrees(mult: number) {
@@ -214,30 +228,3 @@ export default class Robots {
         }
     }
 }
-
-export const jobsView = [
-    {
-        text: "Cut Trees",
-        tooltip: "Cut down 2 trees for 1 wood"
-    },
-    {
-        text: "Expand indoor water storage",
-        tooltip: "Gives 50 more max indoor water.<br>Cost increases by 1"
-    },
-    {
-        text: "Build Mines",
-        tooltip: "Build up to (total land / 1000) mines"
-    },
-    {
-        text: "Mine Ore",
-        tooltip: "Get (mines / 100) ore per tick"
-    },
-    {
-        text: "Smelt Ore",
-        tooltip: "Each tick costs 5 wood, 1 ore, and 1000 oxygen<br>Gain 1 metal"
-    },
-    {
-        text: "Turn ore into dirt",
-        tooltip: "Each tick costs 1 energy and 1000 ore<br>Gain 5 Base Land<br>Total land gained: <div id='totalDirtFromOre'></div>"
-    }
-];

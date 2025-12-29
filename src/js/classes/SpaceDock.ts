@@ -1,4 +1,4 @@
-import { view } from '../../main';
+import { game } from '../../main';
 
 export default class SpaceDock {
     battleships: number;
@@ -13,6 +13,6 @@ export default class SpaceDock {
 
     addBattleship(amount: number) {
         this.battleships += amount;
-        view?.updateSpaceDock();
+        game?.events.emit('spaceDock:updated');
     }
 }

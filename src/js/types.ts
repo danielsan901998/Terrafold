@@ -1,3 +1,5 @@
+import EventEmitter from './EventEmitter';
+
 export interface Comet {
     id: number;
     name: string;
@@ -43,6 +45,7 @@ export interface Game {
     spaceDock: any;
     hangar: any;
     space: any;
+    events: EventEmitter;
     tick(): void;
     initialize(): void;
     buyIce(): void;
