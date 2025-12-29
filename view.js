@@ -200,8 +200,8 @@ function View() {
         rowContainer.className = "computerRow";
         var baseId = "computerRow" + dataPos;
         rowContainer.id = baseId + 'Container';
-        var plusButton = "<div id='"+baseId+"Plus' class='button' onclick='game.computer.addThread("+dataPos+", 1)'>+</div>";
-        var minusButton = "<div id='"+baseId+"Minus' class='button' onclick='game.computer.removeThread("+dataPos+", 1)'>-</div>";
+        var plusButton = "<div id='"+baseId+"Plus' class='button' onclick='game.computer.addThread("+dataPos+", getClickAmount(event))'>+</div>";
+        var minusButton = "<div id='"+baseId+"Minus' class='button' onclick='game.computer.removeThread("+dataPos+", getClickAmount(event))'>-</div>";
         var threads = " <div id='"+baseId+"Threads' class='small' style='margin-right:4px'></div>" ;
         var text = "<div>" + processesView[dataPos].text + "</div>";
         var progressBar = "<div class='rowProgressBarOuter'><div class='rowProgressBarInner' id='"+baseId+"PB'></div></div>";
@@ -263,8 +263,8 @@ function View() {
         rowContainer.className = "robotRow";
         var baseId = "robotRow" + dataPos;
         rowContainer.id = baseId + 'Container';
-        var plusButton = "<div id='"+baseId+"Plus' class='button' onclick='game.robots.addWorker("+dataPos+", 1)'>+</div>";
-        var minusButton = "<div id='"+baseId+"Minus' class='button' onclick='game.robots.removeWorker("+dataPos+", 1)'>-</div>";
+        var plusButton = "<div id='"+baseId+"Plus' class='button' onclick='game.robots.addWorker("+dataPos+", getClickAmount(event))'>+</div>";
+        var minusButton = "<div id='"+baseId+"Minus' class='button' onclick='game.robots.removeWorker("+dataPos+", getClickAmount(event))'>-</div>";
         var workers = " <div id='"+baseId+"Workers' class='small' style='margin-right:4px'></div>" ;
         var text = "<div>" + jobsView[dataPos].text + "</div>";
 

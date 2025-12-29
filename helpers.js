@@ -1,3 +1,14 @@
+function getClickAmount(event) {
+    var multiplier = 1;
+    if (event.ctrlKey) {
+        multiplier *= 5;
+    }
+    if (event.shiftKey) {
+        multiplier *= 10;
+    }
+    return multiplier;
+}
+
 //because I hate IE so much
 Math.log2 = Math.log2 || function(x){return Math.log(x)*Math.LOG2E;};
 Math.log10 = Math.log10 || function(x) { return Math.log(x) * Math.LOG10E; };

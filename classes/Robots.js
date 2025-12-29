@@ -84,17 +84,15 @@ function Robots() {
     };
 
     this.addWorker = function(dataPos, numAdding) {
-        if (this.robotsFree >= numAdding) {
-            this.jobs[dataPos].workers += numAdding;
-            this.robotsFree -= numAdding;
-        }
+        numAdding = Math.min(numAdding, this.robotsFree);
+        this.jobs[dataPos].workers += numAdding;
+        this.robotsFree -= numAdding;
         view.updateRobots();
     };
     this.removeWorker = function(dataPos, numRemoving) {
-        if(this.jobs[dataPos].workers >= numRemoving) {
-            this.jobs[dataPos].workers -= numRemoving;
-            this.robotsFree += numRemoving;
-        }
+        numRemoving = Math.min(numRemoving, this.jobs[dataPos].workers);
+        this.jobs[dataPos].workers -= numRemoving;
+        this.robotsFree += numRemoving;
         view.updateRobots();
     };
 

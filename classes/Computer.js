@@ -81,17 +81,15 @@ function Computer() {
   };
 
   this.addThread = function (dataPos, numAdding) {
-    if (this.freeThreads >= numAdding) {
-      this.processes[dataPos].threads += numAdding;
-      this.freeThreads -= numAdding;
-    }
+    numAdding = Math.min(numAdding, this.freeThreads);
+    this.processes[dataPos].threads += numAdding;
+    this.freeThreads -= numAdding;
     view.updateComputer();
   };
   this.removeThread = function (dataPos, numRemoving) {
-    if (this.processes[dataPos].threads >= numRemoving) {
-      this.processes[dataPos].threads -= numRemoving;
-      this.freeThreads += numRemoving;
-    }
+    numRemoving = Math.min(numRemoving, this.processes[dataPos].threads);
+    this.processes[dataPos].threads -= numRemoving;
+    this.freeThreads += numRemoving;
     view.updateComputer();
   };
 
