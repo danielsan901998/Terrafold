@@ -11,7 +11,6 @@
 
         <title>Terrafold</title>
         <link rel="stylesheet" href="stylesheet.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body id="theBody">
 
@@ -42,12 +41,12 @@
                     <div class="showthat infoText">O<div class="showthis">
                             Options Menu<br><br>
                             <div class="small">
-                                <div class="button" onclick="clearSave()">Hard Reset</div><br>
-                                <div class="button" onclick="pauseGame()">Toggle Pause</div><br>
-                                <div class="button" onclick="game.cash+=.1">Beg for Money<br>(+$.1 for if you get stuck)</div><br>
-                                <div class="button" onclick="save()">Save</div><br>
-                                <div class="button" onclick="exportSave()">Export Save</div><br>
-                                <div class="button" onclick="importSave()">Import Save</div> <textarea id="exportImportSave" class="listTextInput"></textarea><br>
+                                <div id="btnHardReset" class="button">Hard Reset</div><br>
+                                <div id="btnPause" class="button">Toggle Pause</div><br>
+                                <div id="btnBeg" class="button">Beg for Money<br>(+$.1 for if you get stuck)</div><br>
+                                <div id="btnSave" class="button">Save</div><br>
+                                <div id="btnExport" class="button">Export Save</div><br>
+                                <div id="btnImport" class="button">Import Save</div> <textarea id="exportImportSave" class="listTextInput"></textarea><br>
                             </div>
                         </div></div>
                         <div id="resources" class="infoText" style="padding:0 10px;">
@@ -67,7 +66,7 @@
         </div>
 
 
-        <div id="mainContainer" class="small" oncontextmenu="return false;">
+        <div id="mainContainer" class="small">
 
             <div class="column">
                 <div id="iceContainer" class="container showthat" style="width:130px;">
@@ -78,7 +77,7 @@
                         </div>
                     </div>
                     <div>Ice: <div id="ice"></div></div><br>
-                    <div class="button" onclick="game.buyIce()">Buy Ice for $1</div><br>
+                    <div id="btnBuyIce" class="button">Buy Ice for $1</div><br>
                     <div>Buyable Ice: <div id="buyableIce"></div></div><br>
                     <div class="showthis">
                         Ice melts at a rate of .1% per tick and becomes <img src='img/water.png' class='smallIcon'>.<br>
@@ -257,7 +256,7 @@
                     </div>
                     <div><img src='img/water.png' class='smallIcon'>: <div id="farmsWater"></div></div><br>
                     <input id="buyFarmAmount" type="number" step="1" value="1"><br>
-                    <div class="button" onclick="game.buyFarms()">Buy Farm for 50 soil</div><br>
+                    <div id="btnBuyFarms" class="button">Buy Farm for 50 soil</div><br>
                     <div>Farms: <div id="farms"></div></div><br>
                     <div>Food: <div id="food"></div></div><br>
                     <div class="showthis">
@@ -302,11 +301,11 @@
 
             <div id="computerContainer" class="container">
                 <div class="title">Computer</div>
-                <div id="unlockComputer" class="button" onclick="game.computer.unlockComputer()">Build Computer (1000 science)</div>
+                <div id="unlockComputer" class="button">Build Computer (1000 science)</div>
                 <div id="unlockedComputer" style="display:none;">
                     <div>Threads: <div id="freeThreads"></div>/<div id="threads"></div></div> Speed: <div id="speed"></div><br>
-                    <div id="buyThread" class="button" onclick="game.computer.buyThread()">Buy CPU (+1 thread) for <div id="threadCost"></div> cash</div><br>
-                    <div id="buySpeed" class="button" onclick="game.computer.buySpeed()">Research New Cooling System (+1 speed) for <div id="speedCost"></div> science</div><br>
+                    <div id="buyThread" class="button">Buy CPU (+1 thread) for <div id="threadCost"></div> cash</div><br>
+                    <div id="buySpeed" class="button">Research New Cooling System (+1 speed) for <div id="speedCost"></div> science</div><br>
                     <div id="computerRows" style="text-align:left;">
                     </div>
                 </div>
@@ -314,8 +313,8 @@
 
             <div id="robotsContainer" class="container">
                 <div class="title">Robots</div>
-                <div id="unlockRobots" class="button" onclick="game.robots.unlockRobots()">Special deal! Buy first robot for $3000</div><br>
-                <div id="failRobots" class="button" onclick="game.robots.failedRobots()">Buy robot for $1m</div>
+                <div id="unlockRobots" class="button">Special deal! Buy first robot for $3000</div><br>
+                <div id="failRobots" class="button">Buy robot for $1m</div>
                 <div id="unlockedRobots">
                     <div>Free: <div id="robotsFree"></div>, Total: <div id="robots"></div>, Max: <div id="robotMax"></div></div><br>
                     <div>Ore: <div id="ore"></div></div><br>
@@ -326,12 +325,12 @@
 
             <div id="energyContainer" class="container showthat">
                 <div class="title">Power Plant</div>
-                <div id="unlockEnergy" class="button" onclick="game.energy.unlockEnergy()">Build lightning rod for 500 metal</div>
+                <div id="unlockEnergy" class="button">Build lightning rod for 500 metal</div>
                 <div id="unlockedEnergy">
                     <div>Energy: <div id="energy"></div></div><br>
                     <div>Battery: <div id="battery"></div></div><br>
                     <input id="buyBattery" type="number" value="1"><br>
-                    <div class="button" onclick="game.buyBattery()">+1 battery for <br><div id="batteryCost">30k oxygen, 20k science</div></div><br>
+                    <div id="btnBuyBattery" class="button">+1 battery for <br><div id="batteryCost">30k oxygen, 20k science</div></div><br>
                 </div><br>
                 <div class="showthis">
                     Loses 2% of energy past the battery per tick<br>
@@ -342,7 +341,7 @@
             <div class="column">
                 <div id="spaceStationContainer" class="container showthat">
                     <div class="title">Space Station</div>
-                    <div id="unlockSpaceStation" class="button" onclick="game.spaceStation.unlockSpaceStation()">Build Space Station for 2000 metal, 20k wood</div>
+                    <div id="unlockSpaceStation" class="button">Build Space Station for 2000 metal, 20k wood</div>
                     <div id="unlockedSpaceStation">
                         <div>You have <div id="orbitingResources"></div></div> in orbit.<br>
                         <div>Sending <div id="orbitSending"></div></div> to the planet.<br>
@@ -358,7 +357,7 @@
 
                 <div id="tractorBeamContainer" class="container showthat">
                     <div class="title">Tractor Beam</div>
-                    <div id="unlockTractorBeam" class="button" onclick="game.tractorBeam.unlockTractorBeam()">Build Tractor Beam for 5m oxygen, 500k science</div>
+                    <div id="unlockTractorBeam" class="button">Build Tractor Beam for 5m oxygen, 500k science</div>
                     <div id="unlockedTractorBeam">
                         <div id="allPassing"></div>
                     </div>
@@ -376,7 +375,7 @@
             <div id="spaceDockContainer" class="container showthat">
                 <div class="title">Space Dock</div>
                 <input id="buyBattleshipAmount" type="number" step="1" value="1"><br>
-                <div class="button" onclick="game.buyBattleship()">Build Battleship for <br><div id="battleshipCost">30m oxygen, 15m science</div></div><br>
+                <div id="btnBuyBattleship" class="button">Build Battleship for <br><div id="battleshipCost">30m oxygen, 15m science</div></div><br>
                 Battleships: <div id="battleships"></div><br>
 
                 <div class="showthis">
@@ -387,7 +386,7 @@
             <div id="hangarContainer" class="container showthat">
                 <div class="title">Hangar</div>
                 <input id="buyHangarAmount" type="number" step="1" value="1"><br>
-                <div class="button" onclick="game.buyHangar()">Increase hangar size for 1M soil</div><br>
+                <div id="btnBuyHangar" class="button">Increase hangar size for 1M soil</div><br>
                 Sending <div id="hangarSending"></div>
                 <div class="showthis">
                     Takes 5% of your current food. The more food a ship takes the longer it lasts<br>
@@ -410,31 +409,5 @@
 
 
     </body>
-    <script src="helpers.js"></script>
-    <script src="view.js"></script>
-    <script src="driver.js"></script>
-    <script src="game.js"></script>
-    <script src="classes/Clouds.js"></script>
-    <script src="classes/Computer.js"></script>
-    <script src="classes/Energy.js"></script>
-    <script src="classes/Farms.js"></script>
-    <script src="classes/Hangar.js"></script>
-    <script src="classes/Ice.js"></script>
-    <script src="classes/Land.js"></script>
-    <script src="classes/Planet.js"></script>
-    <script src="classes/PlanetManager.js"></script>
-    <script src="classes/City.js"></script>
-    <script src="classes/Robots.js"></script>
-    <script src="classes/Ship.js"></script>
-    <script src="classes/ShipManager.js"></script>
-    <script src="classes/Space.js"></script>
-    <script src="classes/SpaceDock.js"></script>
-    <script src="classes/SpaceStation.js"></script>
-    <script src="classes/TractorBeam.js"></script>
-    <script src="classes/Trees.js"></script>
-    <script src="classes/Water.js"></script>
-    <script src="UIClasses/spaceView.js"></script>
-    <script src="UIClasses/ProgressBar.js"></script>
-    <script src="hotkeys.js"></script>
-    <script src="saving.js"></script>
+    <script type="module" src="main.js"></script>
 </html>

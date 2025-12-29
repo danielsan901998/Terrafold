@@ -1,5 +1,17 @@
-function View() {
-    this.update = function() {
+import { game, clearSave, begForMoney, save, exportSave, importSave, pauseGame } from '../main.js';
+import { intToString, intToStringNegative, round1, round2, getClickAmount } from './utils.js';
+import ProgressBar from './UIClasses/ProgressBar.js';
+import updateSpace from './UIClasses/spaceView.js';
+import { processesView } from './classes/Computer.js';
+import { jobsView } from './classes/Robots.js';
+
+export default class View {
+    constructor() {
+        this.progressBar1 = new ProgressBar('nextStormProgress', '#21276a');
+        this.progressBar2 = new ProgressBar('stormDurationProgress', '#1c7682');
+    }
+
+    update() {
         //should run no more than once per frame
         this.updateInfo();
         this.updateIce();
@@ -20,9 +32,9 @@ function View() {
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
         updateSpace();
-    };
+    }
 
-    this.updateInfo = function() {
+    updateInfo() {
         document.getElementById('totalWater').innerHTML = intToString(game.ice.ice + game.water.indoor + game.water.outdoor + game.clouds.water + game.land.water + game.trees.water + game.farms.water);
         document.getElementById('cash').innerHTML = intToString(game.cash);
         document.getElementById('oxygen').innerHTML = intToString(game.oxygen);
@@ -30,17 +42,17 @@ function View() {
         document.getElementById('wood').innerHTML = intToString(game.wood);
         document.getElementById('metal').innerHTML = intToString(game.metal);
         document.getElementById('oxygenLeak').innerHTML = intToString(game.oxygenLeak, 4);
-    };
+    }
 
-    this.updateIce = function() {
+    updateIce() {
         document.getElementById('ice').innerHTML = intToString(game.ice.ice);
         document.getElementById('buyableIce').innerHTML = intToString(game.ice.buyable);
         document.getElementById('iceTransferred').innerHTML = intToString(game.ice.transferred, 4);
         document.getElementById('indoorWaterReceived').innerHTML = intToString(game.ice.transferred, 4);
-        document.getElementById('iceBuyerAmount').innerHTML = game.ice.gain+"";
-    };
+        document.getElementById('iceBuyerAmount').innerHTML = game.ice.gain + "";
+    }
 
-    this.updateWater = function() {
+    updateWater() {
         document.getElementById('indoorWater').innerHTML = intToString(game.water.indoor);
         document.getElementById('indoorWaterMax').innerHTML = intToString(game.water.maxIndoor);
         document.getElementById('indoorWaterSelling').innerHTML = intToString(game.water.selling);
@@ -51,21 +63,21 @@ function View() {
         document.getElementById('outdoorWater').innerHTML = intToString(game.water.outdoor);
         document.getElementById('waterTransferred').innerHTML = intToString(game.water.transferred, 4);
         document.getElementById('cloudsReceived').innerHTML = intToString(game.water.transferred, 4);
-    };
+    }
 
-    this.updateClouds = function() {
+    updateClouds() {
         document.getElementById('clouds').innerHTML = intToString(game.clouds.water);
-        document.getElementById('stormTimer').innerHTML = game.clouds.stormTimer+"";
-        document.getElementById('stormRate').innerHTML = game.clouds.stormRate+"%";
-        document.getElementById('intensityPB').style.height = game.clouds.stormRate+"%";
-        document.getElementById('stormDuration').innerHTML = game.clouds.stormDuration+"";
+        document.getElementById('stormTimer').innerHTML = game.clouds.stormTimer + "";
+        document.getElementById('stormRate').innerHTML = game.clouds.stormRate + "%";
+        document.getElementById('intensityPB').style.height = game.clouds.stormRate + "%";
+        document.getElementById('stormDuration').innerHTML = game.clouds.stormDuration + "";
         document.getElementById('rain').innerHTML = intToString(game.clouds.transferred, 4);
         document.getElementById('landReceived').innerHTML = intToString(game.clouds.transferred, 4);
         document.getElementById('lightningChance').innerHTML = intToString(game.clouds.lightningChance);
         document.getElementById('lightningStrength').innerHTML = intToString(game.clouds.lightningStrength);
-    };
+    }
 
-    this.updateLand = function() {
+    updateLand() {
         document.getElementById('landWater').innerHTML = intToString(game.land.water);
         document.getElementById('optimizedLand').innerHTML = intToString(game.land.optimizedLand);
         document.getElementById('baseLand').innerHTML = intToString(game.land.baseLand);
@@ -76,9 +88,9 @@ function View() {
         document.getElementById('forestReceived').innerHTML = intToString(game.land.transferred, 4);
         document.getElementById('landWaterToFarm').innerHTML = intToString(game.land.transferred, 4);
         document.getElementById('farmReceived').innerHTML = intToString(game.land.transferred, 4);
-    };
+    }
 
-    this.updateTrees = function() {
+    updateTrees() {
         document.getElementById('forestWater').innerHTML = intToString(game.trees.water);
         document.getElementById('ferns').innerHTML = intToString(game.trees.ferns);
         document.getElementById('fernsDelta').innerHTML = intToString(game.trees.fernsDelta, 4);
@@ -93,37 +105,37 @@ function View() {
         document.getElementById('fernWater').innerHTML = intToString(game.trees.fernsWaterUse, 4);
         document.getElementById('smallTreesWater').innerHTML = intToString(game.trees.smallTreesWaterUse, 4);
         document.getElementById('treesWater').innerHTML = intToString(game.trees.treesWaterUse, 4);
-    };
+    }
 
-    this.updateFarms = function() {
+    updateFarms() {
         document.getElementById('farmsWater').innerHTML = intToString(game.farms.water);
         document.getElementById('farms').innerHTML = intToString(game.farms.farms);
         document.getElementById('food').innerHTML = intToString(game.farms.food);
         document.getElementById('foodCreated').innerHTML = intToString(game.farms.foodCreated, 4);
         document.getElementById('farmFoodEaten').innerHTML = intToString(game.population.foodEaten, 4);
-        document.getElementById('efficiency').innerHTML = intToString(game.farms.efficiency*100, 1);
+        document.getElementById('efficiency').innerHTML = intToString(game.farms.efficiency * 100, 1);
         document.getElementById('farmWaterToLake').innerHTML = intToString(game.farms.transferred, 4);
         document.getElementById('lakeWaterFromFarm').innerHTML = intToString(game.farms.transferred, 4);
-    };
+    }
 
-    this.updatePopulation = function() {
+    updatePopulation() {
         document.getElementById('population').innerHTML = intToString(game.population.people);
         document.getElementById('foodEaten').innerHTML = intToString(game.population.foodEaten, 4);
         document.getElementById('populationGrowth').innerHTML = intToStringNegative(game.population.popGrowth, 4);
         document.getElementById('starving').innerHTML = intToString(game.population.starving, 4);
         document.getElementById('scienceDelta').innerHTML = intToString(game.population.scienceDelta, 4);
         document.getElementById('cashDelta').innerHTML = intToString(game.population.cashDelta, 4);
-        document.getElementById('scienceRatio').innerHTML = game.population.scienceRatio+"% science";
-        document.getElementById('scienceRatio').innerHTML = game.population.scienceRatio < 50 ? 100-game.population.scienceRatio+"% science" : game.population.scienceRatio+"% cash";
+        document.getElementById('scienceRatio').innerHTML = game.population.scienceRatio + "% science";
+        document.getElementById('scienceRatio').innerHTML = game.population.scienceRatio < 50 ? 100 - game.population.scienceRatio + "% science" : game.population.scienceRatio + "% cash";
 
         document.getElementById('happiness').innerHTML = intToString(game.population.happiness, 4);
         document.getElementById('happinessFromHouse').innerHTML = intToString(game.population.houseBonus);
         document.getElementById('happinessFromTrees').innerHTML = intToString(game.population.happinessFromTrees, 4);
         document.getElementById('happinessFromOxygen').innerHTML = intToString(game.population.happinessFromOxygen, 4);
-    };
+    }
 
-    this.checkComputerUnlocked = function() {
-        if(game.computer.unlocked) {
+    checkComputerUnlocked() {
+        if (game.computer.unlocked) {
             document.getElementById('unlockedComputer').style.display = "inline-block";
             document.getElementById('unlockComputer').style.display = "none";
             document.getElementById('robotsContainer').style.display = "inline-block";
@@ -132,11 +144,11 @@ function View() {
             document.getElementById('unlockComputer').style.display = "inline-block";
             document.getElementById('robotsContainer').style.display = "none";
         }
-    };
+    }
 
-    this.checkRobotsUnlocked = function() {
-        if(game.robots.unlocked) {
-            if(game.robots.failed) {
+    checkRobotsUnlocked() {
+        if (game.robots.unlocked) {
+            if (game.robots.failed) {
                 document.getElementById('unlockedRobots').style.display = "none";
                 document.getElementById('failRobots').style.display = "inline-block";
             } else {
@@ -158,214 +170,280 @@ function View() {
             document.getElementById('woodContainer').style.display = "none";
             document.getElementById('metalContainer').style.display = "none";
         }
-    };
+    }
 
-    this.updateComputerRowProgress = function() {
-        if(!game.computer.unlocked) {
+    updateComputerRowProgress() {
+        if (!game.computer.unlocked) {
             return;
         }
-        for(var i = 0; i < game.computer.processes.length; i++) {
+        for (var i = 0; i < game.computer.processes.length; i++) {
             var row = game.computer.processes[i];
             var baseId = "computerRow" + i;
-            document.getElementById(baseId+"PB").style.width = (row.currentTicks / row.ticksNeeded)*100 + "%";
-            document.getElementById(baseId+"PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
-            document.getElementById(baseId+"CurrentTicks").innerHTML = row.currentTicks+"";
-            document.getElementById(baseId+"TicksNeeded").innerHTML = row.ticksNeeded+"";
-            if(row.cost !== 0) {
-                document.getElementById(baseId+"Cost").style.display = "block";
-                document.getElementById(baseId+"Cost").innerHTML = "Each tick costs "+intToString(row.cost) + " "+row.costType;
+            document.getElementById(baseId + "PB").style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
+            document.getElementById(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
+            document.getElementById(baseId + "CurrentTicks").innerHTML = row.currentTicks + "";
+            document.getElementById(baseId + "TicksNeeded").innerHTML = row.ticksNeeded + "";
+            if (row.cost !== 0) {
+                document.getElementById(baseId + "Cost").style.display = "block";
+                document.getElementById(baseId + "Cost").innerHTML = "Each tick costs " + intToString(row.cost) + " " + row.costType;
             } else {
-                document.getElementById(baseId+"Cost").style.display = "none";
+                document.getElementById(baseId + "Cost").style.display = "none";
             }
         }
-        document.getElementById('landOptimized').innerHTML = round2((game.land.optimizedLand / (game.land.baseLand * 10))*100)+"%";
-    };
+        document.getElementById('landOptimized').innerHTML = round2((game.land.optimizedLand / (game.land.baseLand * 10)) * 100) + "%";
+    }
 
-    this.updateComputer = function() {
-        document.getElementById('freeThreads').innerHTML = game.computer.freeThreads+"";
-        document.getElementById('threads').innerHTML = game.computer.threads+"";
-        document.getElementById('speed').innerHTML = game.computer.speed+"";
+    updateComputer() {
+        document.getElementById('freeThreads').innerHTML = game.computer.freeThreads + "";
+        document.getElementById('threads').innerHTML = game.computer.threads + "";
+        document.getElementById('speed').innerHTML = game.computer.speed + "";
         document.getElementById('threadCost').innerHTML = intToString(game.computer.getThreadCost(), 1);
         document.getElementById('speedCost').innerHTML = intToString(game.computer.getSpeedCost(), 1);
-        for(var i = 0; i < game.computer.processes.length; i++) {
+        for (var i = 0; i < game.computer.processes.length; i++) {
             var row = game.computer.processes[i];
-            document.getElementById('computerRow'+i+'Threads').innerHTML = row.threads;
-            document.getElementById('computerRow'+i+'Container').style.display = row.showing() ? "block" : "none";
+            document.getElementById('computerRow' + i + 'Threads').innerHTML = row.threads;
+            document.getElementById('computerRow' + i + 'Container').style.display = row.showing() ? "block" : "none";
         }
-    };
+    }
 
-    this.addComputerRow = function(dataPos) {
+    addComputerRow(dataPos) {
         var containerDiv = document.getElementById('computerRows');
         var rowContainer = document.createElement("div");
         rowContainer.className = "computerRow";
         var baseId = "computerRow" + dataPos;
         rowContainer.id = baseId + 'Container';
-        var plusButton = "<div id='"+baseId+"Plus' class='button' onclick='game.computer.addThread("+dataPos+", getClickAmount(event))'>+</div>";
-        var minusButton = "<div id='"+baseId+"Minus' class='button' onclick='game.computer.removeThread("+dataPos+", getClickAmount(event))'>-</div>";
-        var threads = " <div id='"+baseId+"Threads' class='small' style='margin-right:4px'></div>" ;
-        var text = "<div>" + processesView[dataPos].text + "</div>";
-        var progressBar = "<div class='rowProgressBarOuter'><div class='rowProgressBarInner' id='"+baseId+"PB'></div></div>";
 
-        var tooltip = "<div id='"+baseId+"CurrentTicks'></div> ticks<br>" +
-            "<div id='"+baseId+"TicksNeeded'></div> ticks needed<br>" +
-            "<div id='"+baseId+"Cost'></div><br>";
-        var tooltipContainer = "<div class='computerTooltipContainer' id='"+baseId+"Tooltip'><div class='rowTooltip'>" + tooltip +  processesView[dataPos].tooltip + "</div></div>";
+        var plusButton = document.createElement("div");
+        plusButton.id = baseId + "Plus";
+        plusButton.className = "button";
+        plusButton.innerHTML = "+";
+        plusButton.addEventListener('click', (event) => game.computer.addThread(dataPos, getClickAmount(event)));
+
+        var minusButton = document.createElement("div");
+        minusButton.id = baseId + "Minus";
+        minusButton.className = "button";
+        minusButton.innerHTML = "-";
+        minusButton.addEventListener('click', (event) => game.computer.removeThread(dataPos, getClickAmount(event)));
+
+        var threads = document.createElement("div");
+        threads.id = baseId + "Threads";
+        threads.className = "small";
+        threads.style.marginRight = "4px";
+
+        var text = document.createElement("div");
+        text.innerHTML = processesView[dataPos].text;
+
+        var progressBar = document.createElement("div");
+        progressBar.className = "rowProgressBarOuter";
+        progressBar.innerHTML = "<div class='rowProgressBarInner' id='" + baseId + "PB'></div>";
+
+        var tooltipContainer = document.createElement("div");
+        tooltipContainer.className = "computerTooltipContainer";
+        tooltipContainer.id = baseId + "Tooltip";
+
+        var tooltipInner = document.createElement("div");
+        tooltipInner.className = "rowTooltip";
+        tooltipInner.innerHTML = "<div id='" + baseId + "CurrentTicks'></div> ticks<br>" +
+            "<div id='" + baseId + "TicksNeeded'></div> ticks needed<br>" +
+            "<div id='" + baseId + "Cost'></div><br>" + processesView[dataPos].tooltip;
+
+        tooltipContainer.appendChild(tooltipInner);
+
         rowContainer.onmouseover = function () {
-            document.getElementById(baseId+"Tooltip").style.display = "block";
+            document.getElementById(baseId + "Tooltip").style.display = "block";
         };
-        rowContainer.onmouseout = function() {
-            document.getElementById(baseId+"Tooltip").style.display = "none";
+        rowContainer.onmouseout = function () {
+            document.getElementById(baseId + "Tooltip").style.display = "none";
         };
 
-        rowContainer.innerHTML = plusButton + threads + minusButton + text + progressBar + tooltipContainer;
+        rowContainer.appendChild(plusButton);
+        rowContainer.appendChild(threads);
+        rowContainer.appendChild(minusButton);
+        rowContainer.appendChild(text);
+        rowContainer.appendChild(progressBar);
+        rowContainer.appendChild(tooltipContainer);
+
         containerDiv.appendChild(rowContainer);
-    };
+    }
 
-    this.updateRobots = function() {
-        document.getElementById('robots').innerHTML = game.robots.robots+"";
-        document.getElementById('robotsFree').innerHTML = game.robots.robotsFree+"";
-        document.getElementById('robotMax').innerHTML = game.robots.robotMax+"";
-        for(var i = 0; i < game.robots.jobs.length; i++) {
+    updateRobots() {
+        document.getElementById('robots').innerHTML = game.robots.robots + "";
+        document.getElementById('robotsFree').innerHTML = game.robots.robotsFree + "";
+        document.getElementById('robotMax').innerHTML = game.robots.robotMax + "";
+        for (var i = 0; i < game.robots.jobs.length; i++) {
             var row = game.robots.jobs[i];
-            document.getElementById('robotRow'+i+'Workers').innerHTML = row.workers;
-            document.getElementById('robotRow'+i+'Container').style.display = row.showing() ? "block" : "none";
+            document.getElementById('robotRow' + i + 'Workers').innerHTML = row.workers;
+            document.getElementById('robotRow' + i + 'Container').style.display = row.showing() ? "block" : "none";
         }
-    };
+    }
 
-    this.updateRobotsRowProgress = function() {
+    updateRobotsRowProgress() {
         document.getElementById('ore').innerHTML = intToString(game.robots.ore);
-        for(var i = 0; i < game.robots.jobs.length; i++) {
+        for (var i = 0; i < game.robots.jobs.length; i++) {
             var row = game.robots.jobs[i];
             var baseId = "robotRow" + i;
-            if(!row.ticksNeeded) { //Has a progress bar
+            if (!row.ticksNeeded) { //Has a progress bar
                 continue;
             }
-            document.getElementById(baseId+"PB").style.width = (row.currentTicks / row.ticksNeeded)*100 + "%";
-            document.getElementById(baseId+"PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
-            document.getElementById(baseId+"CurrentTicks").innerHTML = row.currentTicks+"";
-            document.getElementById(baseId+"TicksNeeded").innerHTML = intToString(row.ticksNeeded,1);
-            if(row.cost) {
-                document.getElementById(baseId+"Cost").style.display = "block";
-                var costString = "Each tick costs "+intToString(row.cost[0]) + " "+row.costType[0];
+            document.getElementById(baseId + "PB").style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
+            document.getElementById(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
+            document.getElementById(baseId + "CurrentTicks").innerHTML = row.currentTicks + "";
+            document.getElementById(baseId + "TicksNeeded").innerHTML = intToString(row.ticksNeeded, 1);
+            if (row.cost) {
+                document.getElementById(baseId + "Cost").style.display = "block";
+                var costString = "Each tick costs " + intToString(row.cost[0]) + " " + row.costType[0];
                 costString += row.cost.length > 1 ? " and " + intToString(row.cost[1]) + " " + row.costType[1] : "";
-                document.getElementById(baseId+"Cost").innerHTML = costString;
+                document.getElementById(baseId + "Cost").innerHTML = costString;
             } else {
-                document.getElementById(baseId+"Cost").style.display = "none";
+                document.getElementById(baseId + "Cost").style.display = "none";
             }
         }
         document.getElementById('totalDirtFromOre').innerHTML = intToString(game.robots.jobs[5].completions * 5);
 
-    };
+    }
 
-    this.addRobotRow = function(dataPos) {
+    addRobotRow(dataPos) {
         var containerDiv = document.getElementById('robotRows');
         var rowContainer = document.createElement("div");
         rowContainer.className = "robotRow";
         var baseId = "robotRow" + dataPos;
         rowContainer.id = baseId + 'Container';
-        var plusButton = "<div id='"+baseId+"Plus' class='button' onclick='game.robots.addWorker("+dataPos+", getClickAmount(event))'>+</div>";
-        var minusButton = "<div id='"+baseId+"Minus' class='button' onclick='game.robots.removeWorker("+dataPos+", getClickAmount(event))'>-</div>";
-        var workers = " <div id='"+baseId+"Workers' class='small' style='margin-right:4px'></div>" ;
-        var text = "<div>" + jobsView[dataPos].text + "</div>";
 
-        if(game.robots.jobs[dataPos].ticksNeeded) {
-            var tooltip = "<div id='"+baseId+"CurrentTicks'></div> ticks<br>" +
-                "<div id='"+baseId+"TicksNeeded'></div> ticks needed<br>" +
-                "<div id='"+baseId+"Cost'></div><br>";
-            var progressBar = "<div class='rowProgressBarOuter'><div class='rowProgressBarInner' id='" + baseId + "PB'></div></div>";
-        } else {
-            tooltip = "";
-            progressBar = "";
+        var plusButton = document.createElement("div");
+        plusButton.id = baseId + "Plus";
+        plusButton.className = "button";
+        plusButton.innerHTML = "+";
+        plusButton.addEventListener('click', (event) => game.robots.addWorker(dataPos, getClickAmount(event)));
+
+        var minusButton = document.createElement("div");
+        minusButton.id = baseId + "Minus";
+        minusButton.className = "button";
+        minusButton.innerHTML = "-";
+        minusButton.addEventListener('click', (event) => game.robots.removeWorker(dataPos, getClickAmount(event)));
+
+        var workers = document.createElement("div");
+        workers.id = baseId + "Workers";
+        workers.className = "small";
+        workers.style.marginRight = "4px";
+
+        var text = document.createElement("div");
+        text.innerHTML = jobsView[dataPos].text;
+
+        var progressBar = document.createElement("div");
+        if (game.robots.jobs[dataPos].ticksNeeded) {
+            progressBar.className = "rowProgressBarOuter";
+            progressBar.innerHTML = "<div class='rowProgressBarInner' id='" + baseId + "PB'></div>";
         }
 
-        var tooltipContainer = "<div class='computerTooltipContainer' id='"+baseId+"Tooltip'><div class='rowTooltip'>" + tooltip + jobsView[dataPos].tooltip + "</div></div>";
+        var tooltipContainer = document.createElement("div");
+        tooltipContainer.className = "computerTooltipContainer";
+        tooltipContainer.id = baseId + "Tooltip";
+
+        var tooltipInner = document.createElement("div");
+        tooltipInner.className = "rowTooltip";
+
+        var tooltipContent = "";
+        if (game.robots.jobs[dataPos].ticksNeeded) {
+            tooltipContent = "<div id='" + baseId + "CurrentTicks'></div> ticks<br>" +
+                "<div id='" + baseId + "TicksNeeded'></div> ticks needed<br>" +
+                "<div id='" + baseId + "Cost'></div><br>";
+        }
+        tooltipInner.innerHTML = tooltipContent + jobsView[dataPos].tooltip;
+        tooltipContainer.appendChild(tooltipInner);
+
         rowContainer.onmouseover = function () {
-            document.getElementById(baseId+"Tooltip").style.display = "block";
+            document.getElementById(baseId + "Tooltip").style.display = "block";
         };
-        rowContainer.onmouseout = function() {
-            document.getElementById(baseId+"Tooltip").style.display = "none";
+        rowContainer.onmouseout = function () {
+            document.getElementById(baseId + "Tooltip").style.display = "none";
         };
 
-        rowContainer.innerHTML = plusButton + workers + minusButton + text + progressBar + tooltipContainer;
+        rowContainer.appendChild(plusButton);
+        rowContainer.appendChild(workers);
+        rowContainer.appendChild(minusButton);
+        rowContainer.appendChild(text);
+        if (progressBar.innerHTML) rowContainer.appendChild(progressBar);
+        rowContainer.appendChild(tooltipContainer);
+
         containerDiv.appendChild(rowContainer);
-    };
+    }
 
-    this.checkEnergyUnlocked = function() {
-        if(game.energy.unlocked) {
+    checkEnergyUnlocked() {
+        if (game.energy.unlocked) {
             document.getElementById('unlockedEnergy').style.display = "inline-block";
             document.getElementById('unlockEnergy').style.display = "none";
-            if(document.getElementById('spaceDockContainer').classList.contains("disabled")) {
+            if (document.getElementById('spaceDockContainer').classList.contains("disabled")) {
                 document.getElementById('spaceDockContainer').classList.remove("disabled");
             }
             this.updateRobots();
         } else {
             document.getElementById('unlockedEnergy').style.display = "none";
             document.getElementById('unlockEnergy').style.display = "inline-block";
-            if(!document.getElementById('spaceDockContainer').classList.contains("disabled")) {
+            if (!document.getElementById('spaceDockContainer').classList.contains("disabled")) {
                 document.getElementById('spaceDockContainer').classList.add("disabled");
             }
         }
-    };
+    }
 
-    this.updateEnergy = function() {
+    updateEnergy() {
         document.getElementById('energy').innerHTML = intToString(game.power);
         document.getElementById('battery').innerHTML = intToString(game.energy.battery, 1);
         document.getElementById('drain').innerHTML = intToString(game.energy.drain);
-    };
+    }
 
-    this.checkSpaceStationUnlocked = function() {
-        if(game.energy.unlocked) {
+    checkSpaceStationUnlocked() {
+        if (game.energy.unlocked) {
             document.getElementById('spaceStationContainer').style.display = "inline-block";
         } else {
             document.getElementById('spaceStationContainer').style.display = "none";
         }
 
-        if(game.spaceStation.unlocked) {
+        if (game.spaceStation.unlocked) {
             document.getElementById('unlockedSpaceStation').style.display = "inline-block";
             document.getElementById('unlockSpaceStation').style.display = "none";
         } else {
             document.getElementById('unlockedSpaceStation').style.display = "none";
             document.getElementById('unlockSpaceStation').style.display = "inline-block";
         }
-    };
+    }
 
-    this.updateSpaceStation = function() {
+    updateSpaceStation() {
         var orbitString = "";
         var orbitSendString = "";
-        for(var i = 0; i < game.spaceStation.orbiting.length; i++) {
+        for (var i = 0; i < game.spaceStation.orbiting.length; i++) {
             orbitString += intToString(game.spaceStation.orbiting[i].amount) + " " + game.spaceStation.orbiting[i].type;
             orbitSendString += intToString(game.spaceStation.orbiting[i].amount / 10000, 4) + " " + game.spaceStation.orbiting[i].type;
-            if(i !== game.spaceStation.orbiting.length - 1) {
+            if (i !== game.spaceStation.orbiting.length - 1) {
                 orbitString += ", ";
                 orbitSendString += ", ";
             }
         }
         document.getElementById('orbitingResources').innerHTML = orbitString;
         document.getElementById('orbitSending').innerHTML = orbitSendString;
-    };
+    }
 
-    this.checkTractorBeamUnlocked = function() {
-        if(game.spaceStation.unlocked) {
+    checkTractorBeamUnlocked() {
+        if (game.spaceStation.unlocked) {
             document.getElementById('tractorBeamContainer').style.display = "inline-block";
         } else {
             document.getElementById('tractorBeamContainer').style.display = "none";
         }
 
-        if(game.tractorBeam.unlocked) {
+        if (game.tractorBeam.unlocked) {
             document.getElementById('unlockedTractorBeam').style.display = "inline-block";
             document.getElementById('unlockTractorBeam').style.display = "none";
         } else {
             document.getElementById('unlockedTractorBeam').style.display = "none";
             document.getElementById('unlockTractorBeam').style.display = "inline-block";
         }
-    };
+    }
 
 
-    this.updateTractorBeam = function() {
+    updateTractorBeam() {
         var container = document.getElementById("allPassing");
         var text = "";
         var comets = game.tractorBeam.comets;
-        for(var i = 0; i < comets.length; i++) {
+        for (var i = 0; i < comets.length; i++) {
             text += comets[i].name + " with " +
                 intToString(comets[i].amount, 1) +
                 " " + comets[i].amountType +
@@ -374,12 +452,12 @@ function View() {
         }
         container.innerHTML = text;
         document.getElementById('takeAmount').innerHTML = game.tractorBeam.takeAmount;
-    };
+    }
 
-    this.drawComet = function(cometData) {
+    drawComet(cometData) {
         var cometDiv;
-        var cometDivName = 'comet'+cometData.id;
-        if(!cometData.drawed){
+        var cometDivName = 'comet' + cometData.id;
+        if (!cometData.drawed) {
             cometDiv = document.createElement("div");
             cometDiv.className = cometData.name.toLowerCase();
             cometDiv.id = cometDivName;
@@ -392,7 +470,7 @@ function View() {
             //y = mx + b, m = (y-b)/x
             cometData.slope = (0 - cometData.startingY) / (cometData.endingX);
             document.getElementById('cometsContainer').appendChild(cometDiv);
-            cometData.drawed=true;
+            cometData.drawed = true;
         }
         else
             cometDiv = document.getElementById(cometDivName);
@@ -401,23 +479,23 @@ function View() {
         cometDiv.style.left = cometData.left + "px";
         cometDiv.style.top = cometData.top + "px";
 
-    };
+    }
 
-    this.removeComet = function(cometData) {
-        var cometDivName = 'comet'+cometData.id;
+    removeComet(cometData) {
+        var cometDivName = 'comet' + cometData.id;
         var cometDiv = document.getElementById(cometDivName);
-        if(cometDiv)
+        if (cometDiv)
             document.getElementById('cometsContainer').removeChild(cometDiv);
         else
-            console.log(cometDivName+"not found");
-    };
+            console.log(cometDivName + "not found");
+    }
 
-    this.updateSpaceDock = function() {
-        document.getElementById('battleships').innerHTML = game.spaceDock.battleships+"";
-    };
+    updateSpaceDock() {
+        document.getElementById('battleships').innerHTML = game.spaceDock.battleships + "";
+    }
 
-    this.checkSpaceDockUnlocked = function() {
-        if(game.spaceDock.unlocked) {
+    checkSpaceDockUnlocked() {
+        if (game.spaceDock.unlocked) {
             document.getElementById('spaceDockContainer').style.display = "inline-block";
             document.getElementById('hangarContainer').style.display = "inline-block";
             document.getElementById('spaceCanvas').style.display = "inline-block";
@@ -428,14 +506,123 @@ function View() {
             document.getElementById('spaceCanvas').style.display = "none";
             document.getElementById('spaceContainer').style.display = "none";
         }
-    };
+    }
 
-    this.updateHangar = function() {
-        document.getElementById("hangarSending").innerHTML = game.hangar.sendRate + " in "+round1(game.hangar.timeRemaining/10) +" seconds.";
-    };
-
-
-    this.progressBar1 = new ProgressBar('nextStormProgress', '#21276a');
-    this.progressBar2 = new ProgressBar('stormDurationProgress', '#1c7682');
+    updateHangar() {
+        document.getElementById("hangarSending").innerHTML = game.hangar.sendRate + " in " + round1(game.hangar.timeRemaining / 10) + " seconds.";
+    }
 }
 
+// --- Listeners ---
+const initListeners = () => {
+    const addClick = (id, func) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', func);
+    };
+
+    addClick('btnHardReset', clearSave);
+    addClick('btnPause', pauseGame);
+    addClick('btnBeg', begForMoney);
+    addClick('btnSave', save);
+    addClick('btnExport', exportSave);
+    addClick('btnImport', importSave);
+    addClick('btnBuyIce', () => game.buyIce());
+    addClick('btnBuyFarms', () => game.buyFarms());
+    addClick('unlockComputer', () => game.computer.unlockComputer());
+    addClick('buyThread', () => game.computer.buyThread());
+    addClick('buySpeed', () => game.computer.buySpeed());
+    addClick('unlockRobots', () => game.robots.unlockRobots());
+    addClick('failRobots', () => game.robots.failedRobots());
+    addClick('unlockEnergy', () => game.energy.unlockEnergy());
+    addClick('btnBuyBattery', () => game.buyBattery());
+    addClick('unlockSpaceStation', () => game.spaceStation.unlockSpaceStation());
+    addClick('unlockTractorBeam', () => game.tractorBeam.unlockTractorBeam());
+    addClick('btnBuyBattleship', () => game.buyBattleship());
+    addClick('btnBuyHangar', () => game.buyHangar());
+
+    const mainContainer = document.getElementById('mainContainer');
+    if (mainContainer) {
+        mainContainer.addEventListener('contextmenu', e => e.preventDefault());
+    }
+
+    const scienceSlider = document.getElementById('scienceSlider');
+    if (scienceSlider) {
+        scienceSlider.addEventListener('input', function () {
+            game.population.scienceRatio = this.value;
+        });
+    }
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initListeners);
+} else {
+    initListeners();
+}
+
+// --- Hotkeys ---
+var myKeyQueue = [];
+function processKeyQueue() {
+    var key = myKeyQueue[0].key;
+    // var shift = myKeyQueue[0].shift;
+    myKeyQueue.splice(0, 1);
+    if (key === 66) { //b
+        game.buyIce()
+    }
+}
+
+document.addEventListener("keydown", function (e) {
+    var code = { key: (e.charCode !== 0 ? e.charCode : e.keyCode), shift: e.shiftKey };
+    myKeyQueue.push(code);
+    processKeyQueue();
+});
+
+var keys = { 32: 1, 37: 1, 38: 1, 39: 1, 40: 1 };
+
+function preventDefault(e) {
+    e = e || window.event;
+    if (e.preventDefault)
+        e.preventDefault();
+    e.returnValue = false;
+}
+
+function preventDefaultForScrollKeys(e) {
+    if (keys[e.keyCode]) {
+        preventDefault(e);
+        return false;
+    }
+}
+
+function disableScroll() {
+    document.onkeydown = preventDefaultForScrollKeys;
+}
+disableScroll();
+
+
+var backgroundGrid = document.getElementById('mainContainer');
+var rclickStartingPoint;
+
+if (backgroundGrid) {
+    backgroundGrid.onmousedown = function (e) {
+        if ((e.which && e.which === 3) || (e.buttons && e.buttons === 2)) { //Right click
+            rclickStartingPoint = { x: e.pageX, y: e.pageY };
+        }
+    };
+
+    backgroundGrid.onmousemove = function (e) {
+        if ((e.which && e.which === 3) || (e.buttons && e.buttons === 2)) {
+            var dragToPoint = { x: e.pageX, y: e.pageY };
+            if (rclickStartingPoint) {
+                var offsetx = Math.ceil((dragToPoint.x - rclickStartingPoint.x) / 1.5);
+                var offsety = Math.ceil((dragToPoint.y - rclickStartingPoint.y) / 1.5);
+                window.scrollBy(offsetx, offsety);
+                rclickStartingPoint = dragToPoint;
+            }
+        }
+    };
+
+    backgroundGrid.onmouseup = function (e) {
+        if ((e.which && e.which === 3) || (e.buttons && e.buttons === 2)) {
+            return;
+        }
+    };
+}

@@ -1,39 +1,41 @@
-function Land(totalLand) {
-    this.land = totalLand;
-    this.baseLand = totalLand;
-    this.optimizedLand = totalLand;
-    this.water = 0;
-    this.soil = 0;
-    this.transferred = 0;
+export default class Land {
+    constructor(totalLand) {
+        this.land = totalLand;
+        this.baseLand = totalLand;
+        this.optimizedLand = totalLand;
+        this.water = 0;
+        this.soil = 0;
+        this.transferred = 0;
+    }
 
-    this.tick = function(amount) {
+    tick(amount) {
         this.water += amount;
         this.turnLandToSoil();
-    };
+    }
 
-    this.turnLandToSoil = function() {
+    turnLandToSoil() {
         this.convertedLand = this.water / 1000;
-        if(this.land < this.convertedLand) {
+        if (this.land < this.convertedLand) {
             this.convertedLand = this.land;
         }
         this.land -= this.convertedLand;
         this.soil += this.convertedLand;
         this.water -= this.convertedLand;
-    };
+    }
 
-    this.transferWater = function() {
+    transferWater() {
         this.transferred = this.water / 1000;
         this.water -= this.transferred;
         return this.transferred;
-    };
+    }
 
-    this.improveLand = function() {
+    improveLand() {
         var amount = (10 * this.baseLand - this.optimizedLand) / 100;
         this.optimizedLand += amount;
         this.land += amount;
-    };
+    }
 
-    this.addLand = function(amount) {
+    addLand(amount) {
         this.optimizedLand += amount;
         this.land += amount;
         this.baseLand += amount;

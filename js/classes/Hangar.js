@@ -1,13 +1,18 @@
-function Hangar() {
-    this.sendRate = 1;
-    this.timeRemaining = this.totalTime = 40;
-    this.y = 350;
+import { game } from '../../main.js';
+import Ship from './Ship.js';
 
-    this.tick = function() {
+export default class Hangar {
+    constructor() {
+        this.sendRate = 1;
+        this.timeRemaining = this.totalTime = 40;
+        this.y = 350;
+    }
+
+    tick() {
         this.timeRemaining--;
-        if(this.timeRemaining < 0) {
+        if (this.timeRemaining < 0) {
             if (game.spaceDock.battleships > 0) {
-                var tosend=Math.min(this.sendRate,game.spaceDock.battleships);
+                var tosend = Math.min(this.sendRate, game.spaceDock.battleships);
                 var foodTaken = game.farms.food * .05; // Take 5% food per launch
                 game.farms.food -= foodTaken;
                 game.space.spawnShip(new Ship(tosend, foodTaken), this.y);
@@ -18,13 +23,13 @@ function Hangar() {
                 this.timeRemaining = 0;
             }
         }
-    };
+    }
 
-    this.getTarget = function() {
+    getTarget() {
         return {
-            isHome:true,
-            x:-125,
-            y:this.y,
+            isHome: true,
+            x: -125,
+            y: this.y,
         }
-    };
+    }
 }

@@ -1,14 +1,21 @@
+import { game } from '../../main.js';
+import { intToString, withinDistance } from '../utils.js';
+import PlanetManager from '../classes/PlanetManager.js';
+
 var canvas = document.getElementById("spaceCanvas");
-var ctx = canvas.getContext("2d");
-ctx.font = "11px Arial";
+var ctx = canvas ? canvas.getContext("2d") : null;
+if (ctx) ctx.font = "11px Arial";
 var xOffset = 200;
 var mousePos = {};
 
-canvas.addEventListener('mousemove', function(e) {
-    mousePos = {x:e.offsetX - xOffset, y:e.offsetY};
-});
+if (canvas) {
+    canvas.addEventListener('mousemove', function(e) {
+        mousePos = {x:e.offsetX - xOffset, y:e.offsetY};
+    });
+}
 
-function updateSpace() {
+export default function updateSpace() {
+    if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBorders();
     drawTargets();
@@ -157,7 +164,7 @@ function drawPlanetObjects(planet, size) {
     ctx.rotate(-1*planet.view.rotation);
 }
 
-function rotatePlanet(planet) { //Done on planet's tick
+export function rotatePlanet(planet) { //Done on planet's tick
     planet.view.rotation += planet.view.rotationSpeed/10+.01;
     if(planet.view.rotation >= Math.PI * 2) {
         planet.view.rotation -= Math.PI * 2;

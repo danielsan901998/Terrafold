@@ -1,25 +1,29 @@
-function TractorBeam() {
-    this.unlocked = 0;
-    this.cometSpotChance = 0.006;
-    this.takeAmount = "";
+import { game, view, incrementCometId } from '../../main.js';
+import { intToString } from '../utils.js';
 
-    this.comets = [];
+export default class TractorBeam {
+    constructor() {
+        this.unlocked = 0;
+        this.cometSpotChance = 0.006;
+        this.takeAmount = "";
+        this.comets = [];
+    }
 
-    this.tick = function() {
-        if(!this.unlocked) {
+    tick() {
+        if (!this.unlocked) {
             return;
         }
         this.checkForNewAsteroids();
 
-        if(this.comets.length){
+        if (this.comets.length) {
             var transferred = game.power / 1000;
             game.power -= this.pullIntoOrbit(transferred);
             this.removeAsteroidIfDone();
         }
-    };
+    }
 
-    this.unlockTractorBeam = function() {
-        if(game.science >= 5e5 && game.oxygen >= 5e6) {
+    unlockTractorBeam() {
+        if (game.science >= 5e5 && game.oxygen >= 5e6) {
             game.science -= 5e5;
             game.oxygen -= 2e6;
             this.unlocked = 1;
@@ -28,19 +32,19 @@ function TractorBeam() {
             view.checkSpaceDockUnlocked();
         }
         view.updateTractorBeam();
-    };
+    }
 
-    this.pullIntoOrbit = function(energy) {
+    pullIntoOrbit(energy) {
         var maxtaken = energy / this.comets.length;
-        var used=0;
+        var used = 0;
         this.takeAmount = "";
-        for(var j = 0; j < game.spaceStation.orbiting.length; j++) {
+        for (var j = 0; j < game.spaceStation.orbiting.length; j++) {
             var orbiting = game.spaceStation.orbiting[j];
             var totalAmount = 0;
-            for(var i = 0; i < this.comets.length; i++) {
+            for (var i = 0; i < this.comets.length; i++) {
                 var comet = this.comets[i];
-                if(comet.amountType === orbiting.type) {
-                    var taken = Math.min(maxtaken,comet.amount);
+                if (comet.amountType === orbiting.type) {
+                    var taken = Math.min(maxtaken, comet.amount);
                     used += taken;
                     comet.amount -= taken;
                     totalAmount += taken;
@@ -48,35 +52,35 @@ function TractorBeam() {
             }
             orbiting.amount += totalAmount;
             this.takeAmount += intToString(totalAmount, 3) + " " + orbiting.type;
-            if(j < game.spaceStation.orbiting.length -1 ) {
+            if (j < game.spaceStation.orbiting.length - 1) {
                 this.takeAmount += ", "
             }
         }
         return used;
-    };
+    }
 
-    this.checkForNewAsteroids = function() {
+    checkForNewAsteroids() {
         var discoverChance = Math.random();
-        if(discoverChance < this.cometSpotChance) {
+        if (discoverChance < this.cometSpotChance) {
             this.addComet();
         }
-    };
+    }
 
-    this.removeAsteroidIfDone = function() {
+    removeAsteroidIfDone() {
         var length = this.comets.length - 1;
-        for(var i = length; i >= 0; i--) {
+        for (var i = length; i >= 0; i--) {
             var comet = this.comets[i];
             comet.duration--;
-            if(comet.duration < 0 || comet.amount < 1) {
-                if(comet.drawed)
+            if (comet.duration < 0 || comet.amount < 1) {
+                if (comet.drawed)
                     view.removeComet(comet);
                 this.comets.splice(i, 1);
             }
         }
-    };
+    }
 
-    this.addComet = function() {
-        if(this.comets.length > 20) {
+    addComet() {
+        if (this.comets.length > 20) {
             return;
         }
         var typeRoll = Math.random();
@@ -85,32 +89,32 @@ function TractorBeam() {
         var speedRoll = Math.random() * 2 + 1;
         var comet = {};
 
-        if(typeRoll < .9) {
+        if (typeRoll < .9) {
             comet = {
                 name: "Comet",
                 amountType: "ice",
-                amount:amountRoll * 1000,
-                duration:durationRoll,
-                initialDuration:durationRoll,
-                speed:speedRoll,
-                size:20
+                amount: amountRoll * 1000,
+                duration: durationRoll,
+                initialDuration: durationRoll,
+                speed: speedRoll,
+                size: 20
             };
         } else {
             comet = {
                 name: "Asteroid",
                 amountType: "dirt",
-                amount:amountRoll,
-                duration:durationRoll * 2,
-                initialDuration:durationRoll * 2,
-                speed:speedRoll / 2,
-                size:5
+                amount: amountRoll,
+                duration: durationRoll * 2,
+                initialDuration: durationRoll * 2,
+                speed: speedRoll / 2,
+                size: 5
             };
         }
-        comet.id = cometId++;
+        comet.id = incrementCometId();
         comet.drawed = false;
 
 
         this.comets.push(comet);
 
-    };
+    }
 }
