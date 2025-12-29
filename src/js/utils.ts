@@ -10,15 +10,17 @@ export function getClickAmount(event: MouseEvent): number {
 }
 
 export function round1(num: number): number {
-    return Math.floor(num*10)/10
+    return Math.floor(num * 10) / 10;
 }
+
 export function round2(num: number): number {
-    return Math.floor(num*100)/100
+    return Math.floor(num * 100) / 100;
 }
 
 export function precision2(num: number): number {
     return Number(num.toPrecision(2));
 }
+
 export function precision3(num: number): number {
     return Number(num.toPrecision(3));
 }
@@ -148,199 +150,33 @@ export function factorial(n: number): number {
 }
 
 export function sortArrayObjectsByValue(arr: any[], valueName: string): void {
-    const n = arr.length;
-
-    // One by one move boundary of unsorted subarray
-    for (let i = 0; i < n - 1; i++) {
-        // Find the minimum element in unsorted array
-        let min_idx = i;
-        for (let j = i + 1; j < n; j++) {
-            if (arr[j][valueName] < arr[min_idx][valueName])
-                min_idx = j;
-        }
-
-        // Swap the found minimum element with the first
-        // element
-        const temp = arr[min_idx];
-        arr[min_idx] = arr[i];
-        arr[i] = temp;
-    }
+    arr.sort((a, b) => a[valueName] - b[valueName]);
 }
 
-export function encode(theSave: string): string {
-    return Base64.encode(lzw_encode(theSave));
+export async function encode(theSave: string): Promise<string> {
+    const stream = new Blob([theSave]).stream().pipeThrough(new CompressionStream('gzip'));
+    const response = new Response(stream);
+    const buffer = await response.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]!);
+    }
+    return btoa(binary);
 }
 
-export function decode(encodedSave: string): string {
-    return lzw_decode(Base64.decode(encodedSave))
+export async function decode(encodedSave: string): Promise<string> {
+    if (!encodedSave) return "";
+    const trimmed = encodedSave.trim();
+    if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+        return trimmed;
+    }
+    try {
+        const binaryString = atob(encodedSave);
+        const bytes = Uint8Array.from(binaryString, (m) => m.codePointAt(0)!);
+        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+        return new Response(stream).text();
+    } catch (e) {
+        return encodedSave;
+    }
 }
-
-// LZW-compress a string
-function lzw_encode(s: string): string {
-    const dict: Record<string, number> = {};
-    const data = (s + "").split("");
-    const out: (string | number)[] = [];
-    let currChar: string;
-    let phrase = data[0]!;
-    let code = 256;
-    for (let i = 1; i < data.length; i++) {
-        currChar = data[i]!;
-        if (dict[phrase + currChar] != null) {
-            phrase += currChar;
-        }
-        else {
-            out.push(phrase.length > 1 ? dict[phrase]! : phrase.charCodeAt(0));
-            dict[phrase + currChar] = code;
-            code++;
-            phrase = currChar;
-        }
-    }
-    out.push(phrase.length > 1 ? dict[phrase]! : phrase.charCodeAt(0));
-    const outStrings: string[] = [];
-    for (let i = 0; i < out.length; i++) {
-        outStrings[i] = String.fromCharCode(out[i] as number);
-    }
-    return outStrings.join("");
-}
-
-// Decompress an LZW-encoded string
-function lzw_decode(s: string): string {
-    const dict: Record<number, string> = {};
-    const data = (s + "").split("");
-    let currChar = data[0]!;
-    let oldPhrase = currChar;
-    const out = [currChar];
-    let code = 256;
-    let phrase;
-    for (let i = 1; i < data.length; i++) {
-        const currCode = data[i]!.charCodeAt(0);
-        if (currCode < 256) {
-            phrase = data[i]!;
-        }
-        else {
-            phrase = dict[currCode] ? dict[currCode]! : (oldPhrase + currChar);
-        }
-        out.push(phrase);
-        currChar = phrase.charAt(0);
-        dict[code] = oldPhrase + currChar;
-        code++;
-        oldPhrase = phrase;
-    }
-    return out.join("");
-}
-
-const Base64 = {
-
-    // private property
-    _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-
-    // public method for encoding
-    encode: function (input: string): string {
-        let output = "";
-        let chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-        let i = 0;
-
-        input = Base64._utf8_encode(input);
-
-        while (i < input.length) {
-            chr1 = input.charCodeAt(i++);
-            chr2 = input.charCodeAt(i++);
-            chr3 = input.charCodeAt(i++);
-
-            enc1 = chr1 >> 2;
-            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-            enc4 = chr3 & 63;
-
-            if (isNaN(chr2)) {
-                enc3 = enc4 = 64;
-            } else if (isNaN(chr3)) {
-                enc4 = 64;
-            }
-            output = output + 
-                this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
-                this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
-        }
-        return output;
-    },
-
-    // public method for decoding
-    decode: function (input: string): string {
-        let output = "";
-        let chr1, chr2, chr3;
-        let enc1, enc2, enc3, enc4;
-        let i = 0;
-
-        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-        while (i < input.length) {
-            enc1 = this._keyStr.indexOf(input.charAt(i++));
-            enc2 = this._keyStr.indexOf(input.charAt(i++));
-            enc3 = this._keyStr.indexOf(input.charAt(i++));
-            enc4 = this._keyStr.indexOf(input.charAt(i++));
-
-            chr1 = (enc1 << 2) | (enc2 >> 4);
-            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-            chr3 = ((enc3 & 3) << 6) | enc4;
-
-            output = output + String.fromCharCode(chr1);
-            if (enc3 != 64) {
-                output = output + String.fromCharCode(chr2);
-            }
-            if (enc4 != 64) {
-                output = output + String.fromCharCode(chr3);
-            }
-        }
-        output = Base64._utf8_decode(output);
-        return output;
-    },
-
-    // private method for UTF-8 encoding
-    _utf8_encode: function (string: string): string {
-        string = string.replace(/\r\n/g, "\n");
-        let utftext = "";
-
-        for (let n = 0; n < string.length; n++) {
-            const c = string.charCodeAt(n);
-            if (c < 128) {
-                utftext += String.fromCharCode(c);
-            }
-            else if ((c > 127) && (c < 2048)) {
-                utftext += String.fromCharCode((c >> 6) | 192);
-                utftext += String.fromCharCode((c & 63) | 128);
-            }
-            else {
-                utftext += String.fromCharCode((c >> 12) | 224);
-                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-                utftext += String.fromCharCode((c & 63) | 128);
-            }
-        }
-        return utftext;
-    },
-
-    // private method for UTF-8 decoding
-    _utf8_decode: function (utftext: string): string {
-        let string = "";
-        let i = 0;
-        let c = 0, c2 = 0, c3 = 0;
-        while (i < utftext.length) {
-            c = utftext.charCodeAt(i);
-            if (c < 128) {
-                string += String.fromCharCode(c);
-                i++;
-            }
-            else if ((c > 191) && (c < 224)) {
-                c2 = utftext.charCodeAt(i + 1);
-                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
-                i += 2;
-            }
-            else {
-                c2 = utftext.charCodeAt(i + 1);
-                c3 = utftext.charCodeAt(i + 2);
-                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
-                i += 3;
-            }
-        }
-        return string;
-    }
-};

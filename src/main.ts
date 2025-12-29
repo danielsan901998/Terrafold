@@ -107,7 +107,7 @@ class Game implements IGame {
         this.spaceDock = new SpaceDock();
         this.hangar = new Hangar();
 
-
+        view?.clearComputerRows();
         for (let i = 0; i < this.computer.processes.length; i++) {
             view?.addComputerRow(i);
             const proc = this.computer.processes[i];
@@ -116,6 +116,7 @@ class Game implements IGame {
                 proc.completions = 0;
             }
         }
+        view?.clearRobotRows();
         for (let i = 0; i < this.robots.jobs.length; i++) {
             view?.addRobotRow(i);
             const job = this.robots.jobs[i];
@@ -232,9 +233,9 @@ doWork.onmessage = function (event) {
     }
 };
 
-export function clearSave() {
+export async function clearSave() {
     window.localStorage.terrafold2 = "";
-    load();
+    await load();
 }
 
 function loadDefaults() {
@@ -257,10 +258,11 @@ function setInitialView() {
 }
 
 
-function load() {
+async function load() {
     loadDefaults();
     if (window.localStorage.terrafold2) { // existing savegame
-        const toLoad = JSON.parse(decode(window.localStorage.terrafold2));
+        const decoded = await decode(window.localStorage.terrafold2);
+        const toLoad = JSON.parse(decoded);
         if (game) copyObject(toLoad, game);
 
         if (game) {
@@ -288,28 +290,28 @@ function copyObject(object: any, toSave: any) {
     }
 }
 
-export function save() {
+export async function save() {
     let toSave = {};
     if (game) copyObject(game, toSave)
-    window.localStorage.terrafold2 = encode(JSON.stringify(toSave));
+    window.localStorage.terrafold2 = await encode(JSON.stringify(toSave));
 }
 
-export function exportSave() {
-    save();
+export async function exportSave() {
+    await save();
     const el = document.getElementById("exportImportSave") as HTMLTextAreaElement;
     if (el) {
-        el.value = encode(window.localStorage.terrafold2 || "");
+        el.value = await encode(window.localStorage.terrafold2 || "");
         el.select();
         document.execCommand('copy');
         el.value = "";
     }
 }
 
-export function importSave() {
+export async function importSave() {
     const el = document.getElementById("exportImportSave") as HTMLTextAreaElement;
     if (el) {
-        window.localStorage.terrafold2 = decode(el.value);
-        load();
+        window.localStorage.terrafold2 = await decode(el.value);
+        await load();
     }
 }
 

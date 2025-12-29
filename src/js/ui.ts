@@ -55,6 +55,14 @@ export default class View {
         return el;
     }
 
+    clearComputerRows() {
+        this.getElement('computerRows').innerHTML = '';
+    }
+
+    clearRobotRows() {
+        this.getElement('robotRows').innerHTML = '';
+    }
+
     updateInfo() {
         if (!game) return;
         this.updateElementText('totalWater', intToString(game.ice.ice + game.water.indoor + game.water.outdoor + game.clouds.water + game.land.water + game.trees.water + game.farms.water));
