@@ -9,12 +9,6 @@ export function getClickAmount(event: MouseEvent): number {
     return multiplier;
 }
 
-// because I hate IE so much
-// @ts-ignore
-Math.log2 = Math.log2 || function(x: number){return Math.log(x)*Math.LOG2E;};
-// @ts-ignore
-Math.log10 = Math.log10 || function(x: number) { return Math.log(x) * Math.LOG10E; };
-
 export function round1(num: number): number {
     return Math.floor(num*10)/10
 }
@@ -115,14 +109,33 @@ const format_symbol_table = [
     { value: 1E3, symbol: "K" }
 ];
 const format_regex = /\.0+$|(\.[0-9]*[1-9])0+$/;
+const nFormatCache = new Map<string, string>();
+
 export function nFormatter(num: number, digits: number): string {
+    const key = num + "|" + digits;
+    const cached = nFormatCache.get(key);
+    if (cached !== undefined) return cached;
+
+    let result: string;
+    let found = false;
     for (let i = 0; i < format_symbol_table.length; i++) {
         const entry = format_symbol_table[i];
         if (entry && (num) >= entry.value / 1.000501) { // /1.000501 to handle rounding
-            return (num / entry.value).toPrecision(digits).replace(format_regex, "$1") + entry.symbol;
+            result = (num / entry.value).toPrecision(digits).replace(format_regex, "$1") + entry.symbol;
+            found = true;
+            break;
         }
     }
-    return num.toPrecision(digits).replace(format_regex, "$1");
+    if (!found) {
+        result = num.toPrecision(digits).replace(format_regex, "$1");
+    }
+
+    if (nFormatCache.size > 1000) {
+        const firstKey = nFormatCache.keys().next().value;
+        if (firstKey !== undefined) nFormatCache.delete(firstKey);
+    }
+    nFormatCache.set(key, result!);
+    return result!;
 }
 
 let factorials: number[] = [];

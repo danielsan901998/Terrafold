@@ -19,20 +19,3 @@ This plan outlines the steps to implement the potential improvements identified 
     *   Ensure these new UI components utilize the event system to receive state updates.
     *   Optimize DOM updates within these components to only affect changed elements.
     *   Address the use of parallel arrays (e.g., in `classes/Computer.js`) by refactoring to use more appropriate data structures, such as arrays of objects where each object contains all related data.
-
-## Testing and Verification
-
-*   **Goal:** Ensure the integrity and stability of the application throughout the refactoring process.
-*   **Steps:**
-    *   Add testing to detect uncaught errors. Use playwright with page.on listener for console and pageerror
-    *   Pay special attention to game state persistence, UI responsiveness, and the correct operation of core game mechanics.
-
-## TypeScript Migration
-
-*   **Goal:** Proof of concept for a TypeScript migration to enhance code quality and developer experience.
-*   **Steps:**
-    *   Begin with a small subset of the codebase (e.g., `classes/Computer.js`, `classes/Planet.js`).
-    *   Convert these files to TypeScript, adding type annotations and interfaces where appropriate.
-    *   Gradually expand the migration to cover more modules.
-    *   Ensure that the existing JavaScript code continues to function correctly during the transition.
-    *   Evaluate the benefits of TypeScript in terms of code clarity, error prevention, and maintainability.

@@ -9,10 +9,19 @@ import { Comet } from './types';
 export default class View {
     progressBar1: ProgressBar;
     progressBar2: ProgressBar;
+    private textCache: Map<string, string> = new Map();
+    private cometPool: HTMLElement[] = [];
 
     constructor() {
         this.progressBar1 = new ProgressBar('nextStormProgress', '#21276a');
         this.progressBar2 = new ProgressBar('stormDurationProgress', '#1c7682');
+    }
+
+    private updateElementText(id: string, value: string | number) {
+        const strValue = value.toString();
+        if (this.textCache.get(id) === strValue) return;
+        this.getElement(id).textContent = strValue;
+        this.textCache.set(id, strValue);
     }
 
     update() {
@@ -48,109 +57,109 @@ export default class View {
 
     updateInfo() {
         if (!game) return;
-        this.getElement('totalWater').innerHTML = intToString(game.ice.ice + game.water.indoor + game.water.outdoor + game.clouds.water + game.land.water + game.trees.water + game.farms.water);
-        this.getElement('cash').innerHTML = intToString(game.cash);
-        this.getElement('oxygen').innerHTML = intToString(game.oxygen);
-        this.getElement('science').innerHTML = intToString(game.science);
-        this.getElement('wood').innerHTML = intToString(game.wood);
-        this.getElement('metal').innerHTML = intToString(game.metal);
-        this.getElement('oxygenLeak').innerHTML = intToString(game.oxygenLeak, 4);
+        this.updateElementText('totalWater', intToString(game.ice.ice + game.water.indoor + game.water.outdoor + game.clouds.water + game.land.water + game.trees.water + game.farms.water));
+        this.updateElementText('cash', intToString(game.cash));
+        this.updateElementText('oxygen', intToString(game.oxygen));
+        this.updateElementText('science', intToString(game.science));
+        this.updateElementText('wood', intToString(game.wood));
+        this.updateElementText('metal', intToString(game.metal));
+        this.updateElementText('oxygenLeak', intToString(game.oxygenLeak, 4));
     }
 
     updateIce() {
         if (!game) return;
-        this.getElement('ice').innerHTML = intToString(game.ice.ice);
-        this.getElement('buyableIce').innerHTML = intToString(game.ice.buyable);
-        this.getElement('iceTransferred').innerHTML = intToString(game.ice.transferred, 4);
-        this.getElement('indoorWaterReceived').innerHTML = intToString(game.ice.transferred, 4);
-        this.getElement('iceBuyerAmount').innerHTML = game.ice.gain + "";
+        this.updateElementText('ice', intToString(game.ice.ice));
+        this.updateElementText('buyableIce', intToString(game.ice.buyable));
+        this.updateElementText('iceTransferred', intToString(game.ice.transferred, 4));
+        this.updateElementText('indoorWaterReceived', intToString(game.ice.transferred, 4));
+        this.updateElementText('iceBuyerAmount', game.ice.gain);
     }
 
     updateWater() {
         if (!game) return;
-        this.getElement('indoorWater').innerHTML = intToString(game.water.indoor);
-        this.getElement('indoorWaterMax').innerHTML = intToString(game.water.maxIndoor);
-        this.getElement('indoorWaterSelling').innerHTML = intToString(game.water.selling);
-        this.getElement('indoorWaterProfits').innerHTML = intToString(game.water.gain);
-        this.getElement('excessWater').innerHTML = intToString(game.water.excess, 4);
-        this.getElement('lakeWaterFromStorage').innerHTML = intToString(game.water.excess, 4);
+        this.updateElementText('indoorWater', intToString(game.water.indoor));
+        this.updateElementText('indoorWaterMax', intToString(game.water.maxIndoor));
+        this.updateElementText('indoorWaterSelling', intToString(game.water.selling));
+        this.updateElementText('indoorWaterProfits', intToString(game.water.gain));
+        this.updateElementText('excessWater', intToString(game.water.excess, 4));
+        this.updateElementText('lakeWaterFromStorage', intToString(game.water.excess, 4));
 
-        this.getElement('outdoorWater').innerHTML = intToString(game.water.outdoor);
-        this.getElement('waterTransferred').innerHTML = intToString(game.water.transferred, 4);
-        this.getElement('cloudsReceived').innerHTML = intToString(game.water.transferred, 4);
+        this.updateElementText('outdoorWater', intToString(game.water.outdoor));
+        this.updateElementText('waterTransferred', intToString(game.water.transferred, 4));
+        this.updateElementText('cloudsReceived', intToString(game.water.transferred, 4));
     }
 
     updateClouds() {
         if (!game) return;
-        this.getElement('clouds').innerHTML = intToString(game.clouds.water);
-        this.getElement('stormTimer').innerHTML = game.clouds.stormTimer + "";
-        this.getElement('stormRate').innerHTML = game.clouds.stormRate + "%";
+        this.updateElementText('clouds', intToString(game.clouds.water));
+        this.updateElementText('stormTimer', game.clouds.stormTimer);
+        this.updateElementText('stormRate', game.clouds.stormRate + "%");
         this.getElement('intensityPB').style.height = game.clouds.stormRate + "%";
-        this.getElement('stormDuration').innerHTML = game.clouds.stormDuration + "";
-        this.getElement('rain').innerHTML = intToString(game.clouds.transferred, 4);
-        this.getElement('landReceived').innerHTML = intToString(game.clouds.transferred, 4);
-        this.getElement('lightningChance').innerHTML = intToString(game.clouds.lightningChance);
-        this.getElement('lightningStrength').innerHTML = intToString(game.clouds.lightningStrength);
+        this.updateElementText('stormDuration', game.clouds.stormDuration);
+        this.updateElementText('rain', intToString(game.clouds.transferred, 4));
+        this.updateElementText('landReceived', intToString(game.clouds.transferred, 4));
+        this.updateElementText('lightningChance', intToString(game.clouds.lightningChance));
+        this.updateElementText('lightningStrength', intToString(game.clouds.lightningStrength));
     }
 
     updateLand() {
         if (!game) return;
-        this.getElement('landWater').innerHTML = intToString(game.land.water);
-        this.getElement('optimizedLand').innerHTML = intToString(game.land.optimizedLand);
-        this.getElement('baseLand').innerHTML = intToString(game.land.baseLand);
-        this.getElement('land').innerHTML = intToString(game.land.land);
-        this.getElement('soil').innerHTML = intToString(game.land.soil);
-        this.getElement('landConverted').innerHTML = intToString(game.land.convertedLand, 4);
-        this.getElement('landWaterToForest').innerHTML = intToString(game.land.transferred, 4);
-        this.getElement('forestReceived').innerHTML = intToString(game.land.transferred, 4);
-        this.getElement('landWaterToFarm').innerHTML = intToString(game.land.transferred, 4);
-        this.getElement('farmReceived').innerHTML = intToString(game.land.transferred, 4);
+        this.updateElementText('landWater', intToString(game.land.water));
+        this.updateElementText('optimizedLand', intToString(game.land.optimizedLand));
+        this.updateElementText('baseLand', intToString(game.land.baseLand));
+        this.updateElementText('land', intToString(game.land.land));
+        this.updateElementText('soil', intToString(game.land.soil));
+        this.updateElementText('landConverted', intToString(game.land.convertedLand, 4));
+        this.updateElementText('landWaterToForest', intToString(game.land.transferred, 4));
+        this.updateElementText('forestReceived', intToString(game.land.transferred, 4));
+        this.updateElementText('landWaterToFarm', intToString(game.land.transferred, 4));
+        this.updateElementText('farmReceived', intToString(game.land.transferred, 4));
     }
 
     updateTrees() {
         if (!game) return;
-        this.getElement('forestWater').innerHTML = intToString(game.trees.water);
-        this.getElement('ferns').innerHTML = intToString(game.trees.ferns);
-        this.getElement('fernsDelta').innerHTML = intToString(game.trees.fernsDelta, 4);
-        this.getElement('smallTrees').innerHTML = intToString(game.trees.smallTrees);
-        this.getElement('smallTreesDelta').innerHTML = intToString(game.trees.smallTreesDelta, 4);
-        this.getElement('trees').innerHTML = intToString(game.trees.trees);
-        this.getElement('treesDelta').innerHTML = intToString(game.trees.treesDelta, 4);
-        this.getElement('totalPlants').innerHTML = intToString(game.trees.totalPlants);
-        this.getElement('oxygenGain').innerHTML = intToString(game.trees.oxygenGain, 4);
-        this.getElement('forestWaterToLake').innerHTML = intToString(game.trees.transferred, 4);
-        this.getElement('lakeWaterFromForest').innerHTML = intToString(game.trees.transferred, 4);
-        this.getElement('fernWater').innerHTML = intToString(game.trees.fernsWaterUse, 4);
-        this.getElement('smallTreesWater').innerHTML = intToString(game.trees.smallTreesWaterUse, 4);
-        this.getElement('treesWater').innerHTML = intToString(game.trees.treesWaterUse, 4);
+        this.updateElementText('forestWater', intToString(game.trees.water));
+        this.updateElementText('ferns', intToString(game.trees.ferns));
+        this.updateElementText('fernsDelta', intToString(game.trees.fernsDelta, 4));
+        this.updateElementText('smallTrees', intToString(game.trees.smallTrees));
+        this.updateElementText('smallTreesDelta', intToString(game.trees.smallTreesDelta, 4));
+        this.updateElementText('trees', intToString(game.trees.trees));
+        this.updateElementText('treesDelta', intToString(game.trees.treesDelta, 4));
+        this.updateElementText('totalPlants', intToString(game.trees.totalPlants));
+        this.updateElementText('oxygenGain', intToString(game.trees.oxygenGain, 4));
+        this.updateElementText('forestWaterToLake', intToString(game.trees.transferred, 4));
+        this.updateElementText('lakeWaterFromForest', intToString(game.trees.transferred, 4));
+        this.updateElementText('fernWater', intToString(game.trees.fernsWaterUse, 4));
+        this.updateElementText('smallTreesWater', intToString(game.trees.smallTreesWaterUse, 4));
+        this.updateElementText('treesWater', intToString(game.trees.treesWaterUse, 4));
     }
 
     updateFarms() {
         if (!game) return;
-        this.getElement('farmsWater').innerHTML = intToString(game.farms.water);
-        this.getElement('farms').innerHTML = intToString(game.farms.farms);
-        this.getElement('food').innerHTML = intToString(game.farms.food);
-        this.getElement('foodCreated').innerHTML = intToString(game.farms.foodCreated, 4);
-        this.getElement('farmFoodEaten').innerHTML = intToString(game.population.foodEaten, 4);
-        this.getElement('efficiency').innerHTML = intToString(game.farms.efficiency * 100, 1);
-        this.getElement('farmWaterToLake').innerHTML = intToString(game.farms.transferred, 4);
-        this.getElement('lakeWaterFromFarm').innerHTML = intToString(game.farms.transferred, 4);
+        this.updateElementText('farmsWater', intToString(game.farms.water));
+        this.updateElementText('farms', intToString(game.farms.farms));
+        this.updateElementText('food', intToString(game.farms.food));
+        this.updateElementText('foodCreated', intToString(game.farms.foodCreated, 4));
+        this.updateElementText('farmFoodEaten', intToString(game.population.foodEaten, 4));
+        this.updateElementText('efficiency', intToString(game.farms.efficiency * 100, 1));
+        this.updateElementText('farmWaterToLake', intToString(game.farms.transferred, 4));
+        this.updateElementText('lakeWaterFromFarm', intToString(game.farms.transferred, 4));
     }
 
     updatePopulation() {
         if (!game) return;
-        this.getElement('population').innerHTML = intToString(game.population.people);
-        this.getElement('foodEaten').innerHTML = intToString(game.population.foodEaten, 4);
-        this.getElement('populationGrowth').innerHTML = intToStringNegative(game.population.popGrowth, 4);
-        this.getElement('starving').innerHTML = intToString(game.population.starving, 4);
-        this.getElement('scienceDelta').innerHTML = intToString(game.population.scienceDelta, 4);
-        this.getElement('cashDelta').innerHTML = intToString(game.population.cashDelta, 4);
-        this.getElement('scienceRatio').innerHTML = game.population.scienceRatio < 50 ? 100 - game.population.scienceRatio + "% science" : game.population.scienceRatio + "% cash";
+        this.updateElementText('population', intToString(game.population.people));
+        this.updateElementText('foodEaten', intToString(game.population.foodEaten, 4));
+        this.updateElementText('populationGrowth', intToStringNegative(game.population.popGrowth, 4));
+        this.updateElementText('starving', intToString(game.population.starving, 4));
+        this.updateElementText('scienceDelta', intToString(game.population.scienceDelta, 4));
+        this.updateElementText('cashDelta', intToString(game.population.cashDelta, 4));
+        this.updateElementText('scienceRatio', game.population.scienceRatio < 50 ? 100 - game.population.scienceRatio + "% science" : game.population.scienceRatio + "% cash");
 
-        this.getElement('happiness').innerHTML = intToString(game.population.happiness, 4);
-        this.getElement('happinessFromHouse').innerHTML = intToString(game.population.houseBonus);
-        this.getElement('happinessFromTrees').innerHTML = intToString(game.population.happinessFromTrees, 4);
-        this.getElement('happinessFromOxygen').innerHTML = intToString(game.population.happinessFromOxygen, 4);
+        this.updateElementText('happiness', intToString(game.population.happiness, 4));
+        this.updateElementText('happinessFromHouse', intToString(game.population.houseBonus));
+        this.updateElementText('happinessFromTrees', intToString(game.population.happinessFromTrees, 4));
+        this.updateElementText('happinessFromOxygen', intToString(game.population.happinessFromOxygen, 4));
     }
 
     checkComputerUnlocked() {
@@ -203,29 +212,29 @@ export default class View {
             const baseId = "computerRow" + i;
             this.getElement(baseId + "PB").style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
             this.getElement(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
-            this.getElement(baseId + "CurrentTicks").innerHTML = row.currentTicks + "";
-            this.getElement(baseId + "TicksNeeded").innerHTML = row.ticksNeeded + "";
+            this.updateElementText(baseId + "CurrentTicks", row.currentTicks);
+            this.updateElementText(baseId + "TicksNeeded", row.ticksNeeded);
             if (row.cost !== 0) {
                 this.getElement(baseId + "Cost").style.display = "block";
-                this.getElement(baseId + "Cost").innerHTML = "Each tick costs " + intToString(row.cost) + " " + row.costType;
+                this.updateElementText(baseId + "Cost", "Each tick costs " + intToString(row.cost) + " " + row.costType);
             } else {
                 this.getElement(baseId + "Cost").style.display = "none";
             }
         }
-        this.getElement('landOptimized').innerHTML = round2((game.land.optimizedLand / (game.land.baseLand * 10)) * 100) + "%";
+        this.updateElementText('landOptimized', round2((game.land.optimizedLand / (game.land.baseLand * 10)) * 100) + "%");
     }
 
     updateComputer() {
         if (!game) return;
-        this.getElement('freeThreads').innerHTML = game.computer.freeThreads + "";
-        this.getElement('threads').innerHTML = game.computer.threads + "";
-        this.getElement('speed').innerHTML = game.computer.speed + "";
-        this.getElement('threadCost').innerHTML = intToString(game.computer.getThreadCost(), 1);
-        this.getElement('speedCost').innerHTML = intToString(game.computer.getSpeedCost(), 1);
+        this.updateElementText('freeThreads', game.computer.freeThreads);
+        this.updateElementText('threads', game.computer.threads);
+        this.updateElementText('speed', game.computer.speed);
+        this.updateElementText('threadCost', intToString(game.computer.getThreadCost(), 1));
+        this.updateElementText('speedCost', intToString(game.computer.getSpeedCost(), 1));
         for (let i = 0; i < game.computer.processes.length; i++) {
             const row = game.computer.processes[i];
             if (!row) continue;
-            this.getElement('computerRow' + i + 'Threads').innerHTML = row.threads.toString();
+            this.updateElementText('computerRow' + i + 'Threads', row.threads);
             this.getElement('computerRow' + i + 'Container').style.display = row.showing() ? "block" : "none";
         }
     }
@@ -294,20 +303,20 @@ export default class View {
 
     updateRobots() {
         if (!game) return;
-        this.getElement('robots').innerHTML = game.robots.robots + "";
-        this.getElement('robotsFree').innerHTML = game.robots.robotsFree + "";
-        this.getElement('robotMax').innerHTML = game.robots.robotMax + "";
+        this.updateElementText('robots', game.robots.robots);
+        this.updateElementText('robotsFree', game.robots.robotsFree);
+        this.updateElementText('robotMax', game.robots.robotMax);
         for (let i = 0; i < game.robots.jobs.length; i++) {
             const row = game.robots.jobs[i];
             if (!row) continue;
-            this.getElement('robotRow' + i + 'Workers').innerHTML = row.workers.toString();
+            this.updateElementText('robotRow' + i + 'Workers', row.workers);
             this.getElement('robotRow' + i + 'Container').style.display = row.showing() ? "block" : "none";
         }
     }
 
     updateRobotsRowProgress() {
         if (!game) return;
-        this.getElement('ore').innerHTML = intToString(game.robots.ore);
+        this.updateElementText('ore', intToString(game.robots.ore));
         for (let i = 0; i < game.robots.jobs.length; i++) {
             const row = game.robots.jobs[i];
             if (!row) continue;
@@ -317,19 +326,19 @@ export default class View {
             }
             this.getElement(baseId + "PB").style.width = ((row.currentTicks || 0) / row.ticksNeeded) * 100 + "%";
             this.getElement(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
-            this.getElement(baseId + "CurrentTicks").innerHTML = (row.currentTicks || 0) + "";
-            this.getElement(baseId + "TicksNeeded").innerHTML = intToString(row.ticksNeeded, 1);
+            this.updateElementText(baseId + "CurrentTicks", (row.currentTicks || 0));
+            this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded, 1));
             if (row.cost && row.costType) {
                 this.getElement(baseId + "Cost").style.display = "block";
                 let costString = "Each tick costs " + intToString(row.cost[0] || 0) + " " + (row.costType[0] || "");
                 costString += row.cost.length > 1 ? " and " + intToString(row.cost[1] || 0) + " " + (row.costType[1] || "") : "";
-                this.getElement(baseId + "Cost").innerHTML = costString;
+                this.updateElementText(baseId + "Cost", costString);
             } else {
                 this.getElement(baseId + "Cost").style.display = "none";
             }
         }
         if (game.robots.jobs[5]) {
-            this.getElement('totalDirtFromOre').innerHTML = intToString((game.robots.jobs[5].completions || 0) * 5);
+            this.updateElementText('totalDirtFromOre', intToString((game.robots.jobs[5].completions || 0) * 5));
         }
     }
 
@@ -421,9 +430,9 @@ export default class View {
 
     updateEnergy() {
         if (!game) return;
-        this.getElement('energy').innerHTML = intToString(game.power);
-        this.getElement('battery').innerHTML = intToString(game.energy.battery, 1);
-        this.getElement('drain').innerHTML = intToString(game.energy.drain);
+        this.updateElementText('energy', intToString(game.power));
+        this.updateElementText('battery', intToString(game.energy.battery, 1));
+        this.updateElementText('drain', intToString(game.energy.drain));
     }
 
     checkSpaceStationUnlocked() {
@@ -457,8 +466,8 @@ export default class View {
                 orbitSendString += ", ";
             }
         }
-        this.getElement('orbitingResources').innerHTML = orbitString;
-        this.getElement('orbitSending').innerHTML = orbitSendString;
+        this.updateElementText('orbitingResources', orbitString);
+        this.updateElementText('orbitSending', orbitSendString);
     }
 
     checkTractorBeamUnlocked() {
@@ -493,17 +502,21 @@ export default class View {
                 " passing in " + comet.duration + "<br>";
             this.drawComet(comet);
         }
-        container.innerHTML = text;
-        this.getElement('takeAmount').innerHTML = game.tractorBeam.takeAmount;
+        if (this.textCache.get("allPassing") !== text) {
+            container.innerHTML = text;
+            this.textCache.set("allPassing", text);
+        }
+        this.updateElementText('takeAmount', game.tractorBeam.takeAmount);
     }
 
     drawComet(cometData: Comet) {
         let cometDiv: HTMLElement | null;
         const cometDivName = 'comet' + cometData.id;
         if (!cometData.drawed) {
-            cometDiv = document.createElement("div");
+            cometDiv = this.cometPool.pop() || document.createElement("div");
             cometDiv.className = cometData.name.toLowerCase();
             cometDiv.id = cometDivName;
+            cometDiv.style.display = "block";
 
             const totalDistance = cometData.speed * cometData.duration;
             cometData.startingY = Math.random() * (totalDistance * .4) + totalDistance * .1;
@@ -529,15 +542,19 @@ export default class View {
     removeComet(cometData: Comet) {
         const cometDivName = 'comet' + cometData.id;
         const cometDiv = document.getElementById(cometDivName);
-        if (cometDiv)
-            this.getElement('cometsContainer').removeChild(cometDiv);
+        if (cometDiv) {
+            cometDiv.style.display = "none";
+            cometDiv.id = "";
+            this.cometPool.push(cometDiv);
+            // We keep it in the DOM but hidden, and reuse it later.
+        }
         else
             console.log(cometDivName + "not found");
     }
 
     updateSpaceDock() {
         if (!game) return;
-        this.getElement('battleships').innerHTML = game.spaceDock.battleships + "";
+        this.updateElementText('battleships', game.spaceDock.battleships);
     }
 
     checkSpaceDockUnlocked() {
@@ -557,7 +574,7 @@ export default class View {
 
     updateHangar() {
         if (!game) return;
-        this.getElement("hangarSending").innerHTML = game.hangar.sendRate + " in " + round1(game.hangar.timeRemaining / 10) + " seconds.";
+        this.updateElementText("hangarSending", game.hangar.sendRate + " in " + round1(game.hangar.timeRemaining / 10) + " seconds.");
     }
 }
 

@@ -1,6 +1,7 @@
 export default class ProgressBar {
     aProgress: HTMLCanvasElement | null;
     color: string;
+    private lastPercentage: number = -1;
 
     constructor(id: string, color: string) {
         this.aProgress = document.getElementById(id) as HTMLCanvasElement;
@@ -10,6 +11,9 @@ export default class ProgressBar {
     tick(ticks: number, ticksNeeded: number) {
         if (!this.aProgress) return;
         const percentage = (ticks / ticksNeeded);
+        if (Math.abs(this.lastPercentage - percentage) < 0.001) return;
+        this.lastPercentage = percentage;
+        
         this.reset(this.aProgress);
         this.drawProgress(this.aProgress, percentage, this.color);
     }

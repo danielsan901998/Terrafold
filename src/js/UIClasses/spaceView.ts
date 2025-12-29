@@ -55,6 +55,7 @@ function drawShip(ship: any) {
     if (!ctx) return;
     const offsetX = ship.x + 200;
 
+    ctx.save();
     ctx.translate(offsetX+25, ship.y+25);
     ctx.rotate(ship.direction);
 
@@ -72,20 +73,23 @@ function drawShip(ship: any) {
     ctx.lineTo(point4.x, point4.y);
     // ctx.stroke();
     ctx.fill();
-    ctx.rotate(-1*ship.direction);
+    ctx.restore();
 
+    ctx.save();
+    ctx.translate(offsetX+25, ship.y+25);
     ctx.strokeStyle = "white";
     ctx.lineWidth = 1;
     ctx.strokeText(ship.amount.toString(),-4,20);
     ctx.strokeText(intToString(ship.foodAmount / ship.amount / 10, 1),-4,30);
-
-    ctx.translate((offsetX+25)*-1, (ship.y+25)*-1);
+    ctx.restore();
 }
 
 function drawPlanet(planet: any, text: string) {
     if (!ctx) return;
     const size = getPlanetSize(planet.isBoss);
     const offsetX = planet.x + xOffset;
+    
+    ctx.save();
     ctx.translate(offsetX+size, planet.y+size);
 
     drawPlanetAtmo(planet, size);
@@ -95,8 +99,7 @@ function drawPlanet(planet: any, text: string) {
     ctx.strokeStyle = "black";
     ctx.lineWidth = 1;
     ctx.strokeText(text,-3,4);
-
-    ctx.translate((offsetX+size)*-1, (planet.y+size)*-1);
+    ctx.restore();
 }
 
 function drawPlanetTooltip(planet: any) {
@@ -109,6 +112,7 @@ function drawPlanetTooltip(planet: any) {
         return;
     }
 
+    ctx.save();
     ctx.translate(offsetX+size, planet.y+size);
 
     ctx.strokeStyle = "#ffe5d5";
@@ -127,7 +131,7 @@ function drawPlanetTooltip(planet: any) {
     ctx.strokeText("Mines: "+planet.mines+ " / " + planet.maxMines,-15,size+110);
     ctx.strokeText("Build Mine: "+planet.mineTicks+ " / " + planet.mineTicksMax,-15,size+120);
 
-    ctx.translate((offsetX+size)*-1, (planet.y+size)*-1);
+    ctx.restore();
 }
 
 function drawPlanetAtmo(planet: any, size: number) {

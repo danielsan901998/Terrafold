@@ -1,8 +1,10 @@
 import { serve } from "bun";
 import { join } from "path";
 
+const PORT = Number(process.env.PORT) || 8000;
+
 const server = serve({
-  port: 8000,
+  port: PORT,
   async fetch(req) {
     const url = new URL(req.url);
     let path = url.pathname;
