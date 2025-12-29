@@ -140,8 +140,16 @@ export default class View extends BaseView {
         if (cometDiv) {
             cometData.left = (cometData.initialDuration - cometData.duration) / cometData.initialDuration * cometData.endingX;
             cometData.top = cometData.slope * cometData.left + cometData.startingY;
-            cometDiv.style.left = cometData.left + "px";
-            cometDiv.style.top = cometData.top + "px";
+
+            const effectiveAmount = cometData.amountType === 'ice' ? cometData.amount / 1000 : cometData.amount;
+            const baseSize = cometData.name === "Comet" ? 40 : 20;
+            const size = baseSize * Math.sqrt(effectiveAmount / 200);
+
+            cometDiv.style.width = Math.round(size) + "px";
+            cometDiv.style.height = Math.round(size) + "px";
+            cometDiv.style.borderRadius = Math.round(size / 2) + "px";
+            cometDiv.style.left = Math.round(cometData.left - size / 2) + "px";
+            cometDiv.style.top = Math.round(cometData.top - size / 2) + "px";
         }
     }
 

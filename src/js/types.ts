@@ -4,6 +4,7 @@ export interface Comet {
     id: number;
     name: string;
     amount: number;
+    initialAmount: number;
     amountType: string;
     duration: number;
     initialDuration: number;
