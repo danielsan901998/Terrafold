@@ -321,3 +321,5 @@ export function begForMoney() {
 load();
 // @ts-ignore
 window.game = game;
+// @ts-ignore
+window.view = view;
