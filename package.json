@@ -1,0 +1,15 @@
+{
+  "name": "terrafold1-fixed",
+  "private": true,
+  "scripts": {
+    "build": "bun build.ts",
+    "start": "bun build.ts && bun server.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/bun": "latest",
+    "@types/node": "^25.0.3",
+    "playwright": "^1.57.0",
+    "typescript": "^5.9.3"
+  }
+}

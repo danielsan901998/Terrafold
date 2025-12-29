@@ -1,0 +1,46 @@
+export default class ProgressBar {
+    aProgress: HTMLCanvasElement | null;
+    color: string;
+
+    constructor(id: string, color: string) {
+        this.aProgress = document.getElementById(id) as HTMLCanvasElement;
+        this.color = color;
+    }
+
+    tick(ticks: number, ticksNeeded: number) {
+        if (!this.aProgress) return;
+        const percentage = (ticks / ticksNeeded);
+        this.reset(this.aProgress);
+        this.drawProgress(this.aProgress, percentage, this.color);
+    }
+
+    reset(bar: HTMLCanvasElement) {
+        if (!bar) return;
+        const barCTX = bar.getContext("2d");
+        if (!barCTX) return;
+        barCTX.lineCap = 'square';
+
+        barCTX.beginPath();
+        barCTX.lineWidth = 8;
+        barCTX.fillStyle = '#fff';
+        barCTX.arc(35, 35, 25, 0, 2 * Math.PI);
+        barCTX.fill();
+    }
+
+    drawProgress(bar: HTMLCanvasElement, percentage: number, color: string) {
+        if (!bar) return;
+        const barCTX = bar.getContext("2d");
+        if (!barCTX) return;
+        const quarterTurn = Math.PI / 2;
+        const endingAngle = ((2 * percentage * .95) * Math.PI) - quarterTurn * .9; //.985 because lineWidth
+        const startingAngle = 0 - quarterTurn * .9;
+
+        barCTX.lineCap = 'square';
+
+        barCTX.beginPath();
+        barCTX.lineWidth = 8;
+        barCTX.strokeStyle = color;
+        barCTX.arc(35, 35, 20, startingAngle, endingAngle);
+        barCTX.stroke();
+    }
+}
