@@ -1,16 +1,27 @@
 export default abstract class BaseView {
     protected textCache: Map<string, string> = new Map();
+    protected elementCache: Map<string, HTMLElement> = new Map();
+
+    public clearCache() {
+        this.textCache.clear();
+        this.elementCache.clear();
+    }
 
     protected getElement(id: string): HTMLElement {
-        const el = document.getElementById(id);
-        if (!el) throw new Error(`Element ${id} not found`);
+        let el: HTMLElement | undefined = this.elementCache.get(id);
+        if (!el) {
+            const domEl = document.getElementById(id);
+            if (!domEl) throw new Error(`Element ${id} not found`);
+            el = domEl;
+            this.elementCache.set(id, el);
+        }
         return el;
     }
 
-    protected updateElementText(id: string, value: string | number) {
-        const strValue = value.toString();
-        if (this.textCache.get(id) === strValue) return;
-        this.getElement(id).textContent = strValue;
-        this.textCache.set(id, strValue);
+    protected updateElementText(id: string, value: string) {
+        if (this.textCache.get(id) === value) return;
+
+        this.getElement(id).textContent = value;
+        this.textCache.set(id, value);
     }
 }

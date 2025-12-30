@@ -29,6 +29,6 @@ export default class SpaceDockView extends BaseView {
 
     update() {
         if (!game) return;
-        this.updateElementText('battleships', game.spaceDock.battleships);
+        this.updateElementText('battleships', String(game.spaceDock.battleships));
     }
 }

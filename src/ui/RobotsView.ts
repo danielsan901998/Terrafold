@@ -42,20 +42,23 @@ export default class RobotsView extends BaseView {
 
     update() {
         if (!game) return;
-        this.updateElementText('robots', game.robots.robots);
-        this.updateElementText('robotsFree', game.robots.robotsFree);
-        this.updateElementText('robotMax', game.robots.robotMax);
+        this.updateElementText('robots', String(game.robots.robots));
+        this.updateElementText('robotsFree', String(game.robots.robotsFree));
+        this.updateElementText('robotMax', String(game.robots.robotMax));
+        this.updateElementText('ore', intToString(game.robots.ore));
+        if (game.robots.jobs[5]) {
+            this.updateElementText('totalDirtFromOre', intToString((game.robots.jobs[5].completions || 0) * 5));
+        }
         for (let i = 0; i < game.robots.jobs.length; i++) {
             const row = game.robots.jobs[i];
             if (!row) continue;
-            this.updateElementText('robotRow' + i + 'Workers', row.workers);
+            this.updateElementText('robotRow' + i + 'Workers', String(row.workers));
             this.getElement('robotRow' + i + 'Container').style.display = row.showing() ? "block" : "none";
         }
     }
 
     updateRowProgress(i: number) {
         if (!game) return;
-        this.updateElementText('ore', intToString(game.robots.ore));
         const row = game.robots.jobs[i];
         if (!row) return;
         const baseId = "robotRow" + i;
@@ -64,7 +67,7 @@ export default class RobotsView extends BaseView {
         }
         this.getElement(baseId + "PB").style.width = ((row.currentTicks || 0) / row.ticksNeeded) * 100 + "%";
         this.getElement(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
-        this.updateElementText(baseId + "CurrentTicks", (row.currentTicks || 0));
+        this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks || 0));
         this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded, 1));
         if (row.cost && row.costType) {
             this.getElement(baseId + "Cost").style.display = "block";
@@ -73,9 +76,6 @@ export default class RobotsView extends BaseView {
             this.updateElementText(baseId + "Cost", costString);
         } else {
             this.getElement(baseId + "Cost").style.display = "none";
-        }
-        if (game.robots.jobs[5]) {
-            this.updateElementText('totalDirtFromOre', intToString((game.robots.jobs[5].completions || 0) * 5));
         }
     }
 

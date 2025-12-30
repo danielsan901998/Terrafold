@@ -28,15 +28,16 @@ export default class ComputerView extends BaseView {
 
     update() {
         if (!game) return;
-        this.updateElementText('freeThreads', game.computer.freeThreads);
-        this.updateElementText('threads', game.computer.threads);
-        this.updateElementText('speed', game.computer.speed);
+        this.updateElementText('freeThreads', String(game.computer.freeThreads));
+        this.updateElementText('threads', String(game.computer.threads));
+        this.updateElementText('speed', String(game.computer.speed));
         this.updateElementText('threadCost', intToString(game.computer.getThreadCost(), 1));
         this.updateElementText('speedCost', intToString(game.computer.getSpeedCost(), 1));
+        this.updateElementText('landOptimized', round2((game.land.optimizedLand / (game.land.baseLand * 10)) * 100) + "%");
         for (let i = 0; i < game.computer.processes.length; i++) {
             const row = game.computer.processes[i];
             if (!row) continue;
-            this.updateElementText('computerRow' + i + 'Threads', row.threads);
+            this.updateElementText('computerRow' + i + 'Threads', String(row.threads));
             this.getElement('computerRow' + i + 'Container').style.display = row.showing() ? "block" : "none";
         }
     }
@@ -50,15 +51,14 @@ export default class ComputerView extends BaseView {
         const baseId = "computerRow" + i;
         this.getElement(baseId + "PB").style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
         this.getElement(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
-        this.updateElementText(baseId + "CurrentTicks", row.currentTicks);
-        this.updateElementText(baseId + "TicksNeeded", row.ticksNeeded);
+        this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks));
+        this.updateElementText(baseId + "TicksNeeded", String(row.ticksNeeded));
         if (row.cost !== 0) {
             this.getElement(baseId + "Cost").style.display = "block";
             this.updateElementText(baseId + "Cost", "Each tick costs " + intToString(row.cost) + " " + row.costType);
         } else {
             this.getElement(baseId + "Cost").style.display = "none";
         }
-        this.updateElementText('landOptimized', round2((game.land.optimizedLand / (game.land.baseLand * 10)) * 100) + "%");
     }
 
     addComputerRow(dataPos: number) {

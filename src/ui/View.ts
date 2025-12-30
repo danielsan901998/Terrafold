@@ -93,10 +93,12 @@ export default class View extends BaseView {
 
     clearComputerRows() {
         this.getElement('computerRows').innerHTML = '';
+        this.computerView.clearCache();
     }
 
     clearRobotRows() {
         this.getElement('robotRows').innerHTML = '';
+        this.robotsView.clearCache();
     }
 
     updateComputerRowProgress() {

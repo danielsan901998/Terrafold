@@ -50,6 +50,6 @@ export default class TractorBeamView extends BaseView {
             container.innerHTML = text;
             this.textCache.set("allPassing", text);
         }
-        this.updateElementText('takeAmount', game.tractorBeam.takeAmount);
+        this.updateElementText('takeAmount', String(game.tractorBeam.takeAmount));
     }
 }
