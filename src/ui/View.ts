@@ -1,4 +1,4 @@
-import { game, clearSave, begForMoney, save, exportSave, importSave, pauseGame } from '../main';
+import { game, view, clearSave, begForMoney, save, exportSave, importSave, pauseGame } from '../main';
 import { intToString, intToStringNegative, round1, round2, getClickAmount } from '../utils/utils';
 import ProgressBar from './ProgressBar';
 import updateSpace from './spaceView';
@@ -204,6 +204,16 @@ const initListeners = () => {
         scienceSlider.addEventListener('input', function (this: HTMLInputElement) {
             if (game) game.population.scienceRatio = Number(this.value);
         });
+    }
+
+    const buyBatteryInput = document.getElementById('buyBattery') as HTMLInputElement;
+    if (buyBatteryInput) {
+        buyBatteryInput.addEventListener('input', () => view?.energyView.update());
+    }
+
+    const buyBattleshipInput = document.getElementById('buyBattleshipAmount') as HTMLInputElement;
+    if (buyBattleshipInput) {
+        buyBattleshipInput.addEventListener('input', () => view?.spaceDockView.update());
     }
 };
 

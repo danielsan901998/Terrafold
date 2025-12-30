@@ -26,7 +26,7 @@ export default class ProgressBar {
 
         barCTX.beginPath();
         barCTX.lineWidth = 8;
-        barCTX.fillStyle = '#fff';
+        barCTX.fillStyle = '#1e1e1e'; // Matches --card-bg
         barCTX.arc(35, 35, 25, 0, 2 * Math.PI);
         barCTX.fill();
     }

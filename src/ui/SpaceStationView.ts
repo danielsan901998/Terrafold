@@ -15,13 +15,13 @@ export default class SpaceStationView extends BaseView {
     checkUnlocked() {
         if (!game) return;
         if (game.energy.unlocked) {
-            this.getElement('spaceStationContainer').style.display = "inline-block";
+            this.getElement('spaceStationContainer').style.display = "flex";
         } else {
             this.getElement('spaceStationContainer').style.display = "none";
         }
 
         if (game.spaceStation.unlocked) {
-            this.getElement('unlockedSpaceStation').style.display = "inline-block";
+            this.getElement('unlockedSpaceStation').style.display = "block";
             this.getElement('unlockSpaceStation').style.display = "none";
         } else {
             this.getElement('unlockedSpaceStation').style.display = "none";

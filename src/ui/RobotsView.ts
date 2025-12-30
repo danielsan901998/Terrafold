@@ -20,14 +20,14 @@ export default class RobotsView extends BaseView {
                 this.getElement('unlockedRobots').style.display = "none";
                 this.getElement('failRobots').style.display = "inline-block";
             } else {
-                this.getElement('unlockedRobots').style.display = "inline-block";
+                this.getElement('unlockedRobots').style.display = "block";
                 this.getElement('unlockRobots').style.display = "none";
                 this.getElement('failRobots').style.display = "none";
-                this.getElement('lightningContainer').style.display = "inline-block";
-                this.getElement('lightningTooltip').style.display = "inline-block";
-                this.getElement('energyContainer').style.display = "inline-block";
-                this.getElement('woodContainer').style.display = "inline-block";
-                this.getElement('metalContainer').style.display = "inline-block";
+                this.getElement('lightningContainer').style.display = "grid";
+                this.getElement('lightningTooltip').style.display = "block";
+                this.getElement('energyContainer').style.display = "flex";
+                this.getElement('woodContainer').style.display = "flex";
+                this.getElement('metalContainer').style.display = "flex";
             }
         } else {
             this.getElement('unlockedRobots').style.display = "none";
@@ -69,13 +69,14 @@ export default class RobotsView extends BaseView {
         this.getElement(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
         this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks || 0));
         this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded, 1));
+        const costContainer = this.getElement(baseId + "CostContainer");
         if (row.cost && row.costType) {
-            this.getElement(baseId + "Cost").style.display = "block";
-            let costString = "Each tick costs " + intToString(row.cost[0] || 0) + " " + (row.costType[0] || "");
+            costContainer.classList.remove("hidden");
+            let costString = intToString(row.cost[0] || 0) + " " + (row.costType[0] || "");
             costString += row.cost.length > 1 ? " and " + intToString(row.cost[1] || 0) + " " + (row.costType[1] || "") : "";
             this.updateElementText(baseId + "Cost", costString);
         } else {
-            this.getElement(baseId + "Cost").style.display = "none";
+            costContainer.classList.add("hidden");
         }
     }
 
@@ -103,8 +104,9 @@ export default class RobotsView extends BaseView {
         workers.className = "small";
         workers.style.marginRight = "4px";
 
+        const jobName = game?.robots.jobs[dataPos]?.text || "";
         const text = document.createElement("div");
-        text.innerHTML = game?.robots.jobs[dataPos]?.text || "";
+        text.innerHTML = jobName;
 
         const progressBar = document.createElement("div");
         if (game?.robots.jobs[dataPos]?.ticksNeeded) {
@@ -119,28 +121,35 @@ export default class RobotsView extends BaseView {
         const tooltipInner = document.createElement("div");
         tooltipInner.className = "rowTooltip";
 
-        let tooltipContent = "";
+        const description = game?.robots.jobs[dataPos]?.tooltip || "";
+        
+        let statsHtml = "";
         if (game?.robots.jobs[dataPos]?.ticksNeeded) {
-            tooltipContent = "<div id='" + baseId + "CurrentTicks'></div> ticks<br>" +
-                "<div id='" + baseId + "TicksNeeded'></div> ticks needed<br>" +
-                "<div id='" + baseId + "Cost'></div><br>";
+            statsHtml = `
+                <div class="tooltipDivider"></div>
+                <div class="tooltipStats">
+                    <div><b>Progress:</b> <span id="${baseId}CurrentTicks"></span> / <span id="${baseId}TicksNeeded"></span> ticks</div>
+                    <div id="${baseId}CostContainer" class="hidden"><b>Cost:</b> <span id="${baseId}Cost"></span> per tick</div>
+                </div>
+            `;
         }
-        tooltipInner.innerHTML = tooltipContent + (game?.robots.jobs[dataPos]?.tooltip || "");
-        tooltipContainer.appendChild(tooltipInner);
 
-        rowContainer.onmouseover = function () {
-            const el = document.getElementById(baseId + "Tooltip");
-            if (el) el.style.display = "block";
-        };
-        rowContainer.onmouseout = function () {
-            const el = document.getElementById(baseId + "Tooltip");
-            if (el) el.style.display = "none";
-        };
+        tooltipInner.innerHTML = `
+            <div class="tooltipDescription">${description}</div>
+            ${statsHtml}
+        `;
+        
+        tooltipContainer.appendChild(tooltipInner);
 
         rowContainer.appendChild(plusButton);
         rowContainer.appendChild(workers);
         rowContainer.appendChild(minusButton);
-        rowContainer.appendChild(text);
+        
+        const label = document.createElement("div");
+        label.className = "rowLabel";
+        label.appendChild(text);
+        rowContainer.appendChild(label);
+        
         if (progressBar.innerHTML) rowContainer.appendChild(progressBar);
         rowContainer.appendChild(tooltipContainer);
 

@@ -16,9 +16,9 @@ export default class ComputerView extends BaseView {
     checkUnlocked() {
         if (!game) return;
         if (game.computer.unlocked) {
-            this.getElement('unlockedComputer').style.display = "inline-block";
+            this.getElement('unlockedComputer').style.display = "block";
             this.getElement('unlockComputer').style.display = "none";
-            this.getElement('robotsContainer').style.display = "inline-block";
+            this.getElement('robotsContainer').style.display = "flex";
         } else {
             this.getElement('unlockedComputer').style.display = "none";
             this.getElement('unlockComputer').style.display = "inline-block";
@@ -53,11 +53,13 @@ export default class ComputerView extends BaseView {
         this.getElement(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
         this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks));
         this.updateElementText(baseId + "TicksNeeded", String(row.ticksNeeded));
+        const costContainer = this.getElement(baseId + "CostContainer");
         if (row.cost !== 0) {
-            this.getElement(baseId + "Cost").style.display = "block";
-            this.updateElementText(baseId + "Cost", "Each tick costs " + intToString(row.cost) + " " + row.costType);
+            costContainer.classList.remove("hidden");
+            this.updateElementText(baseId + "Cost", intToString(row.cost));
+            this.updateElementText(baseId + "CostType", row.costType);
         } else {
-            this.getElement(baseId + "Cost").style.display = "none";
+            costContainer.classList.add("hidden");
         }
     }
 
@@ -85,8 +87,9 @@ export default class ComputerView extends BaseView {
         threads.className = "small";
         threads.style.marginRight = "4px";
 
+        const processName = game?.computer.processes[dataPos]?.text || "";
         const text = document.createElement("div");
-        text.innerHTML = game?.computer.processes[dataPos]?.text || "";
+        text.innerHTML = processName;
 
         const progressBar = document.createElement("div");
         progressBar.className = "rowProgressBarOuter";
@@ -98,25 +101,29 @@ export default class ComputerView extends BaseView {
 
         const tooltipInner = document.createElement("div");
         tooltipInner.className = "rowTooltip";
-        tooltipInner.innerHTML = "<div id='" + baseId + "CurrentTicks'></div> ticks<br>" +
-            "<div id='" + baseId + "TicksNeeded'></div> ticks needed<br>" +
-            "<div id='" + baseId + "Cost'></div><br>" + (game?.computer.processes[dataPos]?.tooltip || "");
+        
+        const description = game?.computer.processes[dataPos]?.tooltip || "";
+        
+        tooltipInner.innerHTML = `
+            <div class="tooltipDescription">${description}</div>
+            <div class="tooltipDivider"></div>
+            <div class="tooltipStats">
+                <div><b>Progress:</b> <span id="${baseId}CurrentTicks"></span> / <span id="${baseId}TicksNeeded"></span> ticks</div>
+                <div id="${baseId}CostContainer" class="hidden"><b>Cost:</b> <span id="${baseId}Cost"></span> <span id="${baseId}CostType"></span> per tick</div>
+            </div>
+        `;
 
         tooltipContainer.appendChild(tooltipInner);
-
-        rowContainer.onmouseover = function () {
-            const el = document.getElementById(baseId + "Tooltip");
-            if (el) el.style.display = "block";
-        };
-        rowContainer.onmouseout = function () {
-            const el = document.getElementById(baseId + "Tooltip");
-            if (el) el.style.display = "none";
-        };
 
         rowContainer.appendChild(plusButton);
         rowContainer.appendChild(threads);
         rowContainer.appendChild(minusButton);
-        rowContainer.appendChild(text);
+        
+        const label = document.createElement("div");
+        label.className = "rowLabel";
+        label.appendChild(text);
+        rowContainer.appendChild(label);
+        
         rowContainer.appendChild(progressBar);
         rowContainer.appendChild(tooltipContainer);
 

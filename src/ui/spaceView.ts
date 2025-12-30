@@ -96,7 +96,7 @@ function drawPlanet(planet: any, text: string) {
     drawPlanetHealth(planet, size);
     drawPlanetObjects(planet, size);
 
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = "white";
     ctx.lineWidth = 1;
     ctx.strokeText(text,-3,4);
     ctx.restore();
@@ -115,21 +115,20 @@ function drawPlanetTooltip(planet: any) {
     ctx.save();
     ctx.translate(offsetX+size, planet.y+size);
 
-    ctx.strokeStyle = "#ffe5d5";
-    ctx.lineWidth = 1;
-    ctx.strokeText("Atmosphere: " + intToString(planet.atmo, 2),-15,size);
-    ctx.strokeText("Reduction: "+intToString(PlanetManager.getShieldReduction(planet)*100, 1)+"%",-15,size+10);
-    ctx.strokeText("Health: "+intToString(planet.health, 1),-15,size+20);
-    ctx.strokeText("Dirt: "+intToString(planet.dirt, 1),-15,size+30);
-    ctx.strokeText("Ore: "+intToString(planet.ore, 1),-15,size+40);
-    ctx.strokeText("C.Bots: "+planet.bots+ " / " + planet.maxMines,-15,size+50);
-    ctx.strokeText("Solar: "+planet.solar,-15,size+60);
-    ctx.strokeText("Build Factory: "+planet.factoryTicks+" / " + planet.factoryTicksMax,-15,size+70);
-    ctx.strokeText("Build Coilgun: "+planet.coilgunTicks+" / " + planet.coilgunTicksMax,-15,size+80);
-    ctx.strokeText("Coilgun Charge: "+intToString(planet.coilgunCharge,1)+" / " + planet.coilgunChargeMax,-15,size+90);
-    ctx.strokeText("Build Solar: "+intToString(planet.solarTicks,1)+" / " + planet.solarTicksMax,-15,size+100);
-    ctx.strokeText("Mines: "+planet.mines+ " / " + planet.maxMines,-15,size+110);
-    ctx.strokeText("Build Mine: "+planet.mineTicks+ " / " + planet.mineTicksMax,-15,size+120);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText("Atmosphere: " + intToString(planet.atmo, 2),-15,size);
+    ctx.fillText("Reduction: "+intToString(PlanetManager.getShieldReduction(planet)*100, 1)+"%",-15,size+10);
+    ctx.fillText("Health: "+intToString(planet.health, 1),-15,size+20);
+    ctx.fillText("Dirt: "+intToString(planet.dirt, 1),-15,size+30);
+    ctx.fillText("Ore: "+intToString(planet.ore, 1),-15,size+40);
+    ctx.fillText("C.Bots: "+planet.bots+ " / " + planet.maxMines,-15,size+50);
+    ctx.fillText("Solar: "+planet.solar,-15,size+60);
+    ctx.fillText("Build Factory: "+planet.factoryTicks+" / " + planet.factoryTicksMax,-15,size+70);
+    ctx.fillText("Build Coilgun: "+planet.coilgunTicks+" / " + planet.coilgunTicksMax,-15,size+80);
+    ctx.fillText("Coilgun Charge: "+intToString(planet.coilgunCharge,1)+" / " + planet.coilgunChargeMax,-15,size+90);
+    ctx.fillText("Build Solar: "+intToString(planet.solarTicks,1)+" / " + planet.solarTicksMax,-15,size+100);
+    ctx.fillText("Mines: "+planet.mines+ " / " + planet.maxMines,-15,size+110);
+    ctx.fillText("Build Mine: "+planet.mineTicks+ " / " + planet.mineTicksMax,-15,size+120);
 
     ctx.restore();
 }

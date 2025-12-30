@@ -15,7 +15,7 @@ export default class EnergyView extends BaseView {
     checkUnlocked() {
         if (!game) return;
         if (game.energy.unlocked) {
-            this.getElement('unlockedEnergy').style.display = "inline-block";
+            this.getElement('unlockedEnergy').style.display = "block";
             this.getElement('unlockEnergy').style.display = "none";
             if (this.getElement('spaceDockContainer').classList.contains("disabled")) {
                 this.getElement('spaceDockContainer').classList.remove("disabled");
@@ -34,5 +34,9 @@ export default class EnergyView extends BaseView {
         this.updateElementText('energy', intToString(game.power));
         this.updateElementText('battery', intToString(game.energy.battery, 1));
         this.updateElementText('drain', intToString(game.energy.drain));
+
+        const el = document.getElementById('buyBattery') as HTMLInputElement;
+        const amount = el ? Number(el.value) : 1;
+        this.updateElementText('batteryCost', intToString(amount * 3e4) + " oxygen and " + intToString(amount * 2e4) + " science");
     }
 }

@@ -1,5 +1,20 @@
-div {
-    display:inline-block;
+:root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --card-hover-bg: #2a2a2a;
+    --text-color: #e0e0e0;
+    --text-muted: #aaaaaa;
+    --accent-color: #4CAF50;
+    --accent-hover: #45a049;
+    --water-color: #2196F3;
+    --border-color: #333333;
+    --tooltip-bg: #333333;
+    --button-bg: #2e7d32;
+    --button-hover: #388e3c;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
@@ -8,268 +23,541 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    font-family:Arial, Helvetica, serif;
-    color:black;
-    font-size:14px;
-    height:100%;
-    margin:0;
-    background-color: black;
-    cursor:default;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: var(--text-color);
+    font-size: 14px;
+    height: 100vh;
+    margin: 0;
+    background-color: var(--bg-color);
+    cursor: default;
+    overflow-x: hidden;
 }
 
-.showthat:hover .showthis, .showthat2:hover .showthis2 {
-    display:block;
-    background-color: #c3d2ff;
-}
-.showthis, .showthis2 {
-    display:none;
-    position:absolute;
-    background-color: #b4b3e4;
-    border:1px solid;
-    padding:3px 5px;
-    min-width:300px;
-    border-radius:4px;
-    margin-top:5px;
-    z-index:999;
-    text-align:left;
-}
-
-.showthis2 {
-    z-index:1000;
-    min-width:200px;
-}
-
-input {
-    width:100px;
-}
-
-.title {
-    font-size:16px;
-    font-weight:bold;
-    display:block;
-    text-align:center;
-}
-
-
-.large {
-    font-size:16px;
-    font-weight:bold;
-}
-.medium {
-    z-index:3;
+#info {
+    z-index: 1000;
     position: fixed;
-    font-size:14px;
-    font-weight:bold;
-}
-.small {
-    font-size:12px;
-    font-weight:bold;
-}
-
-.superLargeIcon {
-    width:30px;
-    height:30px;
-}
-.largeIcon {
-    width:20px;
-    height:20px;
-}
-.smallIcon {
-    width:16px;
-    height:16px;
-}
-
-input, label {
-    cursor:pointer;
-}
-
-.button {
-    border:2px white solid;
-    background-color: #bde0b7;
-    padding:3px 5px;
-    cursor:pointer;
-    border-radius:10px;
-    min-width:9px;
-    text-align:center;
-    vertical-align:center;
-}
-.button:hover {
-    border:2px blue solid;
-}
-
-.container {
-    z-index:2;
-    position: relative;
-    border:1px solid black;
-    margin:2px 6px;
-    padding:3px 8px;
-    border-radius:5px;
-    text-align:center;
-    min-width:100px;
-    opacity:.6;
-    background-color: #c3d2ff;
-}
-.container:hover {
-    opacity:1;
-    z-index:4;
-}
-
-.slider {
-    -webkit-appearance: none;  /* Override default CSS styles */
-    appearance: none;
-    width: 100%; /* Full-width */
-    height: 25px; /* Specified height */
-    background: #d3d3d3; /* Grey background */
-    outline: none; /* Remove outline */
-    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-    transition: opacity .2s;
-}
-
-.slider:hover {
-    opacity: 1; /* Fully shown on mouse-over */
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
-    appearance: none;
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: #4CAF50; /* Green background */
-    cursor: pointer; /* Cursor on hover */
-}
-
-.slider::-moz-range-thumb {
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: #4CAF50; /* Green background */
-    cursor: pointer; /* Cursor on hover */
-}
-
-.computerRow, .robotRow {
-    margin-bottom:5px;
-    border-bottom:1px solid;
-    display:block;
-    position:relative;
-}
-
-.computerTooltipContainer {
-    display:none;
-    position:absolute;
-    left:100%;
-    border:2px solid;
-    border-radius:5px;
-    background-color:white;
-    top:0;
-    padding:2px;
-    z-index:998;
-}
-
-.rowTooltip {
-    display:block;
-    width:250px;
-}
-
-.rowProgressBarOuter {
-    width:100px;
-    height:20px;
-    background-color:black;
-    float:right;
-    margin-left:5px;
-    margin-top:3px;
-}
-
-.rowProgressBarInner {
-    width:0;
-    height:18px;
-    margin-top:1px;
-    background-color:red;
-}
-
-
-.progress-bar {
-    position:relative;
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-    margin: 7px;
-    padding: 0;
-    text-align:center;
-}
-
-.progress-bar .progress-active {
-    position: absolute;
-    left:5px;
-}
-
-.verticalProgress {
-    position: absolute;
-    width:10%;
-    height:30%;
-    bottom: 12%;
-    left: 45%;
-    background-color:grey;
-}
-
-.verticalProgressInner {
-    position: absolute;
-    width:100%;
-    bottom: 0;
+    top: 0;
     left: 0;
-    background-color: black;
-}
-
-.fa.fa-arrow-right {
-    vertical-align:top;
-    margin-top:14px;
-    font-size:16px;
-}
-
-.forestIcon {
-    border:1px solid;
-    border-radius:3px;
-    width:45px;
-}
-
-.disabled {
-    pointer-events:none;
-    opacity:.2;
-}
-
-.comet {
-    z-index:1;
-    position:absolute;
-    width:20px;
-    height:20px;
-    background-color:blue;
-    opacity:.5;
-    border-radius:10px;
-}
-
-.asteroid {
-    position:absolute;
-    width:10px;
-    height:10px;
-    background-color:brown;
-    opacity:.5;
-    border-radius:5px;
+    right: 0;
+    height: 40px;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    gap: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
 .infoText {
-    border:1px solid;
-    border-top:0;
-    padding:0 5px;
-    height:23px;
-    vertical-align:top;
-    background-color: #c3d2ff;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+    padding: 0 10px;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    color: var(--text-color);
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.infoText:hover {
+    background-color: var(--card-hover-bg);
+}
+
+#resources {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    gap: 20px;
+    padding: 0 10px;
+}
+
+#iceContainer {
+    width: 150px;
+}
+
+#sliderContainer {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#unlockedComputer div:not(.computerTooltipContainer):not(.rowTooltip), 
+#unlockedRobots div:not(.computerTooltipContainer):not(.rowTooltip) {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+#computerRows, #robotRows {
+    display: block;
+    text-align: left;
+    width: 100%;
+}
+
+#computerRows div, #robotRows div {
+    display: inline-flex;
+}
+
+#computerRows .computerRow, #robotRows .robotRow {
+    display: flex;
+}
+
+
+.globalResourceInfo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    width: auto;
+}
+
+#mainContainer {
+    margin-top: 60px;
+    padding: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex: 1 1 300px;
+    max-width: 450px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    min-width: 250px;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.centered-flex-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin: 4px 0;
+}
+
+.clouds-progress {
+    align-items: flex-start !important;
+}
+
+#unlockedComputer, #unlockedRobots, #unlockedEnergy, #unlockedSpaceStation, #unlockedTractorBeam {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Header info lines (like Threads: 3/25) */
+#unlockedComputer > .centered-flex-row, 
+#unlockedRobots > .centered-flex-row,
+#unlockedEnergy > .centered-flex-row {
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+    white-space: nowrap;
+}
+
+/* Strengthen tooltip reset to prevent any nested divs from inheriting inline-flex/nowrap */
+.showthis div:not(.hidden), .showthis2 div:not(.hidden), .computerTooltipContainer div:not(.hidden), .rowTooltip div:not(.hidden) {
+    display: block !important;
+}
+
+.showthis div, .showthis2 div, .computerTooltipContainer div, .rowTooltip div {
+    white-space: normal !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.tooltipDivider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 8px 0;
+}
+
+.tooltipStats {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.tooltipStats b {
+    color: var(--text-color);
+}
+
+.tooltipDescription {
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+#computerContainer, #robotsContainer, #energyContainer {
+    display: block;
+}
+
+#computerRows, #robotRows {
+    display: block !important;
+    width: 100% !important;
+}
+
+#computerRows .computerRow, #robotRows .robotRow {
+    display: flex !important;
+}
+
+.container .title {
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.main-resource {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 5px 0 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: 100%;
+    gap: 4px 15px;
+    margin-bottom: 8px;
+    padding: 0 10px;
+}
+
+.stat-row {
+    display: contents; /* Allows children to be part of the grid */
+}
+
+.stat-label {
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.stat-value {
+    text-align: right;
+    font-weight: bold;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.showthat, .showthat2 {
+    position: relative;
+    display: inline-block;
+}
+
+.showthat:hover .showthis, 
+.showthat2:hover .showthis2 {
+    display: block;
+}
+
+.showthis, .showthis2, .computerTooltipContainer {
+    display: none !important;
+    position: absolute;
+    background-color: var(--tooltip-bg);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    padding: 10px;
+    min-width: 250px;
+    max-width: 350px;
+    border-radius: 6px;
+    top: 100%;
+    z-index: 2000;
+    text-align: left;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 1.4;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+/* Specific styling for header menus to make them easier to interact with */
+#info .showthis {
+    left: 0;
+    transform: none;
+    pointer-events: auto;
+    /* Create a small invisible bridge so the menu doesn't close when moving mouse from trigger to menu */
+    margin-top: 0;
+}
+
+#info .showthat {
+    /* Ensure the trigger has enough height or padding so there's no gap */
+    padding-bottom: 5px; 
+}
+
+/* Restore pointer-events: none for actual tooltips (not menus) to prevent flickering when mouse over them */
+.computerTooltipContainer, .showthis2 {
+    pointer-events: none;
+    margin-top: 5px;
+    z-index: 2100;
+}
+
+#resources .showthis2 {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
+.showthat:hover > .showthis, 
+.showthat2:hover > .showthis2,
+.computerRow:hover .computerTooltipContainer, 
+.robotRow:hover .computerTooltipContainer {
+    display: block !important;
+}
+
+#resources {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 0 10px;
+    flex-wrap: nowrap; /* Prevent resources in header from wrapping into multiple lines */
 }
 
 .globalResourceInfo {
-    width:84px;
-    text-align:center;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap; /* Keep icon and text together */
+}
+
+.button {
+    background-color: var(--button-bg);
+    color: white;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.1s;
+    margin: 5px 2px;
+    display: inline-block;
+    font-size: 12px;
+    max-width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+
+.button div {
+    display: inline;
+}
+
+.computerRow .button, .robotRow .button {
+    padding: 2px 8px;
+    margin: 0 4px;
+    min-width: 25px;
+    white-space: nowrap;
+}
+
+.button:hover {
+    background-color: var(--button-hover);
+}
+
+.button:active {
+    transform: scale(0.98);
+}
+
+input[type="number"], 
+input[type="range"] {
+    background-color: #333;
+    color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 4px;
+    margin: 4px 0;
+    font-size: 12px;
+}
+
+.superLargeIcon { width: 32px; height: 32px; margin: 5px 0; vertical-align: middle; }
+.largeIcon { width: 20px; height: 20px; vertical-align: middle; }
+.smallIcon { width: 16px; height: 16px; vertical-align: middle; }
+
+.progress-bar {
+    margin: 5px auto;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.verticalProgress {
+    background-color: #333;
+    border-radius: 3px;
+    width: 10px;
+    height: 50px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.verticalProgressInner {
+    background-color: var(--accent-color);
+    width: 100%;
+}
+
+.forestIcon {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 3px;
+    margin: 3px;
+    background-color: rgba(255,255,255,0.05);
 }
 
 #spaceContainer {
-    width:90%;
-    background-color:black;
+    width: 100%;
+    max-width: 1000px;
+    margin: 15px auto;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: black;
+    flex: 1 1 100%;
 }
+
+#spaceCanvas {
+    display: block;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+.small { font-size: 11px; color: var(--text-muted); }
+.medium { font-size: 14px; }
+.large { font-size: 18px; }
+
+#exportImportSave {
+    width: 100%;
+    height: 60px;
+    background: #333;
+    color: #eee;
+    border: 1px solid #555;
+    margin-top: 5px;
+}
+
+/* Computer and Robot Rows */
+.computerRow, .robotRow {
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 4px;
+    width: 100%;
+    transition: background-color 0.2s;
+    flex-wrap: nowrap;
+}
+
+.computerRow:hover, .robotRow:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.computerRow > div, .robotRow > div {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.computerRow .rowLabel, .robotRow .rowLabel {
+    flex: 1;
+    text-align: left;
+    margin: 0 12px;
+    white-space: nowrap;
+}
+
+.computerRow:hover .computerTooltipContainer, 
+.robotRow:hover .computerTooltipContainer {
+    display: block !important;
+}
+
+.rowTooltip {
+    display: block;
+    width: 100%;
+}
+
+.rowProgressBarOuter {
+    width: 100px;
+    height: 16px;
+    background-color: #333;
+    border-radius: 3px;
+    margin-left: auto;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.rowProgressBarInner {
+    width: 0;
+    height: 100%;
+    background-color: var(--accent-color);
+    transition: width 0.1s linear;
+}
+
+/* Comets and Asteroids */
+.comet {
+    z-index: 1;
+    position: absolute;
+    background-color: var(--water-color);
+    opacity: 0.6;
+    pointer-events: none;
+    box-shadow: 0 0 10px var(--water-color);
+}
+
+.asteroid {
+    z-index: 1;
+    position: absolute;
+    background-color: #8d6e63;
+    opacity: 0.7;
+    pointer-events: none;
+    box-shadow: 0 0 5px #5d4037;
+}
+

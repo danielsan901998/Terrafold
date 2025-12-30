@@ -15,10 +15,10 @@ export default class SpaceDockView extends BaseView {
     checkUnlocked() {
         if (!game) return;
         if (game.spaceDock.unlocked) {
-            this.getElement('spaceDockContainer').style.display = "inline-block";
-            this.getElement('hangarContainer').style.display = "inline-block";
-            this.getElement('spaceCanvas').style.display = "inline-block";
-            this.getElement('spaceContainer').style.display = "inline-block";
+            this.getElement('spaceDockContainer').style.display = "flex";
+            this.getElement('hangarContainer').style.display = "flex";
+            this.getElement('spaceCanvas').style.display = "block";
+            this.getElement('spaceContainer').style.display = "flex";
         } else {
             this.getElement('spaceDockContainer').style.display = "none";
             this.getElement('hangarContainer').style.display = "none";
@@ -30,5 +30,9 @@ export default class SpaceDockView extends BaseView {
     update() {
         if (!game) return;
         this.updateElementText('battleships', String(game.spaceDock.battleships));
+
+        const el = document.getElementById('buyBattleshipAmount') as HTMLInputElement;
+        const amount = el ? Number(el.value) : 1;
+        this.updateElementText('battleshipCost', intToString(amount * 3e7) + " oxygen and " + intToString(amount * 1.5e7) + " science");
     }
 }

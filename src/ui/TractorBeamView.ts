@@ -18,13 +18,13 @@ export default class TractorBeamView extends BaseView {
     checkUnlocked() {
         if (!game) return;
         if (game.spaceStation.unlocked) {
-            this.getElement('tractorBeamContainer').style.display = "inline-block";
+            this.getElement('tractorBeamContainer').style.display = "flex";
         } else {
             this.getElement('tractorBeamContainer').style.display = "none";
         }
 
         if (game.tractorBeam.unlocked) {
-            this.getElement('unlockedTractorBeam').style.display = "inline-block";
+            this.getElement('unlockedTractorBeam').style.display = "block";
             this.getElement('unlockTractorBeam').style.display = "none";
         } else {
             this.getElement('unlockedTractorBeam').style.display = "none";
