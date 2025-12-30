@@ -176,6 +176,18 @@ test.describe('Terrafold E2E Tests', () => {
       await expect(page.locator('#unlockedComputer')).toBeVisible();
       expect(await page.evaluate(() => (window as any).game.computer.unlocked)).toBe(1);
 
+      // Verify that processes with showing: false are hidden
+      const hiddenProcessVisible = await page.evaluate(() => {
+          const robotsUnlocked = (window as any).game.robots.unlocked;
+          if (robotsUnlocked !== 0) return "Robots should not be unlocked yet";
+          
+          // 'computerRow6Container' is "Build Robots" which has showing: false when robots are not unlocked
+          const row6 = document.getElementById('computerRow6Container');
+          if (!row6) return "computerRow6Container not found";
+          return window.getComputedStyle(row6).display !== 'none';
+      });
+      expect(hiddenProcessVisible, 'Process with showing: false should be hidden (display: none)').toBe(false);
+
       // 5. Scientific notation in inputs
       await page.evaluate(() => {
           (window as any).game.land.soil = 1e15;

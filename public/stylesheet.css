@@ -276,15 +276,6 @@ body {
     display: block;
 }
 
-#computerRows, #robotRows {
-    display: block !important;
-    width: 100% !important;
-}
-
-#computerRows .computerRow, #robotRows .robotRow {
-    display: flex !important;
-}
-
 .container .title {
     display: flex;
     justify-content: center;
