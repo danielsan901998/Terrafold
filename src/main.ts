@@ -1,23 +1,23 @@
-import Space from './js/classes/Space';
-import Ice from './js/classes/Ice';
-import Water from './js/classes/Water';
-import Clouds from './js/classes/Clouds';
-import Land from './js/classes/Land';
-import Trees from './js/classes/Trees';
-import Farms from './js/classes/Farms';
-import City from './js/classes/City';
-import Computer from './js/classes/Computer';
-import Robots from './js/classes/Robots';
-import Energy from './js/classes/Energy';
-import SpaceStation from './js/classes/SpaceStation';
-import TractorBeam from './js/classes/TractorBeam';
-import SpaceDock from './js/classes/SpaceDock';
-import Hangar from './js/classes/Hangar';
+import Space from './core/Space';
+import Ice from './core/Ice';
+import Water from './core/Water';
+import Clouds from './core/Clouds';
+import Land from './core/Land';
+import Trees from './core/Trees';
+import Farms from './core/Farms';
+import City from './core/City';
+import Computer from './core/Computer';
+import Robots from './core/Robots';
+import Energy from './core/Energy';
+import SpaceStation from './core/SpaceStation';
+import TractorBeam from './core/TractorBeam';
+import SpaceDock from './core/SpaceDock';
+import Hangar from './core/Hangar';
 
-import View from './js/ui';
-import { decode, encode } from './js/utils';
-import { Game as IGame } from './js/types';
-import EventEmitter from './js/EventEmitter';
+import View from './ui/View';
+import { decode, encode } from './utils/utils';
+import { Game as IGame } from './types';
+import EventEmitter from './utils/EventEmitter';
 
 // --- State ---
 export let game: Game | null = null;
@@ -26,8 +26,6 @@ let timer = 0;
 let stop = false;
 let cometId = 0;
 
-function setGame(val: Game) { game = val; }
-function setView(val: View) { view = val; }
 function incrementTimer() { timer++; }
 function toggleStop() { stop = !stop; }
 export function incrementCometId() { cometId++; return cometId; }
@@ -151,7 +149,6 @@ class Game implements IGame {
         }
         this.land.soil -= toBuy * 50;
         this.farms.addFarm(toBuy);
-        view?.update();
     }
 
     buyBattery() {
@@ -169,7 +166,6 @@ class Game implements IGame {
         this.oxygen -= toBuy * 3e4;
         this.science -= toBuy * 2e4;
         this.energy.buyBattery(toBuy);
-        view?.update();
     }
 
     buyBattleship() {
@@ -187,7 +183,6 @@ class Game implements IGame {
         this.oxygen -= 3e7 * toBuy;
         this.science -= 1.5e7 * toBuy;
         this.spaceDock.addBattleship(toBuy);
-        view?.update();
     }
 
     buyHangar() {
@@ -202,7 +197,6 @@ class Game implements IGame {
         }
         this.land.soil -= toBuy * cost;
         this.hangar.sendRate += toBuy;
-        view?.update();
     }
 }
 
@@ -230,7 +224,7 @@ export function pauseGame() {
 }
 
 // --- Saving ---
-const doWork = new Worker(new URL('./js/interval.js', import.meta.url).href);
+const doWork = new Worker(new URL('./workers/interval.js', import.meta.url).href);
 doWork.onmessage = function (event) {
     if (event.data === 'interval.start') {
         tick();
@@ -243,22 +237,20 @@ export async function clearSave() {
 }
 
 function loadDefaults() {
-    setGame(new Game());
-    setView(new View());
+    game = new Game();
+    view = new View();
     game?.initialize();
 }
 
 function setInitialView() {
     if (!view) return;
     view.spaceDockView.checkUnlocked();
-    view.spaceDockView.update();
     view.tractorBeamView.checkUnlocked();
     view.spaceStationView.checkUnlocked();
     view.energyView.checkUnlocked();
-    view.computerView.update();
     view.computerView.checkUnlocked();
-    view.robotsView.update();
     view.robotsView.checkUnlocked();
+    view.update();
 }
 
 
