@@ -45,6 +45,31 @@ test.describe('Terrafold E2E Tests', () => {
         await expect(page.locator(selector)).toBeVisible();
       }
 
+      // Verify late game containers and contents are hidden initially
+      const hiddenElements = [
+        '#robotsContainer',
+        '#energyContainer',
+        '#spaceStationContainer',
+        '#tractorBeamContainer',
+        '#spaceDockContainer',
+        '#hangarContainer',
+        '#spaceContainer',
+        '#unlockedComputer',
+        '#unlockedEnergy',
+        '#unlockedSpaceStation',
+        '#unlockedTractorBeam',
+        '#failRobots',
+        '#unlockedRobots',
+        '#lightningContainer',
+        '#lightningTooltip',
+        '#woodContainer',
+        '#metalContainer'
+      ];
+
+      for (const selector of hiddenElements) {
+        await expect(page.locator(selector)).toBeHidden();
+      }
+
       expect(errors, `Uncaught exceptions: ${errors.map(e => e.stack).join('\n')}`).toHaveLength(0);
       expect(consoleErrors, `Console errors: ${consoleErrors.join('\n')}`).toHaveLength(0);
     });

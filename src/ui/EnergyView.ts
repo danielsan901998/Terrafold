@@ -15,14 +15,14 @@ export default class EnergyView extends BaseView {
     checkUnlocked() {
         if (!game) return;
         if (game.energy.unlocked) {
-            this.getElement('unlockedEnergy').style.display = "block";
-            this.getElement('unlockEnergy').style.display = "none";
+            this.setVisible('unlockedEnergy', true);
+            this.setVisible('unlockEnergy', false);
             if (this.getElement('spaceDockContainer').classList.contains("disabled")) {
                 this.getElement('spaceDockContainer').classList.remove("disabled");
             }
         } else {
-            this.getElement('unlockedEnergy').style.display = "none";
-            this.getElement('unlockEnergy').style.display = "inline-block";
+            this.setVisible('unlockedEnergy', false);
+            this.setVisible('unlockEnergy', true);
             if (!this.getElement('spaceDockContainer').classList.contains("disabled")) {
                 this.getElement('spaceDockContainer').classList.add("disabled");
             }

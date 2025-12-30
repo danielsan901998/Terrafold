@@ -26,8 +26,9 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: var(--text-color);
     font-size: 14px;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
+    padding-top: 40px;
     background-color: var(--bg-color);
     cursor: default;
     overflow-x: hidden;
@@ -75,21 +76,14 @@ body {
     padding: 0 10px;
 }
 
-#iceContainer {
-    width: 150px;
-}
-
 #sliderContainer {
     width: 100%;
     margin-top: 10px;
 }
 
-#unlockedComputer div:not(.computerTooltipContainer):not(.rowTooltip), 
-#unlockedRobots div:not(.computerTooltipContainer):not(.rowTooltip) {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    white-space: nowrap;
+#unlockedComputer > .stats-grid, 
+#unlockedRobots > .stats-grid {
+    margin-bottom: 8px;
 }
 
 #computerRows, #robotRows {
@@ -98,14 +92,9 @@ body {
     width: 100%;
 }
 
-#computerRows div, #robotRows div {
-    display: inline-flex;
-}
-
 #computerRows .computerRow, #robotRows .robotRow {
     display: flex;
 }
-
 
 .globalResourceInfo {
     display: flex;
@@ -115,23 +104,80 @@ body {
     width: auto;
 }
 
-#mainContainer {
-    margin-top: 60px;
-    padding: 30px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    align-items: flex-start;
+.storm-intensity-bar {
+    width: 8px;
+    height: 20px;
+    margin-left: 4px;
 }
 
-.column {
-    display: flex;
+.storm-progress-label {
+    font-size: 10px;
+}
+
+.forest-arrows {
+    margin-bottom: 10px;
+}
+
+.arrow-icon {
+    font-size: 10px;
+}
+
+.happy-icon {
+    border-radius: 50%;
+}
+
+.city-delta {
+    font-size: 11px;
+}
+
+.science-ratio-label {
+    font-size: 11px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    min-height: 1.2em;
+}
+
+#sliderContainer {
+    width: 100%;
+    margin-top: 10px;
+    padding: 0 10px;
     flex-direction: column;
-    gap: 15px;
-    flex: 1 1 300px;
-    max-width: 450px;
+}
+
+.full-width-slider {
+    width: 100%;
+    margin: 0;
+}
+
+.numeric-input-small {
+    flex: 1;
+    min-width: 60px;
+    max-width: 120px;
+}
+
+#spaceCanvas {
+    display: block;
+    width: 1000px;
+    height: 500px;
+}
+
+#mainContainer {
+    margin: 0;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.merged-container {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.merged-container:has(> .container:not(.hidden)) {
+    display: flex;
 }
 
 .container {
@@ -144,10 +190,23 @@ body {
     padding: 10px;
     text-align: center;
     width: 100%;
-    min-width: 250px;
+    min-width: 0;
     transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
     position: relative;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+#computerContainer, #robotsContainer {
+    min-width: 280px;
+}
+
+.storm-intensity-bar.verticalProgress {
+    height: 40px;
+}
+
+.progress-active {
+    width: 70px;
+    height: 70px;
 }
 
 .centered-flex-row {
@@ -157,6 +216,7 @@ body {
     gap: 10px;
     width: 100%;
     margin: 4px 0;
+    flex-wrap: wrap;
 }
 
 .clouds-progress {
@@ -256,6 +316,7 @@ body {
     gap: 4px 15px;
     margin-bottom: 8px;
     padding: 0 10px;
+    align-items: center;
 }
 
 .stat-row {
@@ -266,20 +327,17 @@ body {
     text-align: left;
     color: var(--text-muted);
     font-size: 13px;
+    word-break: break-word;
 }
 
-.stat-value {
-    text-align: right;
-    font-weight: bold;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
+#iceContainer .stat-label {
+    white-space: nowrap;
 }
 
 .showthat, .showthat2 {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
 }
 
 .showthat:hover .showthis, 
@@ -295,7 +353,7 @@ body {
     border: 1px solid var(--accent-color);
     padding: 10px;
     min-width: 250px;
-    max-width: 350px;
+    max-width: 300px;
     border-radius: 6px;
     top: 100%;
     z-index: 2000;
@@ -308,6 +366,16 @@ body {
     transform: translateX(-50%);
     white-space: normal;
     overflow-wrap: break-word;
+}
+
+.stat-value {
+    text-align: right;
+    font-weight: bold;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
 }
 
 /* Specific styling for header menus to make them easier to interact with */
@@ -414,7 +482,6 @@ input[type="range"] {
 .smallIcon { width: 16px; height: 16px; vertical-align: middle; }
 
 .progress-bar {
-    margin: 5px auto;
     display: inline-block;
     vertical-align: top;
 }
@@ -424,7 +491,6 @@ input[type="range"] {
     border-radius: 3px;
     width: 10px;
     height: 50px;
-    margin: 0 auto;
     display: flex;
     flex-direction: column-reverse;
 }
@@ -432,29 +498,31 @@ input[type="range"] {
 .verticalProgressInner {
     background-color: var(--accent-color);
     width: 100%;
+    transition: height 0.1s linear;
 }
 
 .forestIcon {
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    padding: 3px;
+    padding: 3px 6px;
     margin: 3px;
     background-color: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 #spaceContainer {
-    width: 100%;
-    max-width: 1000px;
-    margin: 15px auto;
+    width: 1004px; /* 1000px canvas + 2px border on each side */
+    margin: 20px auto;
     border: 2px solid var(--border-color);
     border-radius: 8px;
     overflow: hidden;
     background-color: black;
-    flex: 1 1 100%;
-}
-
-#spaceCanvas {
-    display: block;
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Scrollbar styling */
@@ -505,14 +573,21 @@ input[type="range"] {
 .computerRow > div, .robotRow > div {
     display: inline-flex;
     align-items: center;
+}
+
+.computerRow .button, .robotRow .button, 
+.computerRow .small, .robotRow .small {
     flex-shrink: 0;
 }
 
 .computerRow .rowLabel, .robotRow .rowLabel {
     flex: 1;
     text-align: left;
-    margin: 0 12px;
-    white-space: nowrap;
+    margin: 0 8px;
+    white-space: normal;
+    min-width: 0;
+    word-break: break-word;
+    font-size: 12px;
 }
 
 .computerRow:hover .computerTooltipContainer, 
@@ -526,11 +601,12 @@ input[type="range"] {
 }
 
 .rowProgressBarOuter {
-    width: 100px;
+    flex: 1;
+    min-width: 60px;
+    max-width: 150px;
     height: 16px;
     background-color: #333;
     border-radius: 3px;
-    margin-left: auto;
     overflow: hidden;
     flex-shrink: 0;
 }

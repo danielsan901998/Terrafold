@@ -24,10 +24,13 @@ export default class ProgressBar {
         if (!barCTX) return;
         barCTX.lineCap = 'square';
 
+        const center = bar.width / 2;
+        const radius = (bar.width / 2) - 5;
+
         barCTX.beginPath();
         barCTX.lineWidth = 8;
         barCTX.fillStyle = '#1e1e1e'; // Matches --card-bg
-        barCTX.arc(35, 35, 25, 0, 2 * Math.PI);
+        barCTX.arc(center, center, radius, 0, 2 * Math.PI);
         barCTX.fill();
     }
 
@@ -39,12 +42,15 @@ export default class ProgressBar {
         const endingAngle = ((2 * percentage * .95) * Math.PI) - quarterTurn * .9; //.985 because lineWidth
         const startingAngle = 0 - quarterTurn * .9;
 
+        const center = bar.width / 2;
+        const radius = (bar.width / 2) - 10;
+
         barCTX.lineCap = 'square';
 
         barCTX.beginPath();
         barCTX.lineWidth = 8;
         barCTX.strokeStyle = color;
-        barCTX.arc(35, 35, 20, startingAngle, endingAngle);
+        barCTX.arc(center, center, radius, startingAngle, endingAngle);
         barCTX.stroke();
     }
 }

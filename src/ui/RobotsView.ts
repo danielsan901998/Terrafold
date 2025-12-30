@@ -17,26 +17,26 @@ export default class RobotsView extends BaseView {
         if (!game) return;
         if (game.robots.unlocked) {
             if (game.robots.failed) {
-                this.getElement('unlockedRobots').style.display = "none";
-                this.getElement('failRobots').style.display = "inline-block";
+                this.setVisible('unlockedRobots', false);
+                this.setVisible('failRobots', true);
             } else {
-                this.getElement('unlockedRobots').style.display = "block";
-                this.getElement('unlockRobots').style.display = "none";
-                this.getElement('failRobots').style.display = "none";
-                this.getElement('lightningContainer').style.display = "grid";
-                this.getElement('lightningTooltip').style.display = "block";
-                this.getElement('energyContainer').style.display = "flex";
-                this.getElement('woodContainer').style.display = "flex";
-                this.getElement('metalContainer').style.display = "flex";
+                this.setVisible('unlockedRobots', true);
+                this.setVisible('unlockRobots', false);
+                this.setVisible('failRobots', false);
+                this.setVisible('lightningContainer', true);
+                this.setVisible('lightningTooltip', true);
+                this.setVisible('energyContainer', true);
+                this.setVisible('woodContainer', true);
+                this.setVisible('metalContainer', true);
             }
         } else {
-            this.getElement('unlockedRobots').style.display = "none";
-            this.getElement('unlockRobots').style.display = "inline-block";
-            this.getElement('lightningContainer').style.display = "none";
-            this.getElement('lightningTooltip').style.display = "none";
-            this.getElement('energyContainer').style.display = "none";
-            this.getElement('woodContainer').style.display = "none";
-            this.getElement('metalContainer').style.display = "none";
+            this.setVisible('unlockedRobots', false);
+            this.setVisible('unlockRobots', true);
+            this.setVisible('lightningContainer', false);
+            this.setVisible('lightningTooltip', false);
+            this.setVisible('energyContainer', false);
+            this.setVisible('woodContainer', false);
+            this.setVisible('metalContainer', false);
         }
     }
 
@@ -53,7 +53,7 @@ export default class RobotsView extends BaseView {
             const row = game.robots.jobs[i];
             if (!row) continue;
             this.updateElementText('robotRow' + i + 'Workers', String(row.workers));
-            this.getElement('robotRow' + i + 'Container').style.display = row.showing() ? "block" : "none";
+            this.setVisible('robotRow' + i + 'Container', row.showing());
         }
     }
 

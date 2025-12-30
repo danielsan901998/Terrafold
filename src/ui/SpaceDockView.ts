@@ -15,15 +15,15 @@ export default class SpaceDockView extends BaseView {
     checkUnlocked() {
         if (!game) return;
         if (game.spaceDock.unlocked) {
-            this.getElement('spaceDockContainer').style.display = "flex";
-            this.getElement('hangarContainer').style.display = "flex";
-            this.getElement('spaceCanvas').style.display = "block";
-            this.getElement('spaceContainer').style.display = "flex";
+            this.setVisible('spaceDockContainer', true);
+            this.setVisible('hangarContainer', true);
+            this.setVisible('spaceCanvas', true);
+            this.setVisible('spaceContainer', true);
         } else {
-            this.getElement('spaceDockContainer').style.display = "none";
-            this.getElement('hangarContainer').style.display = "none";
-            this.getElement('spaceCanvas').style.display = "none";
-            this.getElement('spaceContainer').style.display = "none";
+            this.setVisible('spaceDockContainer', false);
+            this.setVisible('hangarContainer', false);
+            this.setVisible('spaceCanvas', false);
+            this.setVisible('spaceContainer', false);
         }
     }
 

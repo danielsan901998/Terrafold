@@ -16,13 +16,13 @@ export default class ComputerView extends BaseView {
     checkUnlocked() {
         if (!game) return;
         if (game.computer.unlocked) {
-            this.getElement('unlockedComputer').style.display = "block";
-            this.getElement('unlockComputer').style.display = "none";
-            this.getElement('robotsContainer').style.display = "flex";
+            this.setVisible('unlockedComputer', true);
+            this.setVisible('unlockComputer', false);
+            this.setVisible('robotsContainer', true);
         } else {
-            this.getElement('unlockedComputer').style.display = "none";
-            this.getElement('unlockComputer').style.display = "inline-block";
-            this.getElement('robotsContainer').style.display = "none";
+            this.setVisible('unlockedComputer', false);
+            this.setVisible('unlockComputer', true);
+            this.setVisible('robotsContainer', false);
         }
     }
 
@@ -38,7 +38,7 @@ export default class ComputerView extends BaseView {
             const row = game.computer.processes[i];
             if (!row) continue;
             this.updateElementText('computerRow' + i + 'Threads', String(row.threads));
-            this.getElement('computerRow' + i + 'Container').style.display = row.showing() ? "block" : "none";
+            this.setVisible('computerRow' + i + 'Container', row.showing());
         }
     }
 

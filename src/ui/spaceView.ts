@@ -5,10 +5,22 @@ import PlanetManager from '../core/PlanetManager';
 const canvas = document.getElementById("spaceCanvas") as HTMLCanvasElement;
 const ctx = canvas ? canvas.getContext("2d") : null;
 if (ctx) ctx.font = "11px Arial";
-const xOffset = 200;
+let xOffset = 200;
 let mousePos: {x: number, y: number} = {x: 0, y: 0};
 
+function resizeCanvas() {
+    if (!canvas) return;
+    if (canvas.width !== 1000 || canvas.height !== 500) {
+        canvas.width = 1000;
+        canvas.height = 500;
+        xOffset = canvas.width / 5; 
+        if (ctx) ctx.font = "11px Arial";
+    }
+}
+
 if (canvas) {
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
     canvas.addEventListener('mousemove', function(e) {
         mousePos = {x:e.offsetX - xOffset, y:e.offsetY};
     });
@@ -46,14 +58,15 @@ function drawTargets() {
 }
 
 function drawBorders() {
-    if (!ctx) return;
+    if (!ctx || !canvas) return;
     ctx.fillStyle = "yellow";
-    ctx.fillRect(100,400,800,1);
+    // Scale borders to canvas size
+    ctx.fillRect(canvas.width * 0.1, canvas.height * 0.8, canvas.width * 0.8, 1);
 }
 
 function drawShip(ship: any) {
     if (!ctx) return;
-    const offsetX = ship.x + 200;
+    const offsetX = ship.x + xOffset;
 
     ctx.save();
     ctx.translate(offsetX+25, ship.y+25);

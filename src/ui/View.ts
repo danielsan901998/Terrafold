@@ -122,7 +122,7 @@ export default class View extends BaseView {
             cometDiv = this.cometPool.pop() || document.createElement("div");
             cometDiv.className = cometData.name.toLowerCase();
             cometDiv.id = cometDivName;
-            cometDiv.style.display = "block";
+            cometDiv.classList.remove('hidden');
 
             const totalDistance = cometData.speed * cometData.duration;
             cometData.startingY = Math.random() * (totalDistance * .4) + totalDistance * .1;
@@ -157,7 +157,7 @@ export default class View extends BaseView {
         const cometDivName = 'comet' + cometData.id;
         const cometDiv = document.getElementById(cometDivName);
         if (cometDiv) {
-            cometDiv.style.display = "none";
+            cometDiv.classList.add('hidden');
             cometDiv.id = "";
             this.cometPool.push(cometDiv);
             // We keep it in the DOM but hidden, and reuse it later.
@@ -214,6 +214,16 @@ const initListeners = () => {
     const buyBattleshipInput = document.getElementById('buyBattleshipAmount') as HTMLInputElement;
     if (buyBattleshipInput) {
         buyBattleshipInput.addEventListener('input', () => view?.spaceDockView.update());
+    }
+
+    const buyFarmInput = document.getElementById('buyFarmAmount') as HTMLInputElement;
+    if (buyFarmInput) {
+        buyFarmInput.addEventListener('input', () => view?.farmsView.update());
+    }
+
+    const buyHangarInput = document.getElementById('buyHangarAmount') as HTMLInputElement;
+    if (buyHangarInput) {
+        buyHangarInput.addEventListener('input', () => view?.hangarView.update());
     }
 };
 

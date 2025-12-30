@@ -14,7 +14,8 @@ export default class CloudsView extends BaseView {
         this.updateElementText('stormDuration', String(game.clouds.stormDuration));
         this.updateElementText('rain', intToString(game.clouds.transferred, 4));
         this.updateElementText('landReceived', intToString(game.clouds.transferred, 4));
-        this.updateElementText('lightningChance', intToString(game.clouds.lightningChance));
+        this.updateElementText('lightningChance', intToString(game.clouds.lightningChance) + "%");
+        this.getElement('lightningPB').style.height = game.clouds.lightningChance + "%";
         this.updateElementText('lightningStrength', intToString(game.clouds.lightningStrength));
     }
 }
