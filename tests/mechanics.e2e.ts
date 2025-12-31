@@ -7,6 +7,9 @@ test.describe('Gameplay Mechanics', () => {
   });
 
   test('should handle core gameplay mechanics', async ({ page }) => {
+    // Pause game to have full control over ticks
+    await page.evaluate(() => (window as any).pauseGame());
+
     // 1. Ice buying and begging
     await page.evaluate(() => {
         (window as any).game.cash = 100;

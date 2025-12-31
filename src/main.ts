@@ -322,3 +322,5 @@ load();
 window.game = game;
 // @ts-ignore
 window.view = view;
+// @ts-ignore
+window.pauseGame = pauseGame;
