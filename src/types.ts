@@ -31,6 +31,8 @@ export interface Game {
     metal: number;
     power: number;
     oxygenLeak: number;
+    canvasWidth: number;
+    canvasHeight: number;
     ice: any;
     water: any;
     clouds: any;

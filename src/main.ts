@@ -40,6 +40,8 @@ class Game implements IGame {
     metal: number;
     power: number;
     oxygenLeak: number = 0;
+    canvasWidth: number = 1200;
+    canvasHeight: number = 600;
 
     space!: Space;
     ice!: Ice;
@@ -67,6 +69,8 @@ class Game implements IGame {
         this.wood = 0;
         this.metal = 0;
         this.power = 0;
+        this.canvasWidth = 1200;
+        this.canvasHeight = 600;
         this.events = new EventEmitter();
     }
 

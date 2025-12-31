@@ -4,17 +4,17 @@ import PlanetManager from '../core/PlanetManager';
 
 const canvas = document.getElementById("spaceCanvas") as HTMLCanvasElement;
 const ctx = canvas ? canvas.getContext("2d") : null;
-if (ctx) ctx.font = "11px Arial";
-let xOffset = 200;
+if (ctx) ctx.font = "13px Arial";
+let xOffset = 240;
 let mousePos: {x: number, y: number} = {x: 0, y: 0};
 
 function resizeCanvas() {
-    if (!canvas) return;
-    if (canvas.width !== 1000 || canvas.height !== 500) {
-        canvas.width = 1000;
-        canvas.height = 500;
+    if (!canvas || !game) return;
+    if (canvas.width !== game.canvasWidth || canvas.height !== game.canvasHeight) {
+        canvas.width = game.canvasWidth;
+        canvas.height = game.canvasHeight;
         xOffset = canvas.width / 5; 
-        if (ctx) ctx.font = "11px Arial";
+        if (ctx) ctx.font = "13px Arial";
     }
 }
 
@@ -29,7 +29,6 @@ if (canvas) {
 export default function updateSpace() {
     if (!ctx || !game || !canvas) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBorders();
     drawTargets();
     drawBattleships();
     drawTooltips();
@@ -61,7 +60,7 @@ function drawBorders() {
     if (!ctx || !canvas) return;
     ctx.fillStyle = "yellow";
     // Scale borders to canvas size
-    ctx.fillRect(canvas.width * 0.1, canvas.height * 0.8, canvas.width * 0.8, 1);
+    ctx.fillRect(canvas.width * 0.1, canvas.height * 0.85, canvas.width * 0.8, 1);
 }
 
 function drawShip(ship: any) {

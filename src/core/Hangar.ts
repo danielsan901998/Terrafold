@@ -10,11 +10,12 @@ export default class Hangar {
     constructor() {
         this.sendRate = 1;
         this.timeRemaining = this.totalTime = 40;
-        this.y = 350;
+        this.y = (game?.canvasHeight || 600) * 0.85 - 25;
     }
 
     tick() {
         if (!game) return;
+        this.y = game.canvasHeight * 0.85 - 25;
         this.timeRemaining--;
         if (this.timeRemaining < 0) {
             if (game.spaceDock.battleships > 0) {

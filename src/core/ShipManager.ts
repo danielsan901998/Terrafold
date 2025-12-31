@@ -34,7 +34,6 @@ export default class ShipManager {
         let targetPlanet = null;
         for (let i = 0; i < game.space.planets.length; i++) {
             const planet = game.space.planets[i]!;
-            // Use PlanetManager functions
             if (PlanetManager.doneBuilding(planet)) {
                 continue;
             }
@@ -113,7 +112,6 @@ export default class ShipManager {
             ship.actionCounter++;
             if (ship.actionCounter >= ship.actionSpeed) {
                 ship.actionCounter = 0;
-                // Use PlanetManager functions
                 if (PlanetManager.alive(ship.target)) {
                     PlanetManager.takeDamage(ship.target, ship.actionRate * ship.amount);
                 } else {
