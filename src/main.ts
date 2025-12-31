@@ -241,9 +241,17 @@ export async function clearSave() {
 }
 
 function loadDefaults() {
+    if (view) {
+        view.destroy();
+    }
     game = new Game();
     view = new View();
     game?.initialize();
+    
+    // @ts-ignore
+    window.game = game;
+    // @ts-ignore
+    window.view = view;
 }
 
 function setInitialView() {
@@ -283,7 +291,7 @@ function copyObject(object: any, toSave: any) {
     for (let property in object) {
         if (typeof object[property] === 'object' && object[property] !== null) {
             if (typeof toSave[property] === 'undefined')
-                toSave[property] = {};
+                toSave[property] = Array.isArray(object[property]) ? [] : {};
             copyObject(object[property], toSave[property]);
         }
         else if (typeof object[property] !== 'function')

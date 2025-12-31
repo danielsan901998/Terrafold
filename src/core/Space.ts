@@ -16,6 +16,7 @@ export default class Space {
 
     tick() {
         let empty = true;
+        ShipManager.updateGlobalTarget();
         for (let i = 0; i < this.planets.length; i++) {
             const planet = this.planets[i]!;
             PlanetManager.tick(planet); // Use PlanetManager.tick

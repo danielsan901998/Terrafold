@@ -2,6 +2,8 @@ import { game } from '../main';
 import { withinDistance, getDistance } from '../utils/utils';
 import PlanetManager from './PlanetManager';
 import Ship from './Ship';
+import Planet from './Planet';
+import { Target } from '../types';
 
 export default class ShipManager {
     static foodPerShip = 20;
@@ -9,12 +11,36 @@ export default class ShipManager {
     static actionSpeed = 40;
     static defaultSpeed = 0.5;
     static emptySpeed = 0.05;
+    static globalTargetIndex = -1;
 
     static tick(ship: Ship) {
         ShipManager.checkEmpty(ship);
         ShipManager.moveToNearestTarget(ship);
         ShipManager.checkJoinFleet(ship);
         ShipManager.attackTarget(ship);
+    }
+
+    static updateGlobalTarget() {
+        if (!game) return;
+        const home = game.hangar.getTarget();
+        ShipManager.globalTargetIndex = ShipManager.findClosestTarget(home.x, home.y);
+    }
+
+    static findClosestTarget(x: number, y: number): number {
+        if (!game) return -1;
+        let bestIndex = -1;
+        let minDist = Infinity;
+        for (let i = 0; i < game.space.planets.length; i++) {
+            const planet = game.space.planets[i]!;
+            if (!PlanetManager.doneBuilding(planet)) {
+                const dist = getDistance(x, y, planet.x, planet.y);
+                if (bestIndex === -1 || dist < minDist) {
+                    bestIndex = i;
+                    minDist = dist;
+                }
+            }
+        }
+        return bestIndex;
     }
 
     static checkJoinFleet(ship: Ship) {
@@ -33,39 +59,28 @@ export default class ShipManager {
         }
     }
 
-    static findClosestTarget(ship: Ship) {
-        if (!game) return null;
-        let pos = 0;
-        let targetPlanet = null;
-        for (let i = 0; i < game.space.planets.length; i++) {
-            const planet = game.space.planets[i]!;
-            if (PlanetManager.doneBuilding(planet)) {
-                continue;
-            }
-            if (!targetPlanet) {
-                targetPlanet = planet;
-                continue;
-            }
-            if (getDistance(ship.x, ship.y, planet.x, planet.y) < getDistance(ship.x, ship.y, targetPlanet.x, targetPlanet.y)) {
-                pos = i;
-                targetPlanet = game.space.planets[pos]!;
-            }
-        }
-        return targetPlanet ? targetPlanet : ShipManager.targetHome(ship);
-    }
-
     static checkEmpty(ship: Ship) {
         ship.food -= ship.count;
         if (!ShipManager.isEmpty(ship)) {
             return;
         }
         ship.food = 0;
-        ship.target = ShipManager.targetHome(ship);
         ship.engaged = false;
+        ship.targetIndex = -1;
     }
 
-    static targetHome(ship: Ship) {
-        return game?.hangar.getTarget();
+    static getTargetObject(ship: Ship): Target | null {
+        if (!game) return null;
+        if (ship.targetIndex === -1) return game.hangar.getTarget();
+        if (ship.targetIndex >= 0 && ship.targetIndex < game.space.planets.length) {
+            const planet = game.space.planets[ship.targetIndex]!;
+            if (!PlanetManager.doneBuilding(planet)) {
+                return planet;
+            }
+        }
+        // If current target is invalid or done, find a new one
+        ship.targetIndex = ShipManager.findClosestTarget(ship.x, ship.y);
+        return ship.targetIndex === -1 ? game.hangar.getTarget() : game.space.planets[ship.targetIndex]!;
     }
 
     static returnHome(ship: Ship) {
@@ -91,21 +106,23 @@ export default class ShipManager {
     }
 
     static moveToNearestTarget(ship: Ship) {
-        if (!ship.target || (!ship.target.isHome && PlanetManager.doneBuilding(ship.target))) { // Use PlanetManager
-            ship.target = ShipManager.findClosestTarget(ship);
-            ship.engaged = false;
-        }
-        if (getDistance(ship.x, ship.y, ship.target.x, ship.target.y) < 40) {
-            if (!ship.target.isHome) {
+        const target = ShipManager.getTargetObject(ship);
+        if (!target) return;
+
+        if (getDistance(ship.x, ship.y, target.x, target.y) < 40) {
+            if (!('isHome' in target)) {
                 ship.engaged = true;
                 return;
             }
             ShipManager.returnHome(ship);
+            return;
         }
+        
+        ship.engaged = false;
         const magnitude = ShipManager.getSpeed(ship);
         let extraTurn = 0;
-        const firstVC = ship.target.y - ship.y;
-        const secondVC = ship.target.x - ship.x;
+        const firstVC = target.y - ship.y;
+        const secondVC = target.x - ship.x;
         if ((firstVC >= 0 && secondVC < 0) || (firstVC < 0 && secondVC < 0)) {
             extraTurn = Math.PI;
         }
@@ -116,17 +133,19 @@ export default class ShipManager {
     }
 
     static attackTarget(ship: Ship) {
-        if (ship.target && !ship.target.isHome && ship.engaged) {
+        const target = ShipManager.getTargetObject(ship);
+        if (target && !('isHome' in target) && ship.engaged) {
+            const planet = target as Planet;
             ship.actionCounter++;
             if (ship.actionCounter >= ShipManager.actionSpeed) {
                 ship.actionCounter = 0;
-                if (PlanetManager.alive(ship.target)) {
-                    PlanetManager.takeDamage(ship.target, ShipManager.actionRate * ship.count);
+                if (PlanetManager.alive(planet)) {
+                    PlanetManager.takeDamage(planet, ShipManager.actionRate * ship.count);
                 } else {
-                    PlanetManager.workConstruction(ship.target, ship.count);
-                    if (PlanetManager.doneBuilding(ship.target)) {
+                    PlanetManager.workConstruction(planet, ship.count);
+                    if (PlanetManager.doneBuilding(planet)) {
                         ship.engaged = false;
-                        ship.target = ShipManager.findClosestTarget(ship);
+                        ship.targetIndex = ShipManager.findClosestTarget(ship.x, ship.y);
                     }
                 }
             }

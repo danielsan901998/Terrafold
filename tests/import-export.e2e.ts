@@ -31,6 +31,10 @@ test.describe('Import/Export', () => {
         if (btn) btn.click();
     }, saveContent);
 
+    // Wait for the rows to be added and visible
+    await page.waitForSelector('.computerRow', { state: 'attached' });
+    await page.waitForSelector('.robotRow', { state: 'attached' });
+
     const computerRowsAfter = await page.locator('.computerRow').count();
     const robotRowsAfter = await page.locator('.robotRow').count();
 

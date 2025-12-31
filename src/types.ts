@@ -17,10 +17,37 @@ export interface Comet {
     top: number;
 }
 
+import Planet from './core/Planet';
+
+export interface Comet {
+    id: number;
+    name: string;
+    amount: number;
+    initialAmount: number;
+    amountType: string;
+    duration: number;
+    initialDuration: number;
+    speed: number;
+    drawed: boolean;
+    startingY: number;
+    endingX: number;
+    slope: number;
+    left: number;
+    top: number;
+}
+
 export interface OrbitingResource {
     amount: number;
     type: string;
 }
+
+export interface HomeTarget {
+    isHome: true;
+    x: number;
+    y: number;
+}
+
+export type Target = Planet | HomeTarget;
 
 export interface Game {
     totalLand: number;

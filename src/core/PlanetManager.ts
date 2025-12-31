@@ -32,7 +32,7 @@ export default class PlanetManager {
 
     static yAreaAllowed() {
         if (!game) return Math.random() * 465 + 10;
-        const maxHeight = game.canvasHeight * 0.85; // 510
+        const maxHeight = game.canvasHeight * 0.80; // 510
         return Math.random() * (maxHeight - 55) + 10;
     }
 

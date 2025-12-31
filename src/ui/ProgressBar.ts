@@ -9,7 +9,7 @@ export default class ProgressBar {
     }
 
     tick(ticks: number, ticksNeeded: number) {
-        if (!this.aProgress) return;
+        if (!this.aProgress || ticksNeeded <= 0) return;
         const percentage = (ticks / ticksNeeded);
         if (Math.abs(this.lastPercentage - percentage) < 0.001) return;
         this.lastPercentage = percentage;

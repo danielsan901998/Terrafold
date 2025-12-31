@@ -11,19 +11,21 @@ export default class Hangar {
     constructor() {
         this.sendRate = 1;
         this.timeRemaining = this.totalTime = 40;
-        this.y = (game?.canvasHeight || 600) * 0.85 - 25;
+        this.y = (game?.canvasHeight || 600) * 0.5 - 25;
     }
 
     tick() {
         if (!game) return;
-        this.y = game.canvasHeight * 0.85 - 25;
+        this.y = game.canvasHeight * 0.5 - 25;
         this.timeRemaining--;
         if (this.timeRemaining < 0) {
             if (game.spaceDock.battleships > 0) {
                 const tosend = Math.min(this.sendRate, game.spaceDock.battleships);
                 const foodTaken = game.farms.food * .05; // Take 5% food per launch
                 game.farms.food -= foodTaken;
-                game.space.spawnShip(new Ship(tosend, foodTaken, ShipManager.foodPerShip), this.y);
+                const newShip = new Ship(tosend, foodTaken, ShipManager.foodPerShip);
+                newShip.targetIndex = ShipManager.globalTargetIndex;
+                game.space.spawnShip(newShip, this.y);
                 game.spaceDock.battleships -= tosend;
                 game.spaceDock.sended += tosend;
                 this.timeRemaining = this.totalTime;
@@ -35,7 +37,7 @@ export default class Hangar {
 
     getTarget() {
         return {
-            isHome: true,
+            isHome: true as const,
             x: -125,
             y: this.y,
         }

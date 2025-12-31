@@ -45,6 +45,7 @@ export default class View extends BaseView {
     private columns: HTMLElement[] = [];
     private lastVisibleCount: number = -1;
     private lastWidth: number = -1;
+    private resizeHandler: () => void;
 
     constructor() {
         super();
@@ -67,9 +68,15 @@ export default class View extends BaseView {
         this.hangarView = new HangarView();
 
         const main = this.getElement('mainContainer');
+        // Move all containers back to main before removing columns to avoid losing them
+        main.querySelectorAll('.container').forEach(container => main.appendChild(container));
+        // Clean up any existing columns from previous View instances
+        main.querySelectorAll('.column').forEach(col => col.remove());
+
         this.allContainers = Array.from(main.querySelectorAll('.container')) as HTMLElement[];
         
-        window.addEventListener('resize', () => this.refreshLayout());
+        this.resizeHandler = () => this.refreshLayout();
+        window.addEventListener('resize', this.resizeHandler);
 
         if (game) {
             game.events.on('tick', () => {
@@ -84,6 +91,10 @@ export default class View extends BaseView {
             game.events.on('tractorBeam:unlocked', () => this.refreshLayout());
             game.events.on('spaceDock:unlocked', () => this.refreshLayout());
         }
+    }
+
+    destroy() {
+        window.removeEventListener('resize', this.resizeHandler);
     }
 
     update() {
@@ -113,6 +124,7 @@ export default class View extends BaseView {
 
     refreshLayout() {
         const main = this.getElement('mainContainer');
+        if (main.offsetWidth === 0) return;
         
         // Extract gap and minWidth from computed styles
         const mainStyle = window.getComputedStyle(main);
@@ -132,6 +144,7 @@ export default class View extends BaseView {
             minWidth = parseFloat(window.getComputedStyle(tempCol).minWidth);
             main.removeChild(tempCol);
         }
+        minWidth = Math.max(200, minWidth || 0);
 
         const containerWidth = minWidth + gap; 
         const currentWidth = main.offsetWidth;

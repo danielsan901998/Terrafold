@@ -7,7 +7,7 @@ export default class Ship {
     y: number;
     engaged: boolean;
     direction: number;
-    target: any;
+    targetIndex: number; // -1 for home, 0+ for planets
 
     constructor(count: number, food: number, foodPerShip: number) {
         this.count = count;
@@ -18,6 +18,6 @@ export default class Ship {
         this.y = 0;
         this.engaged = false;
         this.direction = 0;
-        this.target = null;
+        this.targetIndex = -1;
     }
 }

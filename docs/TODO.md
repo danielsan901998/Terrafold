@@ -35,13 +35,6 @@
 *   **Factory/Orbital Factory**
     *   Unlocked after Grind Ore, use gems to build laser, new cost for Ship. Replace Targetted Sunlight research
 
-## Graphics & Visuals
-*   **Add planet graphics**
-    *   Circle for building factory
-    *   Different color for building coilgun
-    *   Different color for building solar
-*   Add ship laser animation
-
 ## Game Progression & Flow
 *   **Next Sector**
     *   Enabled when at least 5 systems have been completed

@@ -1,7 +1,9 @@
 import { game } from '../main';
 import { intToString, withinDistance } from '../utils/utils';
 import PlanetManager from '../core/PlanetManager';
+import ShipManager from '../core/ShipManager';
 import Ship from '../core/Ship';
+import Planet from '../core/Planet';
 
 const canvas = document.getElementById("spaceCanvas") as HTMLCanvasElement;
 const ctx = canvas ? canvas.getContext("2d") : null;
@@ -67,6 +69,21 @@ function drawBorders() {
 function drawShip(ship: Ship) {
     if (!ctx) return;
     const offsetX = ship.x + xOffset;
+
+    // Laser animation
+    const target = ShipManager.getTargetObject(ship);
+    if (ship.engaged && target && ship.actionCounter < 10) {
+        const isHome = 'isHome' in target;
+        const targetSize = getPlanetSize(!isHome ? (target as Planet).isBoss : false);
+        ctx.save();
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(255, 50, 50, " + (1 - ship.actionCounter / 10) + ")";
+        ctx.lineWidth = 3;
+        ctx.moveTo(offsetX + 25, ship.y + 25);
+        ctx.lineTo(target.x + xOffset + targetSize, target.y + targetSize);
+        ctx.stroke();
+        ctx.restore();
+    }
 
     ctx.save();
     ctx.translate(offsetX+25, ship.y+25);
@@ -180,9 +197,65 @@ function drawPlanetHealth(planet: any, size: number) {
 }
 
 function drawPlanetObjects(planet: any, size: number) {
-    if (!ctx) return;
-    ctx.rotate(planet.view.rotation);
-    ctx.rotate(-1*planet.view.rotation);
+    if (!ctx || PlanetManager.empty(planet)) return;
+    
+    const quarterTurn = Math.PI / 2;
+    const startAngle = -quarterTurn;
+
+    // Factory: Progress arc (Outer)
+    if (planet.factoryTicks > 0 && planet.factoryTicks < PlanetManager.FACTORY_TICKS_MAX) {
+        const percentage = planet.factoryTicks / PlanetManager.FACTORY_TICKS_MAX;
+        const endAngle = (2 * percentage * Math.PI) - quarterTurn;
+        ctx.beginPath();
+        ctx.strokeStyle = "#888888";
+        ctx.lineWidth = 2;
+        ctx.arc(0, 0, size * 0.9, startAngle, endAngle);
+        ctx.stroke();
+    }
+
+    // Coilgun: Construction arc
+    if (planet.coilgunTicks > 0 && planet.coilgunTicks < PlanetManager.COILGUN_TICKS_MAX) {
+        const percentage = planet.coilgunTicks / PlanetManager.COILGUN_TICKS_MAX;
+        const endAngle = (2 * percentage * Math.PI) - quarterTurn;
+        ctx.beginPath();
+        ctx.strokeStyle = "#884400";
+        ctx.lineWidth = 2;
+        ctx.arc(0, 0, size * 0.8, startAngle, endAngle);
+        ctx.stroke();
+    }
+
+    // Coilgun: Charge arc
+    if (planet.coilgunTicks >= PlanetManager.COILGUN_TICKS_MAX && planet.coilgunCharge > 0) {
+        const percentage = planet.coilgunCharge / PlanetManager.COILGUN_CHARGE_MAX;
+        const endAngle = (2 * percentage * Math.PI) - quarterTurn;
+        ctx.beginPath();
+        ctx.strokeStyle = "#ffcc00"; // Gold for charge
+        ctx.lineWidth = 2;
+        ctx.arc(0, 0, size * 0.8, startAngle, endAngle);
+        ctx.stroke();
+    }
+
+    // Solar: Progress arc (Next panel)
+    if (planet.solar > 0 || planet.solarTicks > 0) {
+        const percentage = planet.solarTicks / PlanetManager.SOLAR_TICKS_MAX;
+        const endAngle = (2 * percentage * Math.PI) - quarterTurn;
+        ctx.beginPath();
+        ctx.strokeStyle = "#4444ff"; // Bright blue
+        ctx.lineWidth = 2;
+        ctx.arc(0, 0, size * 0.7, startAngle, endAngle);
+        ctx.stroke();
+    }
+
+    // Mines: Progress arc (Inner)
+    if (planet.mines < planet.maxMines && (planet.mines > 0 || planet.mineTicks > 0)) {
+        const percentage = (planet.mines + Math.min(1, planet.mineTicks / PlanetManager.MINE_TICKS_MAX)) / planet.maxMines;
+        const endAngle = (2 * Math.min(1, percentage) * Math.PI) - quarterTurn;
+        ctx.beginPath();
+        ctx.strokeStyle = "#666666";
+        ctx.lineWidth = 2;
+        ctx.arc(0, 0, size * 0.6, startAngle, endAngle);
+        ctx.stroke();
+    }
 }
 
 export function rotatePlanet(planet: any) { // Done on planet's tick
