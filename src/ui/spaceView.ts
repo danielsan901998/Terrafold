@@ -1,6 +1,7 @@
 import { game } from '../main';
 import { intToString, withinDistance } from '../utils/utils';
 import PlanetManager from '../core/PlanetManager';
+import Ship from '../core/Ship';
 
 const canvas = document.getElementById("spaceCanvas") as HTMLCanvasElement;
 const ctx = canvas ? canvas.getContext("2d") : null;
@@ -63,7 +64,7 @@ function drawBorders() {
     ctx.fillRect(canvas.width * 0.1, canvas.height * 0.85, canvas.width * 0.8, 1);
 }
 
-function drawShip(ship: any) {
+function drawShip(ship: Ship) {
     if (!ctx) return;
     const offsetX = ship.x + xOffset;
 
@@ -91,8 +92,8 @@ function drawShip(ship: any) {
     ctx.translate(offsetX+25, ship.y+25);
     ctx.strokeStyle = "white";
     ctx.lineWidth = 1;
-    ctx.strokeText(ship.amount.toString(),-4,20);
-    ctx.strokeText(intToString(ship.foodAmount / ship.amount / 10, 1),-4,30);
+    ctx.strokeText(ship.count.toString(),-4,20);
+    ctx.strokeText(intToString(ship.food / ship.count / 10, 1),-4,30);
     ctx.restore();
 }
 

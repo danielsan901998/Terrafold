@@ -1,5 +1,6 @@
 import { game } from '../main';
 import Ship from './Ship';
+import ShipManager from './ShipManager';
 
 export default class Hangar {
     sendRate: number;
@@ -22,7 +23,7 @@ export default class Hangar {
                 const tosend = Math.min(this.sendRate, game.spaceDock.battleships);
                 const foodTaken = game.farms.food * .05; // Take 5% food per launch
                 game.farms.food -= foodTaken;
-                game.space.spawnShip(new Ship(tosend, foodTaken), this.y);
+                game.space.spawnShip(new Ship(tosend, foodTaken, ShipManager.foodPerShip), this.y);
                 game.spaceDock.battleships -= tosend;
                 game.spaceDock.sended += tosend;
                 this.timeRemaining = this.totalTime;

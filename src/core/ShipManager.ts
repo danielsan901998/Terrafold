@@ -1,18 +1,23 @@
 import { game } from '../main';
 import { withinDistance, getDistance } from '../utils/utils';
 import PlanetManager from './PlanetManager';
+import Ship from './Ship';
 
 export default class ShipManager {
     static foodPerShip = 20;
+    static actionRate = 1;
+    static actionSpeed = 40;
+    static defaultSpeed = 0.5;
+    static emptySpeed = 0.05;
 
-    static tick(ship: any) {
+    static tick(ship: Ship) {
         ShipManager.checkEmpty(ship);
         ShipManager.moveToNearestTarget(ship);
         ShipManager.checkJoinFleet(ship);
         ShipManager.attackTarget(ship);
     }
 
-    static checkJoinFleet(ship: any) {
+    static checkJoinFleet(ship: Ship) {
         if (!game || !ship.engaged) {
             return;
         }
@@ -28,7 +33,7 @@ export default class ShipManager {
         }
     }
 
-    static findClosestTarget(ship: any) {
+    static findClosestTarget(ship: Ship) {
         if (!game) return null;
         let pos = 0;
         let targetPlanet = null;
@@ -49,26 +54,25 @@ export default class ShipManager {
         return targetPlanet ? targetPlanet : ShipManager.targetHome(ship);
     }
 
-    static checkEmpty(ship: any) {
-        ship.foodAmount -= ship.amount;
+    static checkEmpty(ship: Ship) {
+        ship.food -= ship.count;
         if (!ShipManager.isEmpty(ship)) {
             return;
         }
-        ship.foodAmount = 0;
-        ship.speed = .05;
+        ship.food = 0;
         ship.target = ShipManager.targetHome(ship);
         ship.engaged = false;
     }
 
-    static targetHome(ship: any) {
+    static targetHome(ship: Ship) {
         return game?.hangar.getTarget();
     }
 
-    static returnHome(ship: any) {
+    static returnHome(ship: Ship) {
         if (!game) return;
-        game.spaceDock.battleships += ship.amount;
-        game.spaceDock.sended -= ship.amount;
-        game.farms.food += ship.foodAmount * ShipManager.foodPerShip;
+        game.spaceDock.battleships += ship.count;
+        game.spaceDock.sended -= ship.count;
+        game.farms.food += ship.food * ShipManager.foodPerShip;
         for (let i = game.space.ships.length - 1; i >= 0; i--) {
             const otherShip = game.space.ships[i];
             if (otherShip === ship) {
@@ -78,11 +82,15 @@ export default class ShipManager {
         }
     }
 
-    static isEmpty(ship: any) {
-        return ship.foodAmount <= 0;
+    static isEmpty(ship: Ship) {
+        return ship.food <= 0;
     }
 
-    static moveToNearestTarget(ship: any) {
+    static getSpeed(ship: Ship) {
+        return ShipManager.isEmpty(ship) ? ShipManager.emptySpeed : ShipManager.defaultSpeed;
+    }
+
+    static moveToNearestTarget(ship: Ship) {
         if (!ship.target || (!ship.target.isHome && PlanetManager.doneBuilding(ship.target))) { // Use PlanetManager
             ship.target = ShipManager.findClosestTarget(ship);
             ship.engaged = false;
@@ -94,7 +102,7 @@ export default class ShipManager {
             }
             ShipManager.returnHome(ship);
         }
-        const magnitude = ship.speed;
+        const magnitude = ShipManager.getSpeed(ship);
         let extraTurn = 0;
         const firstVC = ship.target.y - ship.y;
         const secondVC = ship.target.x - ship.x;
@@ -107,15 +115,15 @@ export default class ShipManager {
         ship.direction = direction;
     }
 
-    static attackTarget(ship: any) {
+    static attackTarget(ship: Ship) {
         if (ship.target && !ship.target.isHome && ship.engaged) {
             ship.actionCounter++;
-            if (ship.actionCounter >= ship.actionSpeed) {
+            if (ship.actionCounter >= ShipManager.actionSpeed) {
                 ship.actionCounter = 0;
                 if (PlanetManager.alive(ship.target)) {
-                    PlanetManager.takeDamage(ship.target, ship.actionRate * ship.amount);
+                    PlanetManager.takeDamage(ship.target, ShipManager.actionRate * ship.count);
                 } else {
-                    PlanetManager.workConstruction(ship.target, ship.amount);
+                    PlanetManager.workConstruction(ship.target, ship.count);
                     if (PlanetManager.doneBuilding(ship.target)) {
                         ship.engaged = false;
                         ship.target = ShipManager.findClosestTarget(ship);
@@ -125,10 +133,10 @@ export default class ShipManager {
         }
     }
 
-    static combineShips(ship1: any, ship2: any) {
-        ship1.amount += ship2.amount;
+    static combineShips(ship1: Ship, ship2: Ship) {
+        ship1.count += ship2.count;
         ship1.energy += ship2.energy;
-        ship1.foodAmount += ship2.foodAmount;
+        ship1.food += ship2.food;
         if (ship2.actionCounter > ship1.actionCounter) {
             ship1.actionCounter = ship2.actionCounter;
         }

@@ -1,13 +1,13 @@
 import PlanetManager from './PlanetManager';
 import ShipManager from './ShipManager';
 import Planet from './Planet';
+import Ship from './Ship';
 import { sortArrayObjectsByValue } from '../utils/utils';
 
 export default class Space {
     planets: Planet[];
-    ships: any[];
+    ships: Ship[];
     sector: number;
-
     constructor() {
         this.planets = [];
         this.ships = [];
@@ -28,11 +28,11 @@ export default class Space {
             this.newLevel();
         }
         for (let i = 0; i < this.ships.length; i++) {
-            ShipManager.tick(this.ships[i]); // Use ShipManager.tick
+            ShipManager.tick(this.ships[i]!); // Use ShipManager.tick
         }
     }
 
-    spawnShip(ship: any, y: number) {
+    spawnShip(ship: Ship, y: number) {
         ship.x = -120;
         ship.y = y;
         this.ships.push(ship);
@@ -48,7 +48,7 @@ export default class Space {
         if (lastPlanet) lastPlanet.isBoss = true;
 
         for (let i = 0; i < this.planets.length; i++) {
-            PlanetManager.calcPower(this.planets[i], this.sector);
+            PlanetManager.calcPower(this.planets[i]!, this.sector);
         }
     }
 }
