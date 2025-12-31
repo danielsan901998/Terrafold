@@ -18,11 +18,9 @@ export default class TractorBeamView extends BaseView {
     checkUnlocked() {
         if (!game) return;
         if (game.tractorBeam.unlocked) {
-            this.setVisible('tractorBeamContainer', true);
             this.setVisible('unlockedTractorBeam', true);
             this.setVisible('unlockTractorBeam', false);
         } else {
-            this.setVisible('tractorBeamContainer', false);
             this.setVisible('unlockedTractorBeam', false);
             this.setVisible('unlockTractorBeam', true);
         }

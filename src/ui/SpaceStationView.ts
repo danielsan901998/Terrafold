@@ -18,10 +18,12 @@ export default class SpaceStationView extends BaseView {
             this.setVisible('spaceStationContainer', true);
             this.setVisible('unlockedSpaceStation', true);
             this.setVisible('unlockSpaceStation', false);
+            this.setVisible('tractorBeamContainer', true);
         } else {
             this.setVisible('spaceStationContainer', false);
             this.setVisible('unlockedSpaceStation', false);
             this.setVisible('unlockSpaceStation', true);
+            this.setVisible('tractorBeamContainer', false);
         }
     }
 

@@ -210,7 +210,6 @@ export default class Computer {
                 this.freeThreads += row.threads;
                 row.threads = 0;
             }
-            game?.events.emit('computer:updated');
             return;
         }
         row.isMoving = 1;
@@ -240,7 +239,6 @@ export default class Computer {
             this.unlocked = 1;
             game.events.emit('computer:unlocked');
         }
-        game.events.emit('computer:updated');
     }
 
     buyThread() {
@@ -250,7 +248,6 @@ export default class Computer {
             game.cash -= threadCost;
             this.threads++;
             this.freeThreads++;
-            game.events.emit('computer:updated');
         }
     }
 
@@ -264,7 +261,6 @@ export default class Computer {
         if (game.science >= speedCost) {
             game.science -= speedCost;
             this.speed++;
-            game.events.emit('computer:updated');
         }
     }
 
@@ -278,7 +274,6 @@ export default class Computer {
         if (proc) {
             proc.threads += numAdding;
             this.freeThreads -= numAdding;
-            game?.events.emit('computer:updated');
         }
     }
 
@@ -288,7 +283,6 @@ export default class Computer {
             numRemoving = Math.min(numRemoving, proc.threads);
             proc.threads -= numRemoving;
             this.freeThreads += numRemoving;
-            game?.events.emit('computer:updated');
         }
     }
 }

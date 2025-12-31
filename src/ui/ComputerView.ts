@@ -8,8 +8,6 @@ export default class ComputerView extends BaseView {
         super();
         if (game) {
             game.events.on('computer:unlocked', () => this.checkUnlocked());
-            game.events.on('computer:updated', () => this.update());
-            game.events.on('computer:rowUpdated', (index: number) => this.updateRowProgress(index));
         }
     }
 

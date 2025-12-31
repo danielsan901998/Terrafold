@@ -9,7 +9,6 @@ export default class RobotsView extends BaseView {
         if (game) {
             game.events.on('robots:unlocked', () => this.checkUnlocked());
             game.events.on('robots:updated', () => this.update());
-            game.events.on('robots:rowUpdated', (index: number) => this.updateRowProgress(index));
         }
     }
 

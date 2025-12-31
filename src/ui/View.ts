@@ -41,6 +41,11 @@ export default class View extends BaseView {
     hangarView: HangarView;
     private cometPool: HTMLElement[] = [];
 
+    private allContainers: HTMLElement[] = [];
+    private columns: HTMLElement[] = [];
+    private lastVisibleCount: number = -1;
+    private lastWidth: number = -1;
+
     constructor() {
         super();
         this.progressBar1 = new ProgressBar('nextStormProgress', '#21276a');
@@ -61,9 +66,24 @@ export default class View extends BaseView {
         this.spaceDockView = new SpaceDockView();
         this.hangarView = new HangarView();
 
-        game?.events.on('tick', () => {
-            if (!document.hidden) this.update();
-        });
+        const main = this.getElement('mainContainer');
+        this.allContainers = Array.from(main.querySelectorAll('.container')) as HTMLElement[];
+        
+        window.addEventListener('resize', () => this.refreshLayout());
+
+        if (game) {
+            game.events.on('tick', () => {
+                if (!document.hidden) this.update();
+            });
+
+            // Listen to all events that can change container visibility
+            game.events.on('computer:unlocked', () => this.refreshLayout());
+            game.events.on('robots:unlocked', () => this.refreshLayout());
+            game.events.on('energy:unlocked', () => this.refreshLayout());
+            game.events.on('spaceStation:unlocked', () => this.refreshLayout());
+            game.events.on('tractorBeam:unlocked', () => this.refreshLayout());
+            game.events.on('spaceDock:unlocked', () => this.refreshLayout());
+        }
     }
 
     update() {
@@ -89,6 +109,89 @@ export default class View extends BaseView {
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
         updateSpace();
+    }
+
+    refreshLayout() {
+        const main = this.getElement('mainContainer');
+        
+        // Extract gap and minWidth from computed styles
+        const mainStyle = window.getComputedStyle(main);
+        const gap = parseFloat(mainStyle.columnGap || mainStyle.gap || '0');
+        
+        // Measure minWidth by creating a temporary column if none exist
+        let minWidth = 280;
+        const existingCol = main.querySelector('.column');
+        if (existingCol) {
+            minWidth = parseFloat(window.getComputedStyle(existingCol).minWidth);
+        } else {
+            const tempCol = document.createElement('div');
+            tempCol.className = 'column';
+            tempCol.style.visibility = 'hidden';
+            tempCol.style.position = 'absolute';
+            main.appendChild(tempCol);
+            minWidth = parseFloat(window.getComputedStyle(tempCol).minWidth);
+            main.removeChild(tempCol);
+        }
+
+        const containerWidth = minWidth + gap; 
+        const currentWidth = main.offsetWidth;
+        const numColumns = Math.max(1, Math.floor((currentWidth + gap) / containerWidth));
+
+        const visibleContainers = this.allContainers.filter(c => !c.classList.contains('hidden'));
+        const visibleCount = visibleContainers.length;
+
+        // Optimization: skip if nothing changed
+        if (this.columns.length === numColumns && 
+            visibleCount === this.lastVisibleCount && 
+            currentWidth === this.lastWidth) {
+            return;
+        }
+
+        // Move all containers to mainContainer temporarily to preserve them in DOM
+        // This ensures hidden containers stay in the DOM (but not visible)
+        for (const container of this.allContainers) {
+            main.appendChild(container);
+        }
+
+        // Recreate columns if count changed
+        if (this.columns.length !== numColumns) {
+            this.columns.forEach(col => col.remove());
+            this.columns = [];
+            for (let i = 0; i < numColumns; i++) {
+                const col = document.createElement('div');
+                col.className = 'column';
+                main.appendChild(col);
+                this.columns.push(col);
+            }
+        }
+
+        this.lastVisibleCount = visibleCount;
+        this.lastWidth = currentWidth;
+
+        if (this.columns.length === 0) return;
+
+        // Distribute visible containers
+        for (let j = 0; j < visibleContainers.length; j++) {
+            const container = visibleContainers[j]!;
+            let shortestColumn = this.columns[0]!;
+            
+            // Heuristic to avoid empty columns: first N items fill first N columns
+            if (j < this.columns.length) {
+                shortestColumn = this.columns[j]!;
+            }
+            else {
+                let minHeight = shortestColumn.offsetHeight;
+                for (let i = 1; i < this.columns.length; i++) {
+                    const col = this.columns[i]!;
+                    if (col.offsetHeight < minHeight) {
+                        shortestColumn = col;
+                        minHeight = col.offsetHeight;
+                    }
+                }
+            }
+
+            shortestColumn.appendChild(container);
+        }
     }
 
     clearComputerRows() {
@@ -195,36 +298,12 @@ const initListeners = () => {
     addClick('btnBuyHangar', () => game?.buyHangar());
 
     const mainContainer = document.getElementById('mainContainer');
-    if (mainContainer) {
-        mainContainer.addEventListener('contextmenu', e => e.preventDefault());
-    }
+    mainContainer?.addEventListener('contextmenu', e => e.preventDefault());
 
     const scienceSlider = document.getElementById('scienceSlider') as HTMLInputElement;
-    if (scienceSlider) {
-        scienceSlider.addEventListener('input', function (this: HTMLInputElement) {
-            if (game) game.population.scienceRatio = Number(this.value);
-        });
-    }
-
-    const buyBatteryInput = document.getElementById('buyBattery') as HTMLInputElement;
-    if (buyBatteryInput) {
-        buyBatteryInput.addEventListener('input', () => view?.energyView.update());
-    }
-
-    const buyBattleshipInput = document.getElementById('buyBattleshipAmount') as HTMLInputElement;
-    if (buyBattleshipInput) {
-        buyBattleshipInput.addEventListener('input', () => view?.spaceDockView.update());
-    }
-
-    const buyFarmInput = document.getElementById('buyFarmAmount') as HTMLInputElement;
-    if (buyFarmInput) {
-        buyFarmInput.addEventListener('input', () => view?.farmsView.update());
-    }
-
-    const buyHangarInput = document.getElementById('buyHangarAmount') as HTMLInputElement;
-    if (buyHangarInput) {
-        buyHangarInput.addEventListener('input', () => view?.hangarView.update());
-    }
+    scienceSlider?.addEventListener('input', function (this: HTMLInputElement) {
+        if (game) game.population.scienceRatio = Number(this.value);
+    });
 
     // Sanitize all numeric-input-small to positive integers
     document.querySelectorAll('.numeric-input-small').forEach(el => {
@@ -261,56 +340,3 @@ document.addEventListener("keydown", function (e) {
     myKeyQueue.push(code);
     processKeyQueue();
 });
-
-const keys: Record<number, number> = { 32: 1, 37: 1, 38: 1, 39: 1, 40: 1 };
-
-function preventDefault(e: any) {
-    e = e || window.event;
-    if (e.preventDefault)
-        e.preventDefault();
-    e.returnValue = false;
-}
-
-function preventDefaultForScrollKeys(e: KeyboardEvent) {
-    if (keys[e.keyCode]) {
-        preventDefault(e);
-        return false;
-    }
-    return true;
-}
-
-function disableScroll() {
-    // @ts-ignore
-    document.onkeydown = preventDefaultForScrollKeys;
-}
-disableScroll();
-
-
-const backgroundGrid = document.getElementById('mainContainer');
-let rclickStartingPoint: {x: number, y: number} | undefined;
-
-if (backgroundGrid) {
-    backgroundGrid.onmousedown = function (e: MouseEvent) {
-        if ((e.which && e.which === 3) || (e.buttons && e.buttons === 2)) { //Right click
-            rclickStartingPoint = { x: e.pageX, y: e.pageY };
-        }
-    };
-
-    backgroundGrid.onmousemove = function (e: MouseEvent) {
-        if ((e.which && e.which === 3) || (e.buttons && e.buttons === 2)) {
-            const dragToPoint = { x: e.pageX, y: e.pageY };
-            if (rclickStartingPoint) {
-                const offsetx = Math.ceil((dragToPoint.x - rclickStartingPoint.x) / 1.5);
-                const offsety = Math.ceil((dragToPoint.y - rclickStartingPoint.y) / 1.5);
-                window.scrollBy(offsetx, offsety);
-                rclickStartingPoint = dragToPoint;
-            }
-        }
-    };
-
-    backgroundGrid.onmouseup = function (e: MouseEvent) {
-        if ((e.which && e.which === 3) || (e.buttons && e.buttons === 2)) {
-            return;
-        }
-    };
-}

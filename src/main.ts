@@ -271,6 +271,7 @@ async function load() {
     }
 
     setInitialView();
+    view?.refreshLayout();
     recalcInterval(10);
 }
 

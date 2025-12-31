@@ -173,7 +173,6 @@ export default class Robots {
             game.events.emit('robots:unlocked');
             this.gainRobots(1);
         }
-        game.events.emit('computer:updated');
         game.events.emit('robots:updated');
     }
 

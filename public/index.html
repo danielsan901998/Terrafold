@@ -65,70 +65,68 @@
 
         <div id="mainContainer" class="small">
 
-            <div class="merged-container">
-                <div id="iceContainer" class="container showthat">
-                    <div class="title">Ice</div>
-                    <div class="main-resource showthat2">
-                        <img src='img/water.png' class='largeIcon'>
-                        <span id="ice"></span>
-                        <div class="showthis2">
-                            <div>Melting: <span id="iceTransferred"></span> <img src='img/water.png' class='smallIcon'></div>
-                        </div>
-                    </div>
-                    <div class="stats-grid">
-                        <div class="stat-row">
-                            <div class="stat-label">Buyable Ice</div>
-                            <div class="stat-value" id="buyableIce"></div>
-                        </div>
-                    </div>
-                    <div id="btnBuyIce" class="button">Buy Ice for $1</div>
-                    <div class="showthis">
-                        Ice melts at a rate of .1% per tick and becomes <img src='img/water.png' class='smallIcon'>.<br>
-                        You can buy up to the max at a time, and it comes back at <span id="iceBuyerAmount"></span> per tick.
+            <div id="iceContainer" class="container showthat">
+                <div class="title">Ice</div>
+                <div class="main-resource showthat2">
+                    <img src='img/water.png' class='largeIcon'>
+                    <span id="ice"></span>
+                    <div class="showthis2">
+                        <div>Melting: <span id="iceTransferred"></span> <img src='img/water.png' class='smallIcon'></div>
                     </div>
                 </div>
-
-                <div id="indoorWaterContainer" class="container showthat">
-                    <div class="title">Storage</div>
-                    <div class="main-resource showthat2">
-                        <img src='img/water.png' class='largeIcon'>
-                        <span><span id="indoorWater"></span> / <span id="indoorWaterMax"></span></span>
-                        <div class="showthis2">
-                            <div>Receiving: <span id="indoorWaterReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Overflowing: <span id="excessWater"></span> <img src='img/water.png' class='smallIcon'></div>
-                        </div>
-                    </div>
-                    <div class="stats-grid">
-                        <div class="stat-row">
-                            <div class="stat-label">Selling</div>
-                            <div class="stat-value" id="indoorWaterSelling"></div>
-                        </div>
-                        <div class="stat-row">
-                            <div class="stat-label">Profits</div>
-                            <div class="stat-value" id="indoorWaterProfits"></div>
-                        </div>
-                    </div>
-                    <div class="showthis">
-                        When <img src='img/water.png' class='smallIcon'> is at max, extra water spills into the lake.<br>
-                        Sells 1% of max per tick. Sells for $2 per 1.<br>
+                <div class="stats-grid">
+                    <div class="stat-row">
+                        <div class="stat-label">Buyable Ice</div>
+                        <div class="stat-value" id="buyableIce"></div>
                     </div>
                 </div>
+                <div id="btnBuyIce" class="button">Buy Ice for $1</div>
+                <div class="showthis">
+                    Ice melts at a rate of .1% per tick and becomes <img src='img/water.png' class='smallIcon'>.<br>
+                    You can buy up to the max at a time, and it comes back at <span id="iceBuyerAmount"></span> per tick.
+                </div>
+            </div>
 
-                <div id="outdoorWaterContainer" class="container showthat">
-                    <div class="title">Lake</div>
-                    <div class="main-resource showthat2">
-                        <img src='img/water.png' class='largeIcon'>
-                        <span id="outdoorWater"></span>
-                        <div class="showthis2">
-                            <div>Receiving (Storage): <span id="lakeWaterFromStorage"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Receiving (Forest): <span id="lakeWaterFromForest"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Receiving (Farm): <span id="lakeWaterFromFarm"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Evaporating: <span id="waterTransferred"></span> <img src='img/water.png' class='smallIcon'></div>
-                        </div>
+            <div id="indoorWaterContainer" class="container showthat">
+                <div class="title">Storage</div>
+                <div class="main-resource showthat2">
+                    <img src='img/water.png' class='largeIcon'>
+                    <span><span id="indoorWater"></span> / <span id="indoorWaterMax"></span></span>
+                    <div class="showthis2">
+                        <div>Receiving: <span id="indoorWaterReceived"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Overflowing: <span id="excessWater"></span> <img src='img/water.png' class='smallIcon'></div>
                     </div>
-                    <div class="showthis">
-                        Lake <img src='img/water.png' class='smallIcon'> evaporates .1% per tick into cloud water.
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-row">
+                        <div class="stat-label">Selling</div>
+                        <div class="stat-value" id="indoorWaterSelling"></div>
                     </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Profits</div>
+                        <div class="stat-value" id="indoorWaterProfits"></div>
+                    </div>
+                </div>
+                <div class="showthis">
+                    When <img src='img/water.png' class='smallIcon'> is at max, extra water spills into the lake.<br>
+                    Sells 1% of max per tick. Sells for $2 per 1.<br>
+                </div>
+            </div>
+
+            <div id="outdoorWaterContainer" class="container showthat">
+                <div class="title">Lake</div>
+                <div class="main-resource showthat2">
+                    <img src='img/water.png' class='largeIcon'>
+                    <span id="outdoorWater"></span>
+                    <div class="showthis2">
+                        <div>Receiving (Storage): <span id="lakeWaterFromStorage"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Receiving (Forest): <span id="lakeWaterFromForest"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Receiving (Farm): <span id="lakeWaterFromFarm"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Evaporating: <span id="waterTransferred"></span> <img src='img/water.png' class='smallIcon'></div>
+                    </div>
+                </div>
+                <div class="showthis">
+                    Lake <img src='img/water.png' class='smallIcon'> evaporates .1% per tick into cloud water.
                 </div>
             </div>
 
@@ -189,70 +187,68 @@
                 </div>
             </div>
 
-            <div class="merged-container">
-                <div id="landContainer" class="container showthat">
-                    <div class="title">Land</div>
-                    <div class="main-resource showthat2">
-                        <img src='img/water.png' class='largeIcon'>
-                        <span id="landWater"></span>
-                        <div class="showthis2">
-                            <div>Receiving: <span id="landReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Dry Land to Soil: <span id="landConverted"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Flowing to Forest: <span id="landWaterToForest"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Flowing to Farm: <span id="landWaterToFarm"></span> <img src='img/water.png' class='smallIcon'></div>
-                        </div>
-                    </div>
-                    <div class="stats-grid">
-                        <div class="stat-row">
-                            <div class="stat-label">Total Land</div>
-                            <div class="stat-value" id="optimizedLand"></div>
-                        </div>
-                        <div class="stat-row">
-                            <div class="stat-label">Soil</div>
-                            <div class="stat-value" id="soil"></div>
-                        </div>
-                    </div>
-                    <div class="showthis">
-                        <div>Base Land: <span id="baseLand"></span></div>
-                        <div>Dry Land: <span id="land"></span></div>
-                        Dry land + water = soil, at a rate of (water / 1000)<br>
-                        .1% <img src='img/water.png' class='smallIcon'> goes to forest, another .1% to farms.<br>
+            <div id="landContainer" class="container showthat">
+                <div class="title">Land</div>
+                <div class="main-resource showthat2">
+                    <img src='img/water.png' class='largeIcon'>
+                    <span id="landWater"></span>
+                    <div class="showthis2">
+                        <div>Receiving: <span id="landReceived"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Dry Land to Soil: <span id="landConverted"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Flowing to Forest: <span id="landWaterToForest"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Flowing to Farm: <span id="landWaterToFarm"></span> <img src='img/water.png' class='smallIcon'></div>
                     </div>
                 </div>
+                <div class="stats-grid">
+                    <div class="stat-row">
+                        <div class="stat-label">Total Land</div>
+                        <div class="stat-value" id="optimizedLand"></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Soil</div>
+                        <div class="stat-value" id="soil"></div>
+                    </div>
+                </div>
+                <div class="showthis">
+                    <div>Base Land: <span id="baseLand"></span></div>
+                    <div>Dry Land: <span id="land"></span></div>
+                    Dry land + water = soil, at a rate of (water / 1000)<br>
+                    .1% <img src='img/water.png' class='smallIcon'> goes to forest, another .1% to farms.<br>
+                </div>
+            </div>
 
-                <div id="foodContainer" class="container showthat">
-                    <div class="title">Farm</div>
-                    <div class="main-resource showthat2">
-                        <img src='img/water.png' class='largeIcon'>
-                        <span id="farmsWater"></span>
-                        <div class="showthis2">
-                            <div>Food Eaten: <span id="farmFoodEaten"></span></div>
-                            <div>Receiving: <span id="farmReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Water to Food: <span id="foodCreated"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Flowing to Lake: <span id="farmWaterToLake"></span> <img src='img/water.png' class='smallIcon'></div>
-                        </div>
+            <div id="foodContainer" class="container showthat">
+                <div class="title">Farm</div>
+                <div class="main-resource showthat2">
+                    <img src='img/water.png' class='largeIcon'>
+                    <span id="farmsWater"></span>
+                    <div class="showthis2">
+                        <div>Food Eaten: <span id="farmFoodEaten"></span></div>
+                        <div>Receiving: <span id="farmReceived"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Water to Food: <span id="foodCreated"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Flowing to Lake: <span id="farmWaterToLake"></span> <img src='img/water.png' class='smallIcon'></div>
                     </div>
-                    <div class="stats-grid">
-                        <div class="stat-row">
-                            <div class="stat-label">Farms</div>
-                            <div class="stat-value" id="farms"></div>
-                        </div>
-                        <div class="stat-row">
-                            <div class="stat-label">Food</div>
-                            <div class="stat-value" id="food"></div>
-                        </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-row">
+                        <div class="stat-label">Farms</div>
+                        <div class="stat-value" id="farms"></div>
                     </div>
-                    <div class="centered-flex-row">
-                        <input id="buyFarmAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                        <div id="btnBuyFarms" class="button">Buy Farm (<span id="farmCost"></span> soil)</div>
+                    <div class="stat-row">
+                        <div class="stat-label">Food</div>
+                        <div class="stat-value" id="food"></div>
                     </div>
-                    <div class="showthis">
-                        <label for="buyFarmAmount">Set how much you want to buy with the input.</label><br>
-                        WARNING: using soil reduces trees.<br>
-                        One farm makes .01 food/tick, using water.<br>
-                        .1% of water per tick goes back to the lake.<br>
-                        <div>Farm Efficiency: <span id="efficiency"></span>%</div>
-                    </div>
+                </div>
+                <div class="centered-flex-row">
+                    <input id="buyFarmAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
+                    <div id="btnBuyFarms" class="button">Buy Farm (<span id="farmCost"></span> soil)</div>
+                </div>
+                <div class="showthis">
+                    <label for="buyFarmAmount">Set how much you want to buy with the input.</label><br>
+                    WARNING: using soil reduces trees.<br>
+                    One farm makes .01 food/tick, using water.<br>
+                    .1% of water per tick goes back to the lake.<br>
+                    <div>Farm Efficiency: <span id="efficiency"></span>%</div>
                 </div>
             </div>
 
@@ -406,51 +402,49 @@
                 </div>
             </div>
 
-            <div class="merged-container">
-                <div id="energyContainer" class="container showthat hidden">
-                    <div class="title">Power Plant</div>
-                    <div id="unlockEnergy" class="button">Build lightning rod for 500 metal</div>
-                    <div id="unlockedEnergy" class="hidden">
-                        <div class="stats-grid">
-                            <div class="stat-row">
-                                <div class="stat-label">Energy</div>
-                                <div class="stat-value" id="energy"></div>
-                            </div>
-                            <div class="stat-row">
-                                <div class="stat-label">Battery</div>
-                                <div class="stat-value" id="battery"></div>
-                            </div>
+            <div id="energyContainer" class="container showthat hidden">
+                <div class="title">Power Plant</div>
+                <div id="unlockEnergy" class="button">Build lightning rod for 500 metal</div>
+                <div id="unlockedEnergy" class="hidden">
+                    <div class="stats-grid">
+                        <div class="stat-row">
+                            <div class="stat-label">Energy</div>
+                            <div class="stat-value" id="energy"></div>
                         </div>
-                        <div class="centered-flex-row">
-                            <input id="buyBattery" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                            <div id="btnBuyBattery" class="button">Build Battery (<span id="batteryCost"></span>)</div>
+                        <div class="stat-row">
+                            <div class="stat-label">Battery</div>
+                            <div class="stat-value" id="battery"></div>
                         </div>
                     </div>
-                    <div class="showthis">
-                        Loses 2% of energy past the battery per tick<br>
-                        <div>Draining: <span id="drain"></span></div><br>
+                    <div class="centered-flex-row">
+                        <input id="buyBattery" type="number" min="1" step="1" value="1" class="numeric-input-small">
+                        <div id="btnBuyBattery" class="button">Build Battery (<span id="batteryCost"></span>)</div>
                     </div>
                 </div>
+                <div class="showthis">
+                    Loses 2% of energy past the battery per tick<br>
+                    <div>Draining: <span id="drain"></span></div><br>
+                </div>
+            </div>
 
-                <div id="spaceStationContainer" class="container showthat hidden">
-                    <div class="title">Space Station</div>
-                    <div id="unlockSpaceStation" class="button">Build Space Station for 2000 metal, 20k wood</div>
-                    <div id="unlockedSpaceStation" class="hidden">
-                        <div class="stats-grid">
-                            <div class="stat-row">
-                                <div class="stat-label">In Orbit</div>
-                                <div class="stat-value" id="orbitingResources"></div>
-                            </div>
-                            <div class="stat-row">
-                                <div class="stat-label">Sending</div>
-                                <div class="stat-value" id="orbitSending"></div>
-                            </div>
+            <div id="spaceStationContainer" class="container showthat hidden">
+                <div class="title">Space Station</div>
+                <div id="unlockSpaceStation" class="button">Build Space Station for 2000 metal, 20k wood</div>
+                <div id="unlockedSpaceStation" class="hidden">
+                    <div class="stats-grid">
+                        <div class="stat-row">
+                            <div class="stat-label">In Orbit</div>
+                            <div class="stat-value" id="orbitingResources"></div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Sending</div>
+                            <div class="stat-value" id="orbitSending"></div>
                         </div>
                     </div>
-                    <div class="showthis">
-                        Sends .01% of orbiting resources to the planet.<br>
-                        Dirt gets added to base land.<br>
-                    </div>
+                </div>
+                <div class="showthis">
+                    Sends .01% of orbiting resources to the planet.<br>
+                    Dirt gets added to base land.<br>
                 </div>
             </div>
 
@@ -469,42 +463,42 @@
                 </div>
             </div>
 
-                <div id="spaceDockContainer" class="container showthat hidden">
-                    <div class="title">Space Dock</div>
-                    <div class="stats-grid">
-                        <div class="stat-row">
-                            <div class="stat-label">Battleships</div>
-                            <div class="stat-value" id="battleships"></div>
-                        </div>
-                    </div>
-                    <div class="centered-flex-row">
-                        <input id="buyBattleshipAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                        <div id="btnBuyBattleship" class="button">Build Battleship (<span id="battleshipCost"></span>)</div>
-                    </div>
-                    <div class="showthis">
-                        <label for="buyBattleshipAmount">Set how much you want to buy with the input.</label><br>
+            <div id="spaceDockContainer" class="container showthat hidden">
+                <div class="title">Space Dock</div>
+                <div class="stats-grid">
+                    <div class="stat-row">
+                        <div class="stat-label">Battleships</div>
+                        <div class="stat-value" id="battleships"></div>
                     </div>
                 </div>
+                <div class="centered-flex-row">
+                    <input id="buyBattleshipAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
+                    <div id="btnBuyBattleship" class="button">Build Battleship (<span id="battleshipCost"></span>)</div>
+                </div>
+                <div class="showthis">
+                    <label for="buyBattleshipAmount">Set how much you want to buy with the input.</label><br>
+                </div>
+            </div>
 
-                <div id="hangarContainer" class="container showthat hidden">
-                    <div class="title">Hangar</div>
-                    <div class="stats-grid">
-                        <div class="stat-row">
-                            <div class="stat-label">Sending</div>
-                            <div class="stat-value" id="hangarSending"></div>
-                        </div>
-                    </div>
-                    <div class="centered-flex-row">
-                        <input id="buyHangarAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                        <div id="btnBuyHangar" class="button">Increase hangar size (<span id="hangarCost"></span> soil)</div>
-                    </div>
-                    <div class="showthis">
-                        Takes 5% of your current food. The more food a ship takes the longer it lasts<br>
-                        When a ship is out of food it comes back to base.<br>
-                        Ships destroy atmosphere, destroy health, and build buidings before moving on.<br>
-                        The buildings add dirt directly to your space station.
+            <div id="hangarContainer" class="container showthat hidden">
+                <div class="title">Hangar</div>
+                <div class="stats-grid">
+                    <div class="stat-row">
+                        <div class="stat-label">Sending</div>
+                        <div class="stat-value" id="hangarSending"></div>
                     </div>
                 </div>
+                <div class="centered-flex-row">
+                    <input id="buyHangarAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
+                    <div id="btnBuyHangar" class="button">Increase hangar size (<span id="hangarCost"></span> soil)</div>
+                </div>
+                <div class="showthis">
+                    Takes 5% of your current food. The more food a ship takes the longer it lasts<br>
+                    When a ship is out of food it comes back to base.<br>
+                    Ships destroy atmosphere, destroy health, and build buidings before moving on.<br>
+                    The buildings add dirt directly to your space station.
+                </div>
+            </div>
 
         </div>
             <div id="spaceContainer" class="hidden">
