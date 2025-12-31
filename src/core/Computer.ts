@@ -42,6 +42,7 @@ export default class Computer {
                 finish: function () {
                     if (game) game.land.improveLand();
                     if (game) this.ticksNeeded = Math.floor(game.land.baseLand);
+                    game?.events.emit('computer:updated');
                 },
                 showing: function () {
                     return true;
@@ -248,6 +249,7 @@ export default class Computer {
             game.cash -= threadCost;
             this.threads++;
             this.freeThreads++;
+            game.events.emit('computer:updated');
         }
     }
 
@@ -261,6 +263,7 @@ export default class Computer {
         if (game.science >= speedCost) {
             game.science -= speedCost;
             this.speed++;
+            game.events.emit('computer:updated');
         }
     }
 
@@ -274,6 +277,7 @@ export default class Computer {
         if (proc) {
             proc.threads += numAdding;
             this.freeThreads -= numAdding;
+            game?.events.emit('computer:updated');
         }
     }
 
@@ -283,6 +287,7 @@ export default class Computer {
             numRemoving = Math.min(numRemoving, proc.threads);
             proc.threads -= numRemoving;
             this.freeThreads += numRemoving;
+            game?.events.emit('computer:updated');
         }
     }
 }

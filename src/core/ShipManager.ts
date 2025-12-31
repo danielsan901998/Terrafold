@@ -88,6 +88,7 @@ export default class ShipManager {
         game.spaceDock.battleships += ship.count;
         game.spaceDock.sended -= ship.count;
         game.farms.food += ship.food * ShipManager.foodPerShip;
+        game.events.emit('spaceDock:updated');
         for (let i = game.space.ships.length - 1; i >= 0; i--) {
             const otherShip = game.space.ships[i];
             if (otherShip === ship) {

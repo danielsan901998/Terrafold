@@ -1,3 +1,5 @@
+import { game } from '../main';
+
 export default class Farms {
     water: number;
     farms: number;
@@ -36,9 +38,11 @@ export default class Farms {
 
     addFarm(amount: number) {
         this.farms += amount;
+        game?.events.emit('farms:updated');
     }
 
     improve() {
         this.efficiency += .02;
+        game?.events.emit('farms:updated');
     }
 }

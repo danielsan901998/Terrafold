@@ -7,8 +7,14 @@ export default class EnergyView extends BaseView {
     constructor() {
         super();
         if (game) {
-            game.events.on('energy:unlocked', () => this.checkUnlocked());
-            game.events.on('energy:updated', () => this.update());
+            game.events.on('energy:unlocked', () => {
+                this.checkUnlocked();
+                this.updateFull();
+            });
+            game.events.on('energy:updated', () => this.updateFull());
+
+            const el = document.getElementById('buyBattery');
+            if (el) el.addEventListener('input', () => this.updateFull());
         }
     }
 
@@ -20,6 +26,7 @@ export default class EnergyView extends BaseView {
             if (this.getElement('spaceStationContainer').classList.contains("hidden")) {
                 this.getElement('spaceStationContainer').classList.remove("hidden");
             }
+            this.updateFull();
         } else {
             this.setVisible('unlockedEnergy', false);
             this.setVisible('unlockEnergy', true);
@@ -32,11 +39,16 @@ export default class EnergyView extends BaseView {
     update() {
         if (!game) return;
         this.updateElementText('energy', intToString(game.power));
-        this.updateElementText('battery', intToString(game.energy.battery, 1));
         this.updateElementText('drain', intToString(game.energy.drain));
+    }
+
+    updateFull() {
+        if (!game) return;
+        this.updateElementText('battery', intToString(game.energy.battery, 1));
 
         const el = document.getElementById('buyBattery') as HTMLInputElement;
         const amount = el ? Number(el.value) : 1;
         this.updateElementText('batteryCost', intToString(amount * 3e4) + " oxygen and " + intToString(amount * 2e4) + " science");
+        this.update();
     }
 }

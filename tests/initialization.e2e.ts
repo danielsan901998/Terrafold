@@ -57,7 +57,6 @@ test.describe('Initialization', () => {
       '#unlockedEnergy',
       '#unlockedSpaceStation',
       '#unlockedTractorBeam',
-      '#failRobots',
       '#unlockedRobots',
       '#lightningContainer',
       '#lightningTooltip',

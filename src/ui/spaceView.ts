@@ -107,10 +107,9 @@ function drawShip(ship: Ship) {
 
     ctx.save();
     ctx.translate(offsetX+25, ship.y+25);
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 1;
-    ctx.strokeText(ship.count.toString(),-4,20);
-    ctx.strokeText(intToString(ship.food / ship.count / 10, 1),-4,30);
+    ctx.fillStyle = "white";
+    ctx.fillText(ship.count.toString(),-4,20);
+    ctx.fillText(intToString(ship.food / ship.count / 10, 1),-4,30);
     ctx.restore();
 }
 
@@ -126,9 +125,8 @@ function drawPlanet(planet: any, text: string) {
     drawPlanetHealth(planet, size);
     drawPlanetObjects(planet, size);
 
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 1;
-    ctx.strokeText(text,-3,4);
+    ctx.fillStyle = "white";
+    ctx.fillText(text,-3,4);
     ctx.restore();
 }
 

@@ -3,11 +3,13 @@ import { intToString, getClickAmount, round2 } from '../utils/utils';
 import BaseView from './BaseView';
 
 export default class ComputerView extends BaseView {
+    private hoveredIndex: number | null = null;
 
     constructor() {
         super();
         if (game) {
             game.events.on('computer:unlocked', () => this.checkUnlocked());
+            game.events.on('computer:updated', () => this.update());
         }
     }
 
@@ -17,6 +19,7 @@ export default class ComputerView extends BaseView {
             this.setVisible('unlockedComputer', true);
             this.setVisible('unlockComputer', false);
             this.setVisible('robotsContainer', true);
+            this.update();
         } else {
             this.setVisible('unlockedComputer', false);
             this.setVisible('unlockComputer', true);
@@ -45,19 +48,25 @@ export default class ComputerView extends BaseView {
             return;
         }
         const row = game.computer.processes[i];
-        if (!row) return;
+        if (!row || !row.showing()) return;
+
         const baseId = "computerRow" + i;
-        this.getElement(baseId + "PB").style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
-        this.getElement(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
-        this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks));
-        this.updateElementText(baseId + "TicksNeeded", String(row.ticksNeeded));
-        const costContainer = this.getElement(baseId + "CostContainer");
-        if (row.cost !== 0) {
-            costContainer.classList.remove("hidden");
-            this.updateElementText(baseId + "Cost", intToString(row.cost));
-            this.updateElementText(baseId + "CostType", row.costType);
-        } else {
-            costContainer.classList.add("hidden");
+        const pb = this.getElement(baseId + "PB");
+        pb.style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
+        pb.style.backgroundColor = row.isMoving ? "yellow" : "red";
+
+        // Only update tooltip text if it's actually visible (hovered)
+        if (this.hoveredIndex === i) {
+            this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks));
+            this.updateElementText(baseId + "TicksNeeded", String(row.ticksNeeded));
+            const costContainer = this.getElement(baseId + "CostContainer");
+            if (row.cost !== 0) {
+                costContainer.classList.remove("hidden");
+                this.updateElementText(baseId + "Cost", intToString(row.cost));
+                this.updateElementText(baseId + "CostType", row.costType);
+            } else {
+                costContainer.classList.add("hidden");
+            }
         }
     }
 
@@ -67,6 +76,12 @@ export default class ComputerView extends BaseView {
         rowContainer.className = "computerRow";
         const baseId = "computerRow" + dataPos;
         rowContainer.id = baseId + 'Container';
+
+        rowContainer.addEventListener('mouseenter', () => {
+            this.hoveredIndex = dataPos;
+            this.updateRowProgress(dataPos);
+        });
+        rowContainer.addEventListener('mouseleave', () => this.hoveredIndex = null);
 
         const plusButton = document.createElement("div");
         plusButton.id = baseId + "Plus";

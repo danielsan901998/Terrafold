@@ -28,6 +28,7 @@ export default class Hangar {
                 game.space.spawnShip(newShip, this.y);
                 game.spaceDock.battleships -= tosend;
                 game.spaceDock.sended += tosend;
+                game.events.emit('spaceDock:updated');
                 this.timeRemaining = this.totalTime;
             } else {
                 this.timeRemaining = 0;

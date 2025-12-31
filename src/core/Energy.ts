@@ -35,5 +35,6 @@ export default class Energy {
 
     buyBattery(amount: number) {
         this.battery += amount;
+        game?.events.emit('energy:updated');
     }
 }

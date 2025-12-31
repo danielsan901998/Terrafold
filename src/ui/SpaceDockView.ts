@@ -7,8 +7,14 @@ export default class SpaceDockView extends BaseView {
     constructor() {
         super();
         if (game) {
-            game.events.on('spaceDock:unlocked', () => this.checkUnlocked());
+            game.events.on('spaceDock:unlocked', () => {
+                this.checkUnlocked();
+                this.update();
+            });
             game.events.on('spaceDock:updated', () => this.update());
+            
+            const el = document.getElementById('buyBattleshipAmount');
+            if (el) el.addEventListener('input', () => this.update());
         }
     }
 
@@ -19,6 +25,7 @@ export default class SpaceDockView extends BaseView {
             this.setVisible('hangarContainer', true);
             this.setVisible('spaceCanvas', true);
             this.setVisible('spaceContainer', true);
+            this.update();
         } else {
             this.setVisible('spaceDockContainer', false);
             this.setVisible('hangarContainer', false);

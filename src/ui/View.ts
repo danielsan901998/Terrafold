@@ -109,13 +109,11 @@ export default class View extends BaseView {
         this.farmsView.update();
         this.populationView.update();
         this.updateComputerRowProgress();
-        this.computerView.update();
         this.robotsView.update();
         this.updateRobotsRowProgress();
         this.energyView.update();
         this.spaceStationView.update();
         this.tractorBeamView.update();
-        this.spaceDockView.update();
         this.hangarView.update();
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
@@ -302,7 +300,6 @@ const initListeners = () => {
     addClick('buyThread', () => game?.computer.buyThread());
     addClick('buySpeed', () => game?.computer.buySpeed());
     addClick('unlockRobots', () => game?.robots.unlockRobots());
-    addClick('failRobots', () => game?.robots.failedRobots());
     addClick('unlockEnergy', () => game?.energy.unlockEnergy());
     addClick('btnBuyBattery', () => game?.buyBattery());
     addClick('unlockSpaceStation', () => game?.spaceStation.unlockSpaceStation());

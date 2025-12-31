@@ -3,31 +3,30 @@ import { intToString, getClickAmount } from '../utils/utils';
 import BaseView from './BaseView';
 
 export default class RobotsView extends BaseView {
+    private hoveredIndex: number | null = null;
 
     constructor() {
         super();
         if (game) {
-            game.events.on('robots:unlocked', () => this.checkUnlocked());
-            game.events.on('robots:updated', () => this.update());
+            game.events.on('robots:unlocked', () => {
+                this.checkUnlocked();
+                this.updateFull();
+            });
+            game.events.on('robots:updated', () => this.updateFull());
         }
     }
 
     checkUnlocked() {
         if (!game) return;
         if (game.robots.unlocked) {
-            if (game.robots.failed) {
-                this.setVisible('unlockedRobots', false);
-                this.setVisible('failRobots', true);
-            } else {
-                this.setVisible('unlockedRobots', true);
-                this.setVisible('unlockRobots', false);
-                this.setVisible('failRobots', false);
-                this.setVisible('lightningContainer', true);
-                this.setVisible('lightningTooltip', true);
-                this.setVisible('energyContainer', true);
-                this.setVisible('woodContainer', true);
-                this.setVisible('metalContainer', true);
-            }
+            this.setVisible('unlockedRobots', true);
+            this.setVisible('unlockRobots', false);
+            this.setVisible('lightningContainer', true);
+            this.setVisible('lightningTooltip', true);
+            this.setVisible('energyContainer', true);
+            this.setVisible('woodContainer', true);
+            this.setVisible('metalContainer', true);
+            this.updateFull();
         } else {
             this.setVisible('unlockedRobots', false);
             this.setVisible('unlockRobots', true);
@@ -41,10 +40,14 @@ export default class RobotsView extends BaseView {
 
     update() {
         if (!game) return;
+        this.updateElementText('ore', intToString(game.robots.ore));
+    }
+
+    updateFull() {
+        if (!game) return;
         this.updateElementText('robots', String(game.robots.robots));
         this.updateElementText('robotsFree', String(game.robots.robotsFree));
         this.updateElementText('robotMax', String(game.robots.robotMax));
-        this.updateElementText('ore', intToString(game.robots.ore));
         if (game.robots.jobs[5]) {
             this.updateElementText('totalDirtFromOre', intToString((game.robots.jobs[5].completions || 0) * 5));
         }
@@ -54,28 +57,34 @@ export default class RobotsView extends BaseView {
             this.updateElementText('robotRow' + i + 'Workers', String(row.workers));
             this.setVisible('robotRow' + i + 'Container', row.showing());
         }
+        this.update();
     }
 
     updateRowProgress(i: number) {
         if (!game) return;
         const row = game.robots.jobs[i];
-        if (!row) return;
-        const baseId = "robotRow" + i;
-        if (row.ticksNeeded === undefined) { // Has a progress bar
+        if (!row || !row.showing() || row.ticksNeeded === undefined) {
             return;
         }
-        this.getElement(baseId + "PB").style.width = ((row.currentTicks || 0) / row.ticksNeeded) * 100 + "%";
-        this.getElement(baseId + "PB").style.backgroundColor = row.isMoving ? "yellow" : "red";
-        this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks || 0));
-        this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded, 1));
-        const costContainer = this.getElement(baseId + "CostContainer");
-        if (row.cost && row.costType) {
-            costContainer.classList.remove("hidden");
-            let costString = intToString(row.cost[0] || 0) + " " + (row.costType[0] || "");
-            costString += row.cost.length > 1 ? " and " + intToString(row.cost[1] || 0) + " " + (row.costType[1] || "") : "";
-            this.updateElementText(baseId + "Cost", costString);
-        } else {
-            costContainer.classList.add("hidden");
+        
+        const baseId = "robotRow" + i;
+        const pb = this.getElement(baseId + "PB");
+        pb.style.width = ((row.currentTicks || 0) / row.ticksNeeded) * 100 + "%";
+        pb.style.backgroundColor = row.isMoving ? "yellow" : "red";
+
+        // Only update tooltip text if it's actually visible (hovered)
+        if (this.hoveredIndex === i) {
+            this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks || 0));
+            this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded, 1));
+            const costContainer = this.getElement(baseId + "CostContainer");
+            if (row.cost && row.costType) {
+                costContainer.classList.remove("hidden");
+                let costString = intToString(row.cost[0] || 0) + " " + (row.costType[0] || "");
+                costString += row.cost.length > 1 ? " and " + intToString(row.cost[1] || 0) + " " + (row.costType[1] || "") : "";
+                this.updateElementText(baseId + "Cost", costString);
+            } else {
+                costContainer.classList.add("hidden");
+            }
         }
     }
 
@@ -85,6 +94,12 @@ export default class RobotsView extends BaseView {
         rowContainer.className = "robotRow";
         const baseId = "robotRow" + dataPos;
         rowContainer.id = baseId + 'Container';
+
+        rowContainer.addEventListener('mouseenter', () => {
+            this.hoveredIndex = dataPos;
+            this.updateRowProgress(dataPos);
+        });
+        rowContainer.addEventListener('mouseleave', () => this.hoveredIndex = null);
 
         const plusButton = document.createElement("div");
         plusButton.id = baseId + "Plus";

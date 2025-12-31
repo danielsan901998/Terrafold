@@ -201,6 +201,7 @@ class Game implements IGame {
         }
         this.land.soil -= toBuy * cost;
         this.hangar.sendRate += toBuy;
+        this.events.emit('hangar:updated');
     }
 }
 
@@ -256,6 +257,8 @@ function loadDefaults() {
 
 function setInitialView() {
     if (!view) return;
+    view.farmsView.updateFull();
+    view.hangarView.updateFull();
     view.spaceDockView.checkUnlocked();
     view.tractorBeamView.checkUnlocked();
     view.spaceStationView.checkUnlocked();

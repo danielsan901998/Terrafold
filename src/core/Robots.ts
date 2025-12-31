@@ -23,7 +23,6 @@ export default class Robots {
     unlocked: number;
     ore: number;
     mines: number;
-    failed: number;
     jobs: Job[];
 
     constructor() {
@@ -33,7 +32,6 @@ export default class Robots {
         this.unlocked = 0;
         this.ore = 0;
         this.mines = 0;
-        this.failed = 0;
 
         this.jobs = [
             { // Cut Trees
@@ -152,6 +150,7 @@ export default class Robots {
             row.currentTicks = 0;
             row.completions = (row.completions || 0) + 1;
             row.finish();
+            game?.events.emit('robots:updated');
             this.tickRow(row, overflow); // recursive, but on the new cost
         }
     }
@@ -159,10 +158,12 @@ export default class Robots {
     gainRobots(amount: number) {
         this.robots += amount;
         this.robotsFree += amount;
+        game?.events.emit('robots:updated');
     }
 
     gainStorage(amount: number) {
         this.robotMax += amount;
+        game?.events.emit('robots:updated');
     }
 
     unlockRobots() {
@@ -170,17 +171,6 @@ export default class Robots {
         if (game.cash >= 3000) {
             game.cash -= 3000;
             this.unlocked = 1;
-            game.events.emit('robots:unlocked');
-            this.gainRobots(1);
-        }
-        game.events.emit('robots:updated');
-    }
-
-    failedRobots() {
-        if (!game) return;
-        if (game.cash >= 1e6) {
-            game.cash -= 1e6;
-            this.failed = 0;
             game.events.emit('robots:unlocked');
             this.gainRobots(1);
         }

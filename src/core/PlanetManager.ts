@@ -25,14 +25,14 @@ export default class PlanetManager {
     }
 
     static xAreaAllowed() {
-        if (!game) return Math.random() * 744;
-        const activeWidth = game.canvasWidth * 0.8; // 1200 - 240 = 960
-        return Math.random() * (activeWidth - 100); 
+        if (!game) return 0;
+        const activeWidth = game.canvasWidth * 0.8;
+        return Math.random() * (activeWidth - 200); 
     }
 
     static yAreaAllowed() {
-        if (!game) return Math.random() * 465 + 10;
-        const maxHeight = game.canvasHeight * 0.80; // 510
+        if (!game) return 0;
+        const maxHeight = game.canvasHeight * 0.80;
         return Math.random() * (maxHeight - 55) + 10;
     }
 
