@@ -4,7 +4,9 @@
   "scripts": {
     "build": "bun build.ts",
     "start": "bun build.ts && bun server.ts",
-    "test": "playwright test"
+    "test": "bun run unit-test && bun run integration-test",
+    "unit-test": "bun test",
+    "integration-test": "playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",

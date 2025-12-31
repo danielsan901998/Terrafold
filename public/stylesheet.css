@@ -369,6 +369,22 @@ body {
     gap: 4px;
 }
 
+/* Comet Rows */
+#allPassing {
+    padding: 0 10px;
+}
+
+.comet-row {
+    display: flex;
+    gap: 4px;
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+#allPassing span {
+    font-weight: bold;
+}
+
 /* Specific styling for header menus to make them easier to interact with */
 #info .showthis {
     left: 0;
