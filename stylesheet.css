@@ -1,0 +1,646 @@
+:root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --card-hover-bg: #2a2a2a;
+    --text-color: #e0e0e0;
+    --text-muted: #aaaaaa;
+    --accent-color: #4CAF50;
+    --accent-hover: #45a049;
+    --water-color: #2196F3;
+    --border-color: #333333;
+    --tooltip-bg: #333333;
+    --button-bg: #2e7d32;
+    --button-hover: #388e3c;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: var(--text-color);
+    font-size: 14px;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 40px;
+    background-color: var(--bg-color);
+    cursor: default;
+    overflow-x: hidden;
+}
+
+#info {
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    gap: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.infoText {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+    padding: 0 10px;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    color: var(--text-color);
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.infoText:hover {
+    background-color: var(--card-hover-bg);
+}
+
+#resources {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    gap: 20px;
+    padding: 0 10px;
+}
+
+#sliderContainer {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#unlockedComputer > .stats-grid, 
+#unlockedRobots > .stats-grid {
+    margin-bottom: 8px;
+}
+
+#computerRows, #robotRows {
+    display: block;
+    text-align: left;
+    width: 100%;
+}
+
+#computerRows .computerRow, #robotRows .robotRow {
+    display: flex;
+}
+
+.globalResourceInfo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    width: auto;
+}
+
+.storm-intensity-bar {
+    width: 8px;
+    height: 20px;
+    margin-left: 4px;
+}
+
+.storm-progress-label {
+    font-size: 10px;
+}
+
+.forest-arrows {
+    margin-bottom: 10px;
+}
+
+.arrow-icon {
+    font-size: 10px;
+}
+
+.happy-icon {
+    border-radius: 50%;
+}
+
+.city-delta {
+    font-size: 11px;
+}
+
+.science-ratio-label {
+    font-size: 11px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    min-height: 1.2em;
+}
+
+#sliderContainer {
+    width: 100%;
+    margin-top: 10px;
+    padding: 0 10px;
+    flex-direction: column;
+}
+
+.full-width-slider {
+    width: 100%;
+    margin: 0;
+}
+
+.numeric-input-small {
+    flex: 1;
+    min-width: 60px;
+    max-width: 120px;
+}
+
+#spaceCanvas {
+    display: block;
+    width: 1000px;
+    height: 500px;
+}
+
+#mainContainer {
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: start;
+    justify-content: center;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 350px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    min-width: 0;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+#computerContainer, #robotsContainer {
+    min-width: 280px;
+}
+
+.storm-intensity-bar.verticalProgress {
+    height: 40px;
+}
+
+.progress-active {
+    width: 70px;
+    height: 70px;
+}
+
+.centered-flex-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin: 4px 0;
+    flex-wrap: wrap;
+}
+
+.clouds-progress {
+    align-items: flex-start !important;
+}
+
+#unlockedComputer, #unlockedRobots, #unlockedEnergy, #unlockedSpaceStation, #unlockedTractorBeam {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Header info lines (like Threads: 3/25) */
+#unlockedComputer > .centered-flex-row, 
+#unlockedRobots > .centered-flex-row,
+#unlockedEnergy > .centered-flex-row {
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+    white-space: nowrap;
+}
+
+/* Strengthen tooltip reset to prevent any nested divs from inheriting inline-flex/nowrap */
+.showthis div:not(.hidden), .showthis2 div:not(.hidden), .computerTooltipContainer div:not(.hidden), .rowTooltip div:not(.hidden) {
+    display: block !important;
+}
+
+.showthis div, .showthis2 div, .computerTooltipContainer div, .rowTooltip div {
+    white-space: normal !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.tooltipDivider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 8px 0;
+}
+
+.tooltipStats {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.tooltipStats b {
+    color: var(--text-color);
+}
+
+.tooltipDescription {
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+#computerContainer, #robotsContainer, #energyContainer {
+    display: block;
+}
+
+.container .title {
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.main-resource {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 5px 0 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: 100%;
+    gap: 4px 15px;
+    margin-bottom: 8px;
+    padding: 0 10px;
+    align-items: center;
+}
+
+.stat-row {
+    display: contents; /* Allows children to be part of the grid */
+}
+
+.stat-label {
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 13px;
+    word-break: break-word;
+}
+
+#iceContainer .stat-label {
+    white-space: nowrap;
+}
+
+.showthat, .showthat2 {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.showthat:hover .showthis, 
+.showthat2:hover .showthis2 {
+    display: block;
+}
+
+.showthis, .showthis2, .computerTooltipContainer {
+    display: none !important;
+    position: absolute;
+    background-color: var(--tooltip-bg);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    padding: 10px;
+    min-width: 250px;
+    max-width: 300px;
+    border-radius: 6px;
+    top: 100%;
+    z-index: 2000;
+    text-align: left;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 1.4;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.stat-value {
+    text-align: right;
+    font-weight: bold;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+/* Comet Rows */
+#allPassing {
+    padding: 0 10px;
+}
+
+.comet-row {
+    display: flex;
+    gap: 4px;
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+#allPassing span {
+    font-weight: bold;
+}
+
+/* Specific styling for header menus to make them easier to interact with */
+#info .showthis {
+    left: 0;
+    transform: none;
+    pointer-events: auto;
+    /* Create a small invisible bridge so the menu doesn't close when moving mouse from trigger to menu */
+    margin-top: 0;
+}
+
+#info .showthat {
+    /* Ensure the trigger has enough height or padding so there's no gap */
+    padding-bottom: 5px; 
+}
+
+/* Restore pointer-events: none for actual tooltips (not menus) to prevent flickering when mouse over them */
+.computerTooltipContainer, .showthis2 {
+    pointer-events: none;
+    margin-top: 5px;
+    z-index: 2100;
+}
+
+#resources .showthis2 {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
+.showthat:hover > .showthis, 
+.showthat2:hover > .showthis2,
+.computerRow:hover .computerTooltipContainer, 
+.robotRow:hover .computerTooltipContainer {
+    display: block !important;
+}
+
+#resources {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 0 10px;
+    flex-wrap: nowrap; /* Prevent resources in header from wrapping into multiple lines */
+}
+
+.globalResourceInfo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap; /* Keep icon and text together */
+}
+
+.button {
+    background-color: var(--button-bg);
+    color: white;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.1s;
+    margin: 5px 2px;
+    display: inline-block;
+    font-size: 12px;
+    max-width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+
+.button div {
+    display: inline;
+}
+
+.computerRow .button, .robotRow .button {
+    padding: 2px 8px;
+    margin: 0 4px;
+    min-width: 25px;
+    white-space: nowrap;
+}
+
+.button:hover {
+    background-color: var(--button-hover);
+}
+
+.button:active {
+    transform: scale(0.98);
+}
+
+input[type="number"], 
+input[type="range"] {
+    background-color: #333;
+    color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 4px;
+    margin: 4px 0;
+    font-size: 12px;
+}
+
+.superLargeIcon { width: 32px; height: 32px; margin: 5px 0; vertical-align: middle; }
+.largeIcon { width: 20px; height: 20px; vertical-align: middle; }
+.smallIcon { width: 16px; height: 16px; vertical-align: middle; }
+
+.progress-bar {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.verticalProgress {
+    background-color: #333;
+    border-radius: 3px;
+    width: 10px;
+    height: 50px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.verticalProgressInner {
+    background-color: var(--accent-color);
+    width: 100%;
+    transition: height 0.1s linear;
+}
+
+.forestIcon {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 3px 6px;
+    margin: 3px;
+    background-color: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#spaceContainer {
+    width: 1004px; /* 1000px canvas + 2px border on each side */
+    margin: 20px auto;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: black;
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+.small { font-size: 11px; color: var(--text-muted); }
+.medium { font-size: 14px; }
+.large { font-size: 18px; }
+
+#exportImportSave {
+    width: 100%;
+    height: 60px;
+    background: #333;
+    color: #eee;
+    border: 1px solid #555;
+    margin-top: 5px;
+}
+
+/* Computer and Robot Rows */
+.computerRow, .robotRow {
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 4px;
+    width: 100%;
+    transition: background-color 0.2s;
+    flex-wrap: nowrap;
+}
+
+.computerRow:hover, .robotRow:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.computerRow > div, .robotRow > div {
+    display: inline-flex;
+    align-items: center;
+}
+
+.computerRow .button, .robotRow .button, 
+.computerRow .small, .robotRow .small {
+    flex-shrink: 0;
+}
+
+.computerRow .rowLabel, .robotRow .rowLabel {
+    flex: 1;
+    text-align: left;
+    margin: 0 8px;
+    white-space: normal;
+    min-width: 0;
+    word-break: break-word;
+    font-size: 12px;
+}
+
+.computerRow:hover .computerTooltipContainer, 
+.robotRow:hover .computerTooltipContainer {
+    display: block !important;
+}
+
+.rowTooltip {
+    display: block;
+    width: 100%;
+}
+
+.rowProgressBarOuter {
+    flex: 1;
+    min-width: 60px;
+    max-width: 150px;
+    height: 16px;
+    background-color: #333;
+    border-radius: 3px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.rowProgressBarInner {
+    width: 0;
+    height: 100%;
+    background-color: var(--accent-color);
+    transition: width 0.1s linear;
+}
+
+/* Comets and Asteroids */
+.comet {
+    z-index: 1;
+    position: absolute;
+    background-color: var(--water-color);
+    opacity: 0.6;
+    pointer-events: none;
+    box-shadow: 0 0 10px var(--water-color);
+}
+
+.asteroid {
+    z-index: 1;
+    position: absolute;
+    background-color: #8d6e63;
+    opacity: 0.7;
+    pointer-events: none;
+    box-shadow: 0 0 5px #5d4037;
+}
+

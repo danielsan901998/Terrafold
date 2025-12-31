@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "sources": ["../../src/workers/interval.ts"],
+  "sourcesContent": [
+    "let intervalId: Timer | null = null;\nself.onmessage = function(event: MessageEvent) {\n    if ( event.data.start ) {\n        // @ts-ignore\n        intervalId = setInterval(function(){\n            self.postMessage('interval.start');\n        }, event.data.ms || 0);\n    }\n    if ( event.data.stop && intervalId !== null ) {\n        // @ts-ignore\n        clearInterval(intervalId);\n    }\n};\n"
+  ],
+  "mappings": "AAAA,IAAI,EAA2B,KAC/B,KAAK,UAAY,QAAQ,CAAC,EAAqB,CAC3C,GAAK,EAAM,KAAK,MAEZ,EAAa,YAAY,QAAQ,EAAE,CAC/B,KAAK,YAAY,gBAAgB,GAClC,EAAM,KAAK,IAAM,CAAC,EAEzB,GAAK,EAAM,KAAK,MAAQ,IAAe,KAEnC,cAAc,CAAU",
+  "debugId": "857A867583CC03F464756E2164756E21",
+  "names": []
+}
