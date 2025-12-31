@@ -2,6 +2,8 @@
 
 ## Core Game Mechanics & Systems
 *   **Computer**
+    *   Make showing a boolean instead of a function, use events to update visibility.
+    *   Diferenciate done between repetable like Build Robots and Bigger Storms, only unassign threads for no repetible
     *   Modify Bigger Storms
         *   Unlocks Targetted Sunlight (Improves ice melting rate, 10% at a time up to 100%)
             *   Disappears when Complete
@@ -24,21 +26,20 @@
         *   Takes flat compacted ore #
         *   Light on ticks, heavy on flat energy required
         *   Produces little dirt, littler gems
+*   **Space Station**
+    *   Build solar panel, fixed energy production if energy less than battery, metal cost
 *   **Potential Upgrades**
     *   Increase max # of mines per planet, make it choosable down to 1
 *   **Ice Upgrade Idea**
     *   Each ice upgrade would be +1 + 0.1%, or something like that -- a small constant for the early game, and a percentage upgrade for late game
+*   **Factory/Orbital Factory**
+    *   Unlocked after Grind Ore, use gems to build laser, new cost for Ship. Replace Targetted Sunlight research
 
 ## Graphics & Visuals
 *   **Add planet graphics**
-    *   Show factory, on the planet
-    *   Show solar, around the edges
-    *   Show coilgun, on the middle and always pointed west
     *   Circle for building factory
     *   Different color for building coilgun
     *   Different color for building solar
-    *   When empty, cannon rotates with planet
-*   Add meteor graphics back
 *   Add ship laser animation
 
 ## Game Progression & Flow
