@@ -120,8 +120,8 @@ function drawPlanetTooltip(planet: any) {
     const size = getPlanetSize(planet.isBoss);
     const offsetX = planet.x + xOffset;
 
-    planet.showTooltip = withinDistance(mousePos.x, mousePos.y, planet.x+size, planet.y+size, 50);
-    if(!planet.showTooltip) {
+    const showTooltip = withinDistance(mousePos.x, mousePos.y, planet.x+size, planet.y+size, 50);
+    if(!showTooltip) {
         return;
     }
 
@@ -136,12 +136,12 @@ function drawPlanetTooltip(planet: any) {
     ctx.fillText("Ore: "+intToString(planet.ore, 1),-15,size+40);
     ctx.fillText("C.Bots: "+planet.bots+ " / " + planet.maxMines,-15,size+50);
     ctx.fillText("Solar: "+planet.solar,-15,size+60);
-    ctx.fillText("Build Factory: "+planet.factoryTicks+" / " + planet.factoryTicksMax,-15,size+70);
-    ctx.fillText("Build Coilgun: "+planet.coilgunTicks+" / " + planet.coilgunTicksMax,-15,size+80);
-    ctx.fillText("Coilgun Charge: "+intToString(planet.coilgunCharge,1)+" / " + planet.coilgunChargeMax,-15,size+90);
-    ctx.fillText("Build Solar: "+intToString(planet.solarTicks,1)+" / " + planet.solarTicksMax,-15,size+100);
+    ctx.fillText("Build Factory: "+planet.factoryTicks+" / " + PlanetManager.FACTORY_TICKS_MAX,-15,size+70);
+    ctx.fillText("Build Coilgun: "+planet.coilgunTicks+" / " + PlanetManager.COILGUN_TICKS_MAX,-15,size+80);
+    ctx.fillText("Coilgun Charge: "+intToString(planet.coilgunCharge,1)+" / " + PlanetManager.COILGUN_CHARGE_MAX,-15,size+90);
+    ctx.fillText("Build Solar: "+intToString(planet.solarTicks,1)+" / " + PlanetManager.SOLAR_TICKS_MAX,-15,size+100);
     ctx.fillText("Mines: "+planet.mines+ " / " + planet.maxMines,-15,size+110);
-    ctx.fillText("Build Mine: "+planet.mineTicks+ " / " + planet.mineTicksMax,-15,size+120);
+    ctx.fillText("Build Mine: "+planet.mineTicks+ " / " + PlanetManager.MINE_TICKS_MAX,-15,size+120);
 
     ctx.restore();
 }

@@ -4,23 +4,23 @@ import { rotatePlanet } from '../ui/spaceView';
 import Planet from './Planet';
 
 export default class PlanetManager {
+    static readonly MINE_TICKS_MAX = 2000;
+    static readonly FACTORY_TICKS_MAX = 8000;
+    static readonly SOLAR_TICKS_MAX = 1000;
+    static readonly COILGUN_TICKS_MAX = 1000;
+    static readonly COILGUN_CHARGE_MAX = 1000;
+
     static findArea(planet: Planet) {
         if (!game) return;
-        for (let i = 0; i < game.space.planets.length; i++) {
-            const target = game.space.planets[i];
-            if (target === planet) {
-                continue;
+        let counter = 0;
+        while (PlanetManager.isWithinDistanceOfAny(planet, planet.x, planet.y, 75)) {
+            counter++;
+            if (counter > 40) {
+                console.log("too many planets");
+                return;
             }
-            let counter = 0;
-            while (PlanetManager.isWithinDistanceOfAny(planet, planet.x, planet.y, 75)) {
-                counter++;
-                if (counter > 40) {
-                    console.log("too many planets");
-                    return;
-                }
-                planet.x = PlanetManager.xAreaAllowed();
-                planet.y = PlanetManager.yAreaAllowed();
-            }
+            planet.x = PlanetManager.xAreaAllowed();
+            planet.y = PlanetManager.yAreaAllowed();
         }
     }
 
@@ -35,8 +35,8 @@ export default class PlanetManager {
     static isWithinDistanceOfAny(planet: Planet, x1: number, y1: number, radius: number) {
         if (!game) return false;
         for (let i = 0; i < game.space.planets.length; i++) {
-            const target = game.space.planets[i]!;
-            if (target === planet) {
+            const target = game.space.planets[i];
+            if (!target || target === planet) {
                 continue;
             }
             if (withinDistance(x1, y1, target.x, target.y, radius)) {
@@ -46,21 +46,21 @@ export default class PlanetManager {
         return false;
     }
 
-    static tick(planet: any) {
+    static tick(planet: Planet) {
         PlanetManager.regenShields(planet);
         PlanetManager.tickResources(planet);
-        rotatePlanet(planet); // assuming rotatePlanet is a global or helper function
+        rotatePlanet(planet);
     }
 
-    static empty(planet: any) {
+    static empty(planet: Planet) {
         return planet.dirt <= 0;
     }
 
-    static alive(planet: any) {
+    static alive(planet: Planet) {
         return planet.health > 0;
     }
 
-    static regenShields(planet: any) {
+    static regenShields(planet: Planet) {
         if (!PlanetManager.alive(planet)) {
             planet.atmo = 0;
             return;
@@ -71,13 +71,14 @@ export default class PlanetManager {
         }
     }
 
-    static getShieldReduction(planet: any) {
+    static getShieldReduction(planet: Planet) {
         return planet.atmo / planet.maxAtmo;
     }
 
-    static takeDamage(planet: any, damage: number) {
-        const healthDamage = damage * (1 - PlanetManager.getShieldReduction(planet));
-        planet.atmo -= damage * PlanetManager.getShieldReduction(planet);
+    static takeDamage(planet: Planet, damage: number) {
+        const shieldReduction = PlanetManager.getShieldReduction(planet);
+        const healthDamage = damage * (1 - shieldReduction);
+        planet.atmo -= damage * shieldReduction;
         let extraDamage = 0;
         if (planet.atmo < 0) {
             extraDamage = planet.atmo * -1;
@@ -90,21 +91,15 @@ export default class PlanetManager {
         }
     }
 
-    static calcPower(planet: any, difficulty: number) { // difficulty starts at 1
+    static calcPower(planet: Planet, difficulty: number) {
         planet.power = difficulty * (planet.isBoss ? 1.5 : 1);
-        // limit max atmosphere to avoid drawing to become to too big
         planet.atmo = planet.maxAtmo = Math.min(200, precision3((planet.power * 2) + 100));
         planet.health = planet.maxHealth = precision3((planet.power * 20) + 1000);
         planet.dirt = precision3((planet.power * 200) + 2000);
-
-        planet.mineTicksMax = 2000;
-        planet.factoryTicksMax = 8000;
         planet.maxMines = Math.floor((planet.dirt + .1) / 1000);
-        planet.solarTicksMax = 1000;
-        planet.coilgunTicksMax = 1000;
     }
 
-    static workConstruction(planet: any, amount: number) { // Comes from ships
+    static workConstruction(planet: Planet, amount: number) {
         if (!PlanetManager.doneFactory(planet)) {
             PlanetManager.workOnFactory(planet, amount);
             return;
@@ -116,7 +111,7 @@ export default class PlanetManager {
         PlanetManager.workOnMine(planet, amount);
     }
 
-    static tickResources(planet: any) {
+    static tickResources(planet: Planet) {
         if (PlanetManager.empty(planet)) {
             return;
         }
@@ -127,39 +122,39 @@ export default class PlanetManager {
         PlanetManager.tickCoilgun(planet);
     }
 
-    static doneBuilding(planet: any) {
+    static doneBuilding(planet: Planet) {
         return planet.mines >= planet.maxMines;
     }
 
-    static workOnMine(planet: any, amount: number) {
+    static workOnMine(planet: Planet, amount: number) {
         planet.mineTicks += amount;
-        if (planet.mineTicks >= planet.mineTicksMax) {
-            let toAdd = Math.floor(planet.mineTicks / planet.mineTicksMax);
+        if (planet.mineTicks >= PlanetManager.MINE_TICKS_MAX) {
+            let toAdd = Math.floor(planet.mineTicks / PlanetManager.MINE_TICKS_MAX);
             toAdd = Math.min(toAdd, planet.maxMines - planet.mines);
             planet.mines += toAdd;
-            planet.mineTicks -= toAdd * planet.mineTicksMax;
+            planet.mineTicks -= toAdd * PlanetManager.MINE_TICKS_MAX;
         }
     }
 
-    static tickMines(planet: any) {
+    static tickMines(planet: Planet) {
         planet.ore += planet.mines;
     }
 
-    static tickBots(planet: any) {
-        const botWork = planet.bots;
+    static tickBots(planet: Planet) {
+        const botWork = Math.min(planet.bots, planet.ore);
         planet.ore -= botWork;
         PlanetManager.workOnSolar(planet, botWork);
     }
 
-    static doneFactory(planet: any) {
-        return planet.factoryTicks >= planet.factoryTicksMax;
+    static doneFactory(planet: Planet) {
+        return planet.factoryTicks >= PlanetManager.FACTORY_TICKS_MAX;
     }
 
-    static workOnFactory(planet: any, amount: number) {
+    static workOnFactory(planet: Planet, amount: number) {
         planet.factoryTicks += amount;
     }
 
-    static tickFactory(planet: any) {
+    static tickFactory(planet: Planet) {
         if (planet.ore >= 200) {
             const toAdd = Math.floor(planet.ore / 200);
             planet.bots += toAdd;
@@ -167,38 +162,39 @@ export default class PlanetManager {
         }
     }
 
-    static workOnSolar(planet: any, amount: number) {
+    static workOnSolar(planet: Planet, amount: number) {
         planet.solarTicks += amount;
-        if (planet.solarTicks >= planet.solarTicksMax) {
-            const toAdd = Math.floor(planet.solarTicks / planet.solarTicksMax);
+        if (planet.solarTicks >= PlanetManager.SOLAR_TICKS_MAX) {
+            const toAdd = Math.floor(planet.solarTicks / PlanetManager.SOLAR_TICKS_MAX);
             planet.solar += toAdd;
-            planet.solarTicks -= toAdd * planet.solarTicksMax;
+            planet.solarTicks -= toAdd * PlanetManager.SOLAR_TICKS_MAX;
         }
     }
 
-    static tickSolar(planet: any) {
+    static tickSolar(planet: Planet) {
         planet.coilgunCharge += planet.solar;
     }
 
-    static doneCoilgun(planet: any) {
-        return planet.coilgunTicks >= planet.coilgunTicksMax;
+    static doneCoilgun(planet: Planet) {
+        return planet.coilgunTicks >= PlanetManager.COILGUN_TICKS_MAX;
     }
 
-    static workOnCoilgun(planet: any, amount: number) {
+    static workOnCoilgun(planet: Planet, amount: number) {
         planet.coilgunTicks += amount;
     }
 
-    static tickCoilgun(planet: any) {
-        if (planet.coilgunCharge >= planet.coilgunChargeMax) {
-            const toAdd = Math.floor(planet.coilgunCharge / planet.coilgunChargeMax);
-            planet.coilgunCharge -= toAdd * planet.coilgunChargeMax;
+    static tickCoilgun(planet: Planet) {
+        if (planet.coilgunCharge >= PlanetManager.COILGUN_CHARGE_MAX) {
+            const toAdd = Math.floor(planet.coilgunCharge / PlanetManager.COILGUN_CHARGE_MAX);
+            planet.coilgunCharge -= toAdd * PlanetManager.COILGUN_CHARGE_MAX;
             let loadSize = 500 * toAdd;
             if (planet.dirt <= loadSize) {
                 loadSize = planet.dirt;
             }
             planet.dirt -= loadSize;
-            // TODO create a meteorite and launch it instead
-            if (game && game.spaceStation.orbiting[1]) game.spaceStation.orbiting[1].amount += loadSize
+            if (game && game.spaceStation.orbiting[1]) {
+                game.spaceStation.orbiting[1].amount += loadSize;
+            }
         }
     }
 }

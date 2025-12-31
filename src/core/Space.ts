@@ -45,10 +45,10 @@ export default class Space {
         }
         sortArrayObjectsByValue(this.planets, "x");
         const lastPlanet = this.planets[this.planets.length - 1];
-        if (lastPlanet) lastPlanet.isBoss = true; // rightmost planet
+        if (lastPlanet) lastPlanet.isBoss = true;
 
         for (let i = 0; i < this.planets.length; i++) {
-            PlanetManager.calcPower(this.planets[i], this.sector); // Use PlanetManager.calcPower
+            PlanetManager.calcPower(this.planets[i], this.sector);
         }
     }
 }
