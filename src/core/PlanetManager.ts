@@ -127,7 +127,7 @@ export default class PlanetManager {
     }
 
     static doneBuilding(planet: Planet) {
-        return planet.mines >= planet.maxMines;
+        return planet.mines >= planet.maxMines || PlanetManager.empty(planet);
     }
 
     static workOnMine(planet: Planet, amount: number) {
