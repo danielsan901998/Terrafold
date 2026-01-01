@@ -37,6 +37,7 @@ export default class SpaceDockView extends BaseView {
     update() {
         if (!game) return;
         this.updateElementText('battleships', String(game.spaceDock.battleships));
+        this.updateElementText('totalBattleships', String(game.spaceDock.battleships + game.spaceDock.sended));
 
         const el = document.getElementById('buyBattleshipAmount') as HTMLInputElement;
         const amount = el ? Number(el.value) : 1;

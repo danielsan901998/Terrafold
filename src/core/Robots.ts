@@ -88,7 +88,7 @@ export default class Robots {
             },
             { // Turn ore into dirt
                 text: "Turn ore into dirt",
-                tooltip: "Each tick costs 1 energy and 1000 ore<br>Gain 5 Base Land<br>Total land gained: <div id='totalDirtFromOre'></div>",
+                tooltip: "Each tick costs 1 energy and 1000 ore<br>Gain 5 Base Land<br>Total land gained: <span id='totalDirtFromOre'></span>",
                 currentTicks: 0,
                 ticksNeeded: 1000,
                 workers: 0,
