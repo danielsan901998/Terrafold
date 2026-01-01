@@ -158,6 +158,9 @@ export default class View extends BaseView {
             return;
         }
 
+        // Sort by height descending to improve column balancing
+        visibleContainers.sort((a, b) => b.offsetHeight - a.offsetHeight);
+
         // Move all containers to mainContainer temporarily to preserve them in DOM
         // This ensures hidden containers stay in the DOM (but not visible)
         for (const container of this.allContainers) {
