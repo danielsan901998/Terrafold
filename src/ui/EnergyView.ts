@@ -44,7 +44,7 @@ export default class EnergyView extends BaseView {
 
     updateFull() {
         if (!game) return;
-        this.updateElementText('battery', intToString(game.energy.battery, 1));
+        this.updateElementText('battery', intToString(game.energy.battery));
 
         const el = document.getElementById('buyBattery') as HTMLInputElement;
         const amount = el ? Number(el.value) : 1;

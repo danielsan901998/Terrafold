@@ -54,7 +54,7 @@ export default class TractorBeamView extends BaseView {
                 this.cometRows.set(comet.id, row);
             }
 
-            this.updateElementText(`comet-amount-${comet.id}`, intToString(comet.amount, 1));
+            this.updateElementText(`comet-amount-${comet.id}`, intToString(comet.amount));
             this.updateElementText(`comet-duration-${comet.id}`, String(comet.duration));
 
             view.drawComet(comet);

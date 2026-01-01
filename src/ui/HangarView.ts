@@ -23,7 +23,7 @@ export default class HangarView extends BaseView {
         if (!game) return;
         const el = document.getElementById('buyHangarAmount') as HTMLInputElement;
         const amount = el ? Number(el.value) : 1;
-        this.updateElementText('hangarCost', intToString(amount * 1000000, 1));
+        this.updateElementText('hangarCost', intToString(amount * 1000000));
         this.update();
     }
 }

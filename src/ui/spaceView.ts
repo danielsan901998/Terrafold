@@ -109,7 +109,7 @@ function drawShip(ship: Ship) {
     ctx.translate(offsetX+25, ship.y+25);
     ctx.fillStyle = "white";
     ctx.fillText(ship.count.toString(),-4,20);
-    ctx.fillText(intToString(ship.food / ship.count / 10, 1),-4,30);
+    ctx.fillText(intToString(ship.food / ship.count / 10),-4,30);
     ctx.restore();
 }
 
@@ -144,17 +144,17 @@ function drawPlanetTooltip(planet: any) {
     ctx.translate(offsetX+size, planet.y+size);
 
     ctx.fillStyle = "#ffffff";
-    ctx.fillText("Atmosphere: " + intToString(planet.atmo, 2),-15,size);
-    ctx.fillText("Reduction: "+intToString(PlanetManager.getShieldReduction(planet)*100, 1)+"%",-15,size+10);
-    ctx.fillText("Health: "+intToString(planet.health, 1),-15,size+20);
-    ctx.fillText("Dirt: "+intToString(planet.dirt, 1),-15,size+30);
-    ctx.fillText("Ore: "+intToString(planet.ore, 1),-15,size+40);
+    ctx.fillText("Atmosphere: " + intToString(planet.atmo),-15,size);
+    ctx.fillText("Reduction: "+intToString(PlanetManager.getShieldReduction(planet)*100)+"%",-15,size+10);
+    ctx.fillText("Health: "+intToString(planet.health),-15,size+20);
+    ctx.fillText("Dirt: "+intToString(planet.dirt),-15,size+30);
+    ctx.fillText("Ore: "+intToString(planet.ore),-15,size+40);
     ctx.fillText("C.Bots: "+planet.bots+ " / " + planet.maxMines,-15,size+50);
     ctx.fillText("Solar: "+planet.solar,-15,size+60);
     ctx.fillText("Build Factory: "+planet.factoryTicks+" / " + PlanetManager.FACTORY_TICKS_MAX,-15,size+70);
     ctx.fillText("Build Coilgun: "+planet.coilgunTicks+" / " + PlanetManager.COILGUN_TICKS_MAX,-15,size+80);
-    ctx.fillText("Coilgun Charge: "+intToString(planet.coilgunCharge,1)+" / " + PlanetManager.COILGUN_CHARGE_MAX,-15,size+90);
-    ctx.fillText("Build Solar: "+intToString(planet.solarTicks,1)+" / " + PlanetManager.SOLAR_TICKS_MAX,-15,size+100);
+    ctx.fillText("Coilgun Charge: "+intToString(planet.coilgunCharge)+" / " + PlanetManager.COILGUN_CHARGE_MAX,-15,size+90);
+    ctx.fillText("Build Solar: "+intToString(planet.solarTicks)+" / " + PlanetManager.SOLAR_TICKS_MAX,-15,size+100);
     ctx.fillText("Mines: "+planet.mines+ " / " + planet.maxMines,-15,size+110);
     ctx.fillText("Build Mine: "+planet.mineTicks+ " / " + PlanetManager.MINE_TICKS_MAX,-15,size+120);
 

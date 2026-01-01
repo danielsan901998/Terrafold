@@ -74,8 +74,8 @@ export default class RobotsView extends BaseView {
 
         // Only update tooltip text if it's actually visible (hovered)
         if (this.hoveredIndex === i) {
-            this.updateElementText(baseId + "CurrentTicks", intToString(row.currentTicks, 1));
-            this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded, 1));
+            this.updateElementText(baseId + "CurrentTicks", intToString(row.currentTicks));
+            this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded));
             const costContainer = this.getElement(baseId + "CostContainer");
             if (row.cost && row.costType) {
                 costContainer.classList.remove("hidden");

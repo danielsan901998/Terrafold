@@ -50,11 +50,7 @@ export function intToStringNegative(value: number, amount?: number): string {
     if (value >= 10000) {
         return (isPositive === 1 ? "+" : "-") + nFormatter(value, 3);
     } else {
-        let baseValue = 3;
-        if (amount !== undefined) {
-            baseValue = amount;
-        }
-        return (isPositive === 1 ? "+" : "-") + value.toFixed(baseValue - 1);
+        return (isPositive === 1 ? "+" : "-") + formatSmallNumber(value, amount);
     }
 }
 
@@ -62,12 +58,19 @@ export function intToString(value: number, amount?: number): string {
     if (value >= 10000) {
         return nFormatter(value, 3);
     } else {
-        let baseValue = 3;
-        if (amount !== undefined) {
-            baseValue = amount;
-        }
-        return value.toFixed(baseValue - 1);
+        return formatSmallNumber(value, amount);
     }
+}
+
+function formatSmallNumber(value: number, amount?: number): string {
+    if (Number.isInteger(value)) {
+        return value.toString();
+    }
+    let baseValue = 3;
+    if (amount !== undefined) {
+        baseValue = amount;
+    }
+    return value.toFixed(baseValue - 1).replace(format_regex, "$1");
 }
 
 export function intToStringRound(value: number): string | number {

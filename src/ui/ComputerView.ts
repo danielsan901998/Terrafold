@@ -32,8 +32,8 @@ export default class ComputerView extends BaseView {
         this.updateElementText('freeThreads', String(game.computer.freeThreads));
         this.updateElementText('threads', String(game.computer.threads));
         this.updateElementText('speed', String(game.computer.speed));
-        this.updateElementText('threadCost', intToString(game.computer.getThreadCost(), 1));
-        this.updateElementText('speedCost', intToString(game.computer.getSpeedCost(), 1));
+        this.updateElementText('threadCost', intToString(game.computer.getThreadCost()));
+        this.updateElementText('speedCost', intToString(game.computer.getSpeedCost()));
         this.updateElementText('landOptimized', round2((game.land.optimizedLand / (game.land.baseLand * 10)) * 100) + "%");
         for (let i = 0; i < game.computer.processes.length; i++) {
             const row = game.computer.processes[i];
@@ -57,8 +57,8 @@ export default class ComputerView extends BaseView {
 
         // Only update tooltip text if it's actually visible (hovered)
         if (this.hoveredIndex === i) {
-            this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks));
-            this.updateElementText(baseId + "TicksNeeded", String(row.ticksNeeded));
+            this.updateElementText(baseId + "CurrentTicks", intToString(row.currentTicks));
+            this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded));
             const costContainer = this.getElement(baseId + "CostContainer");
             if (row.cost !== 0) {
                 costContainer.classList.remove("hidden");

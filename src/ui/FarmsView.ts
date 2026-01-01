@@ -27,10 +27,10 @@ export default class FarmsView extends BaseView {
     updateFull() {
         if (!game) return;
         this.updateElementText('farms', intToString(game.farms.farms));
-        this.updateElementText('efficiency', intToString(game.farms.efficiency * 100, 1));
+        this.updateElementText('efficiency', intToString(game.farms.efficiency * 100));
         const el = document.getElementById('buyFarmAmount') as HTMLInputElement;
         const amount = el ? Number(el.value) : 1;
-        this.updateElementText('farmCost', intToString(amount * 50, 1));
+        this.updateElementText('farmCost', intToString(amount * 50));
         this.update();
     }
 }
