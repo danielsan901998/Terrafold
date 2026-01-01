@@ -109,7 +109,7 @@ function drawShip(ship: Ship) {
     ctx.translate(offsetX+25, ship.y+25);
     ctx.fillStyle = "white";
     ctx.fillText(ship.count.toString(),-4,20);
-    ctx.fillText(intToString(ship.food / ship.count / 10),-4,30);
+    ctx.fillText(intToString(ship.food / ship.count / 10,1),-4,30);
     ctx.restore();
 }
 

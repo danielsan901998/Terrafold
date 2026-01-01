@@ -13,6 +13,7 @@ import SpaceStation from './core/SpaceStation';
 import TractorBeam from './core/TractorBeam';
 import SpaceDock from './core/SpaceDock';
 import Hangar from './core/Hangar';
+import Planet from './core/Planet';
 
 import View from './ui/View';
 import { decode, encode } from './utils/utils';
@@ -274,11 +275,8 @@ async function load() {
     if (window.localStorage.terrafold2) { // existing savegame
         const decoded = await decode(window.localStorage.terrafold2);
         const toLoad = JSON.parse(decoded);
-        if (game) copyObject(toLoad, game);
-
         if (game) {
-            for (let comet of game.tractorBeam.comets)
-                comet.drawed = false;
+            copyObject(toLoad, game);
         }
 
         const el = document.getElementById('scienceSlider') as HTMLInputElement;
@@ -290,15 +288,26 @@ async function load() {
     recalcInterval(10);
 }
 
+const EXCLUDED_PROPERTIES = [
+    'text', 'tooltip', 'events', 'canvasWidth', 'canvasHeight', 
+    'drawed', 'isMoving', 'transferred', 'foodCreated', 'convertedLand',
+    'takeAmount', 'foodEaten', 'popGrowth', 'starving', 'scienceDelta', 'cashDelta',
+    'happinessFromTrees', 'happinessFromOxygen', 'happiness', 'rotation',
+    'fernsDelta', 'fernsWaterUse', 'smallTreesDelta', 'smallTreesWaterUse', 
+    'treesDelta', 'treesWaterUse', 'totalPlants', 'oxygenGain'
+];
+
 function copyObject(object: any, toSave: any) {
     for (let property in object) {
-        if (typeof object[property] === 'object' && object[property] !== null) {
-            if (typeof toSave[property] === 'undefined')
-                toSave[property] = Array.isArray(object[property]) ? [] : {};
-            copyObject(object[property], toSave[property]);
+        if (Object.prototype.hasOwnProperty.call(object, property) && !EXCLUDED_PROPERTIES.includes(property)) {
+            if (typeof object[property] === 'object' && object[property] !== null) {
+                if (typeof toSave[property] === 'undefined')
+                    toSave[property] = Array.isArray(object[property]) ? [] : {};
+                copyObject(object[property], toSave[property]);
+            }
+            else if (typeof object[property] !== 'function')
+                toSave[property] = object[property];
         }
-        else if (typeof object[property] !== 'function')
-            toSave[property] = object[property];
     }
 }
 
