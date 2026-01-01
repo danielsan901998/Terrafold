@@ -1,19 +1,32 @@
 import { game } from '../main';
 
-export interface Job {
+export class Job {
     text: string;
     tooltip: string;
     workers: number;
-    currentTicks?: number;
-    ticksNeeded?: number;
+    currentTicks: number = 0;
+    ticksNeeded: number = 0;
     cost?: number[];
     costType?: string[];
-    isMoving?: number | boolean;
-    completions?: number;
+    isMoving: boolean = false;
+    completions: number = 0;
     finish: (this: Job) => void;
     showing: (this: Job) => boolean;
     done?: (this: Job) => boolean;
     during?: (this: Job) => boolean;
+
+    constructor(A: Partial<Job>) {
+        this.text = A.text || "";
+        this.tooltip = A.tooltip || "";
+        this.workers = A.workers || 0;
+        this.ticksNeeded = A.ticksNeeded || 0;
+        this.cost = A.cost;
+        this.costType = A.costType;
+        this.finish = A.finish || (() => { });
+        this.showing = A.showing || (() => true);
+        this.done = A.done;
+        this.during = A.during;
+    }
 }
 
 export default class Robots {
@@ -34,64 +47,50 @@ export default class Robots {
         this.mines = 0;
 
         this.jobs = [
-            { // Cut Trees
+            new Job({ // Cut Trees
                 text: "Cut Trees",
                 tooltip: "Cut down 2 trees for 1 wood",
-                workers: 0,
-                finish: function () { if (game) game.robots.cutTrees(this.workers); },
-                showing: function () { return true; }
-            },
-            { // Expand indoor water storage
+                finish: function () { if (game) game.robots.cutTrees(this.workers); }
+            }),
+            new Job({ // Expand indoor water storage
                 text: "Expand indoor water storage",
                 tooltip: "Gives 50 more max indoor water.<br>Cost increases by 1",
-                currentTicks: 0,
                 ticksNeeded: 3000,
-                workers: 0,
                 cost: [.1],
                 costType: ["metal"],
-                finish: function () { 
-                    if (this.ticksNeeded !== undefined) this.ticksNeeded += 1000; 
-                    if (game) game.water.maxIndoor += 50; 
-                },
-                showing: function () { return true; }
-            },
-            { // Build Mines
+                finish: function () {
+                    this.ticksNeeded += 1000;
+                    if (game) game.water.maxIndoor += 50;
+                }
+            }),
+            new Job({ // Build Mines
                 text: "Build Mines",
                 tooltip: "Build up to (total land / 1000) mines",
-                currentTicks: 0,
                 ticksNeeded: 300,
-                workers: 0,
                 cost: [1],
                 costType: ["wood"],
-                finish: function () { 
-                    if (game) game.robots.mines++; 
-                    if (this.ticksNeeded !== undefined) this.ticksNeeded += 100; 
+                finish: function () {
+                    if (game) game.robots.mines++;
+                    this.ticksNeeded += 100;
                 },
-                done: function () { 
-                    return game ? game.robots.mines * 1000 >= game.land.optimizedLand : false; 
-                },
-                showing: function () { return true; }
-            },
-            { // Mine Ore
+                done: function () {
+                    return game ? game.robots.mines * 1000 >= game.land.optimizedLand : false;
+                }
+            }),
+            new Job({ // Mine Ore
                 text: "Mine Ore",
                 tooltip: "Get (mines / 100) ore per tick",
-                workers: 0,
-                finish: function () { if (game) game.robots.mineOre(this.workers); },
-                showing: function () { return true; }
-            },
-            { // Smelt Ore
+                finish: function () { if (game) game.robots.mineOre(this.workers); }
+            }),
+            new Job({ // Smelt Ore
                 text: "Smelt Ore",
                 tooltip: "Each tick costs 5 wood, 1 ore, and 1000 oxygen<br>Gain 1 metal",
-                workers: 0,
-                finish: function () { if (game) game.robots.smeltOre(this.workers); },
-                showing: function () { return true; }
-            },
-            { // Turn ore into dirt
+                finish: function () { if (game) game.robots.smeltOre(this.workers); }
+            }),
+            new Job({ // Turn ore into dirt
                 text: "Turn ore into dirt",
                 tooltip: "Each tick costs 1 energy and 1000 ore<br>Gain 5 Base Land<br>Total land gained: <span id='totalDirtFromOre'></span>",
-                currentTicks: 0,
                 ticksNeeded: 1000,
-                workers: 0,
                 during: function () {
                     if (game && game.power >= 1 * this.workers && game.robots.ore >= this.workers * 1000) {
                         game.power -= 1 * this.workers;
@@ -102,7 +101,7 @@ export default class Robots {
                 },
                 finish: function () { if (game) game.land.addLand(50); },
                 showing: function () { return game ? game.energy.unlocked !== 0 : false; }
-            }
+            })
         ];
     }
 
@@ -114,15 +113,15 @@ export default class Robots {
 
     tickRow(row: Job, ticksGained: number) {
         if (ticksGained === 0 || (row.done && row.done())) {
-            row.isMoving = 0;
+            row.isMoving = false;
             return;
         }
-        if (row.ticksNeeded === undefined) { // No progress bar
+        if (row.ticksNeeded === 0) { // No progress bar
             row.finish();
             return;
         }
         if (row.during && !row.during()) {
-            row.isMoving = 0;
+            row.isMoving = false;
             return;
         }
         if (row.cost && row.costType) {
@@ -131,7 +130,7 @@ export default class Robots {
                 const costType = row.costType[i];
                 if (costType) {
                     if (game && (game as any)[costType] < cost) {
-                        row.isMoving = 0;
+                        row.isMoving = false;
                         return;
                     }
                 }
@@ -143,12 +142,12 @@ export default class Robots {
         }
 
 
-        row.currentTicks = (row.currentTicks || 0) + ticksGained;
-        row.isMoving = 1;
+        row.currentTicks += ticksGained;
+        row.isMoving = true;
         if (row.currentTicks >= row.ticksNeeded) {
             const overflow = row.currentTicks - row.ticksNeeded;
             row.currentTicks = 0;
-            row.completions = (row.completions || 0) + 1;
+            row.completions++;
             row.finish();
             game?.events.emit('robots:updated');
             this.tickRow(row, overflow); // recursive, but on the new cost

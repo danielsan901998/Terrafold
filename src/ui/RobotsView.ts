@@ -49,7 +49,7 @@ export default class RobotsView extends BaseView {
         this.updateElementText('robotsFree', String(game.robots.robotsFree));
         this.updateElementText('robotMax', String(game.robots.robotMax));
         if (game.robots.jobs[5]) {
-            this.updateElementText('totalDirtFromOre', intToString((game.robots.jobs[5].completions || 0) * 5));
+            this.updateElementText('totalDirtFromOre', intToString(game.robots.jobs[5].completions * 5));
         }
         for (let i = 0; i < game.robots.jobs.length; i++) {
             const row = game.robots.jobs[i];
@@ -63,18 +63,18 @@ export default class RobotsView extends BaseView {
     updateRowProgress(i: number) {
         if (!game) return;
         const row = game.robots.jobs[i];
-        if (!row || !row.showing() || row.ticksNeeded === undefined) {
+        if (!row || !row.showing() || row.ticksNeeded === 0) {
             return;
         }
         
         const baseId = "robotRow" + i;
         const pb = this.getElement(baseId + "PB");
-        pb.style.width = ((row.currentTicks || 0) / row.ticksNeeded) * 100 + "%";
+        pb.style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
         pb.style.backgroundColor = row.isMoving ? "yellow" : "red";
 
         // Only update tooltip text if it's actually visible (hovered)
         if (this.hoveredIndex === i) {
-            this.updateElementText(baseId + "CurrentTicks", String(row.currentTicks || 0));
+            this.updateElementText(baseId + "CurrentTicks", intToString(row.currentTicks, 1));
             this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded, 1));
             const costContainer = this.getElement(baseId + "CostContainer");
             if (row.cost && row.costType) {
