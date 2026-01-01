@@ -1,22 +1,4 @@
 import EventEmitter from './utils/EventEmitter';
-
-export interface Comet {
-    id: number;
-    name: string;
-    amount: number;
-    initialAmount: number;
-    amountType: string;
-    duration: number;
-    initialDuration: number;
-    speed: number;
-    drawed: boolean;
-    startingY: number;
-    endingX: number;
-    slope: number;
-    left: number;
-    top: number;
-}
-
 import Planet from './core/Planet';
 
 export interface Comet {
@@ -79,7 +61,6 @@ export interface Game {
     tick(): void;
     initialize(): void;
     buyIce(): void;
-    buyFarms(): void;
     buyBattery(): void;
     buyBattleship(): void;
     buyHangar(): void;

@@ -322,10 +322,11 @@ const initListeners = () => {
     document.querySelectorAll('.numeric-input-small').forEach(el => {
         el.addEventListener('change', function (this: HTMLInputElement) {
             let val = Number(this.value);
-            if (isNaN(val) || val < 1) val = 1;
-            this.value = Math.floor(val).toString();
-            // Trigger input event to update costs
-            this.dispatchEvent(new Event('input'));
+            if (isNaN(val) || val < 1) {
+                this.value = "1";
+            } else if (val !== Math.floor(val)) {
+                this.value = Math.floor(val).toString();
+            }
         });
     });
 };

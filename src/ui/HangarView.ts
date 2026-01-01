@@ -10,7 +10,7 @@ export default class HangarView extends BaseView {
         if (game) {
             game.events.on('hangar:updated', () => this.updateFull());
             const el = document.getElementById('buyHangarAmount');
-            if (el) el.addEventListener('input', () => this.updateFull());
+            if (el) el.addEventListener('change', () => this.updateFull());
         }
     }
 

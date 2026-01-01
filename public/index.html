@@ -38,12 +38,12 @@
                     </div></div>
                     <div class="showthat infoText">Options<div class="showthis">
                             <div class="small">
-                                <div id="btnHardReset" class="button">Hard Reset</div><br>
-                                <div id="btnPause" class="button">Toggle Pause</div><br>
-                                <div id="btnBeg" class="button">Beg for Money<br>(+$.1 for if you get stuck)</div><br>
-                                <div id="btnSave" class="button">Save</div><br>
-                                <div id="btnExport" class="button">Export Save</div><br>
-                                <div id="btnImport" class="button">Import Save</div> <textarea id="exportImportSave" class="listTextInput"></textarea><br>
+                                <button id="btnHardReset">Hard Reset</button><br>
+                                <button id="btnPause">Toggle Pause</button><br>
+                                <button id="btnBeg">Beg for Money<br>(+$.1 for if you get stuck)</button><br>
+                                <button id="btnSave">Save</button><br>
+                                <button id="btnExport">Export Save</button><br>
+                                <button id="btnImport">Import Save</button> <textarea id="exportImportSave" class="listTextInput"></textarea><br>
                             </div>
                         </div></div>
                         <div id="resources" class="infoText">
@@ -80,7 +80,7 @@
                         <div class="stat-value" id="buyableIce"></div>
                     </div>
                 </div>
-                <div id="btnBuyIce" class="button">Buy Ice for $1</div>
+                <button id="btnBuyIce">Buy Ice for $1</button>
                 <div class="showthis">
                     Ice melts at a rate of .1% per tick and becomes <img src='img/water.png' class='smallIcon'>.<br>
                     You can buy up to the max at a time, and it comes back at <span id="iceBuyerAmount"></span> per tick.
@@ -351,7 +351,7 @@
 
             <div id="computerContainer" class="container">
                 <div class="title">Computer</div>
-                <div id="unlockComputer" class="button">Build Computer (1000 science)</div>
+                <button id="unlockComputer">Build Computer (1000 science)</button>
                 <div id="unlockedComputer" class="hidden">
                     <div class="stats-grid">
                         <div class="stat-row">
@@ -363,15 +363,15 @@
                             <div class="stat-value" id="speed"></div>
                         </div>
                     </div>
-                    <div id="buyThread" class="button">Buy CPU (+1 thread) for <span id="threadCost"></span> cash</div>
-                    <div id="buySpeed" class="button">Research New Cooling System (+1 speed) for <span id="speedCost"></span> science</div>
+                    <button id="buyThread">Buy CPU (+1 thread) for <span id="threadCost"></span> cash</button>
+                    <button id="buySpeed">Research New Cooling System (+1 speed) for <span id="speedCost"></span> science</button>
                     <div id="computerRows"></div>
                 </div>
             </div>
 
             <div id="robotsContainer" class="container hidden">
                 <div class="title">Robots</div>
-                <div id="unlockRobots" class="button">Special deal! Buy first robot for $3000</div>
+                <button id="unlockRobots">Special deal! Buy first robot for $3000</button>
                 <div id="unlockedRobots" class="hidden">
                     <div class="stats-grid">
                         <div class="stat-row">
@@ -393,7 +393,7 @@
 
             <div id="energyContainer" class="container showthat hidden">
                 <div class="title">Power Plant</div>
-                <div id="unlockEnergy" class="button">Build lightning rod for 500 metal</div>
+                <button id="unlockEnergy">Build lightning rod for 500 metal</button>
                 <div id="unlockedEnergy" class="hidden">
                     <div class="stats-grid">
                         <div class="stat-row">
@@ -407,7 +407,7 @@
                     </div>
                     <div class="centered-flex-row">
                         <input id="buyBattery" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                        <div id="btnBuyBattery" class="button">Build Battery (<span id="batteryCost"></span>)</div>
+                        <button id="btnBuyBattery">Build Battery (<span id="batteryCost"></span>)</button>
                     </div>
                 </div>
                 <div class="showthis">
@@ -418,7 +418,7 @@
 
             <div id="spaceStationContainer" class="container showthat hidden">
                 <div class="title">Space Station</div>
-                <div id="unlockSpaceStation" class="button">Build Space Station for 2000 metal, 20k wood</div>
+                <button id="unlockSpaceStation">Build Space Station for 2000 metal, 20k wood</button>
                 <div id="unlockedSpaceStation" class="hidden">
                     <div class="stats-grid">
                         <div class="stat-row">
@@ -439,7 +439,7 @@
 
             <div id="tractorBeamContainer" class="container showthat hidden">
                 <div class="title">Tractor Beam</div>
-                <div id="unlockTractorBeam" class="button">Build Tractor Beam for 5m oxygen, 500k science</div>
+                <button id="unlockTractorBeam">Build Tractor Beam for 5m oxygen, 500k science</button>
                 <div id="unlockedTractorBeam" class="hidden">
                     <div id="allPassing"></div>
                 </div>
@@ -466,7 +466,7 @@
                 </div>
                 <div class="centered-flex-row">
                     <input id="buyBattleshipAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                    <div id="btnBuyBattleship" class="button">Build Battleship (<span id="battleshipCost"></span>)</div>
+                    <button id="btnBuyBattleship">Build Battleship (<span id="battleshipCost"></span>)</button>
                 </div>
                 <div class="showthis">
                     <label for="buyBattleshipAmount">Set how much you want to buy with the input.</label><br>
@@ -483,7 +483,7 @@
                 </div>
                 <div class="centered-flex-row">
                     <input id="buyHangarAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                    <div id="btnBuyHangar" class="button">Increase hangar size (<span id="hangarCost"></span> soil)</div>
+                    <button id="btnBuyHangar">Increase hangar size (<span id="hangarCost"></span> soil)</button>
                 </div>
                 <div class="showthis">
                     Takes 5% of your current food. The more food a ship takes the longer it lasts<br>

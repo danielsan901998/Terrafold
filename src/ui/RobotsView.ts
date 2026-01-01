@@ -101,15 +101,13 @@ export default class RobotsView extends BaseView {
         });
         rowContainer.addEventListener('mouseleave', () => this.hoveredIndex = null);
 
-        const plusButton = document.createElement("div");
+        const plusButton = document.createElement("button");
         plusButton.id = baseId + "Plus";
-        plusButton.className = "button";
         plusButton.innerHTML = "+";
         plusButton.addEventListener('click', (event) => game?.robots.addWorker(dataPos, getClickAmount(event)));
 
-        const minusButton = document.createElement("div");
+        const minusButton = document.createElement("button");
         minusButton.id = baseId + "Minus";
-        minusButton.className = "button";
         minusButton.innerHTML = "-";
         minusButton.addEventListener('click', (event) => game?.robots.removeWorker(dataPos, getClickAmount(event)));
 

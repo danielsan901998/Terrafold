@@ -83,15 +83,13 @@ export default class ComputerView extends BaseView {
         });
         rowContainer.addEventListener('mouseleave', () => this.hoveredIndex = null);
 
-        const plusButton = document.createElement("div");
+        const plusButton = document.createElement("button");
         plusButton.id = baseId + "Plus";
-        plusButton.className = "button";
         plusButton.innerHTML = "+";
         plusButton.addEventListener('click', (event) => game?.computer.addThread(dataPos, getClickAmount(event)));
 
-        const minusButton = document.createElement("div");
+        const minusButton = document.createElement("button");
         minusButton.id = baseId + "Minus";
-        minusButton.className = "button";
         minusButton.innerHTML = "-";
         minusButton.addEventListener('click', (event) => game?.computer.removeThread(dataPos, getClickAmount(event)));
 

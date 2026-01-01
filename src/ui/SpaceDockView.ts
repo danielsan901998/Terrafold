@@ -14,7 +14,7 @@ export default class SpaceDockView extends BaseView {
             game.events.on('spaceDock:updated', () => this.update());
             
             const el = document.getElementById('buyBattleshipAmount');
-            if (el) el.addEventListener('input', () => this.update());
+            if (el) el.addEventListener('change', () => this.update());
         }
     }
 
