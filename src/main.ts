@@ -79,6 +79,7 @@ class Game implements IGame {
         this.ice.tick();
         this.robots.tick();
         this.computer.tick();
+        this.land.soil -= this.farms.updateFarms(this.land.soil);
         this.farms.tick(this.land.transferWater());
         this.population.tick();
         this.water.outdoor += this.farms.transferWater();
@@ -141,19 +142,6 @@ class Game implements IGame {
             return;
         }
         this.cash -= this.ice.buyIce(toBuy);
-    }
-
-    buyFarms() {
-        const el = document.getElementById('buyFarmAmount') as HTMLInputElement;
-        let toBuy = Number(el.value);
-        if (toBuy * 50 > this.land.soil) {
-            toBuy = Math.floor(this.land.soil / 50);
-        }
-        if (toBuy <= 0) {
-            return;
-        }
-        this.land.soil -= toBuy * 50;
-        this.farms.addFarm(toBuy);
     }
 
     buyBattery() {
@@ -258,7 +246,6 @@ function loadDefaults() {
 
 function setInitialView() {
     if (!view) return;
-    view.farmsView.updateFull();
     view.hangarView.updateFull();
     view.spaceDockView.checkUnlocked();
     view.tractorBeamView.checkUnlocked();
@@ -281,6 +268,8 @@ async function load() {
 
         const el = document.getElementById('scienceSlider') as HTMLInputElement;
         if (el && game) el.value = game.population.scienceRatio.toString();
+        const elFarm = document.getElementById('farmSlider') as HTMLInputElement;
+        if (elFarm && game) elFarm.value = game.farms.farmRatio.toString();
     }
 
     setInitialView();

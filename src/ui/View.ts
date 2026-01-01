@@ -11,7 +11,6 @@ import CloudsView from './CloudsView';
 import LandView from './LandView';
 import PopulationView from './PopulationView';
 import TreesView from './TreesView';
-import FarmsView from './FarmsView';
 import EnergyView from './EnergyView';
 import SpaceStationView from './SpaceStationView';
 import TractorBeamView from './TractorBeamView';
@@ -33,7 +32,6 @@ export default class View extends BaseView {
     landView: LandView;
     populationView: PopulationView;
     treesView: TreesView;
-    farmsView: FarmsView;
     energyView: EnergyView;
     spaceStationView: SpaceStationView;
     tractorBeamView: TractorBeamView;
@@ -60,7 +58,6 @@ export default class View extends BaseView {
         this.landView = new LandView();
         this.populationView = new PopulationView();
         this.treesView = new TreesView();
-        this.farmsView = new FarmsView();
         this.energyView = new EnergyView();
         this.spaceStationView = new SpaceStationView();
         this.tractorBeamView = new TractorBeamView();
@@ -106,7 +103,6 @@ export default class View extends BaseView {
         this.cloudsView.update();
         this.landView.update();
         this.treesView.update();
-        this.farmsView.update();
         this.populationView.update();
         this.updateComputerRowProgress();
         this.robotsView.update();
@@ -298,7 +294,6 @@ const initListeners = () => {
     addClick('btnExport', exportSave);
     addClick('btnImport', importSave);
     addClick('btnBuyIce', () => game?.buyIce());
-    addClick('btnBuyFarms', () => game?.buyFarms());
     addClick('unlockComputer', () => game?.computer.unlockComputer());
     addClick('buyThread', () => game?.computer.buyThread());
     addClick('buySpeed', () => game?.computer.buySpeed());
@@ -316,6 +311,11 @@ const initListeners = () => {
     const scienceSlider = document.getElementById('scienceSlider') as HTMLInputElement;
     scienceSlider?.addEventListener('input', function (this: HTMLInputElement) {
         if (game) game.population.scienceRatio = Number(this.value);
+    });
+
+    const farmSlider = document.getElementById('farmSlider') as HTMLInputElement;
+    farmSlider?.addEventListener('input', function (this: HTMLInputElement) {
+        if (game) game.farms.farmRatio = Number(this.value);
     });
 
     // Sanitize all numeric-input-small to positive integers

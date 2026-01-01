@@ -189,14 +189,28 @@
 
             <div id="landContainer" class="container showthat">
                 <div class="title">Land</div>
-                <div class="main-resource showthat2">
-                    <img src='img/water.png' class='largeIcon'>
-                    <span id="landWater"></span>
-                    <div class="showthis2">
-                        <div>Receiving: <span id="landReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Dry Land to Soil: <span id="landConverted"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Flowing to Forest: <span id="landWaterToForest"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Flowing to Farm: <span id="landWaterToFarm"></span> <img src='img/water.png' class='smallIcon'></div>
+                <div class="main-resource-row">
+                    <div class="main-resource showthat2">
+                        <img src='img/water.png' class='largeIcon'>
+                        <span id="landWater"></span>
+                        <div class="showthis2">
+                            <div>Land Water</div>
+                            <div>Receiving: <span id="landReceived"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Dry Land to Soil: <span id="landConverted"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Flowing to Forest: <span id="landWaterToForest"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Flowing to Farm: <span id="landWaterToFarm"></span> <img src='img/water.png' class='smallIcon'></div>
+                        </div>
+                    </div>
+                    <div class="main-resource showthat2">
+                        <img src='img/water.png' class='largeIcon'>
+                        <span id="farmsWater"></span>
+                        <div class="showthis2">
+                            <div>Farm Water</div>
+                            <div>Food Eaten: <span id="farmFoodEaten"></span></div>
+                            <div>Receiving: <span id="farmReceived"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Water to Food: <span id="foodCreated"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Flowing to Lake: <span id="farmWaterToLake"></span> <img src='img/water.png' class='smallIcon'></div>
+                        </div>
                     </div>
                 </div>
                 <div class="stats-grid">
@@ -205,49 +219,25 @@
                         <div class="stat-value" id="optimizedLand"></div>
                     </div>
                     <div class="stat-row">
-                        <div class="stat-label">Soil</div>
-                        <div class="stat-value" id="soil"></div>
-                    </div>
-                </div>
-                <div class="showthis">
-                    <div>Base Land: <span id="baseLand"></span></div>
-                    <div>Dry Land: <span id="land"></span></div>
-                    Dry land + water = soil, at a rate of (water / 1000)<br>
-                    .1% <img src='img/water.png' class='smallIcon'> goes to forest, another .1% to farms.<br>
-                </div>
-            </div>
-
-            <div id="foodContainer" class="container showthat">
-                <div class="title">Farm</div>
-                <div class="main-resource showthat2">
-                    <img src='img/water.png' class='largeIcon'>
-                    <span id="farmsWater"></span>
-                    <div class="showthis2">
-                        <div>Food Eaten: <span id="farmFoodEaten"></span></div>
-                        <div>Receiving: <span id="farmReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Water to Food: <span id="foodCreated"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Flowing to Lake: <span id="farmWaterToLake"></span> <img src='img/water.png' class='smallIcon'></div>
-                    </div>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-row">
-                        <div class="stat-label">Farms</div>
-                        <div class="stat-value" id="farms"></div>
+                        <div class="stat-label">Soil/Farms</div>
+                        <div class="stat-value"><span id="soil"></span> / <span id="farms"></span></div>
                     </div>
                     <div class="stat-row">
                         <div class="stat-label">Food</div>
                         <div class="stat-value" id="food"></div>
                     </div>
                 </div>
-                <div class="centered-flex-row">
-                    <input id="buyFarmAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                    <div id="btnBuyFarms" class="button">Buy Farm (<span id="farmCost"></span> soil)</div>
+                <div class="centered-flex-row" id="farmSliderContainer">
+                    <div id="farmRatioLabel" class="science-ratio-label"></div>
+                    <input type="range" min="0" max="100" value="0" class="slider full-width-slider" id="farmSlider">
                 </div>
                 <div class="showthis">
-                    <label for="buyFarmAmount">Set how much you want to buy with the input.</label><br>
-                    WARNING: using soil reduces trees.<br>
+                    <div>Base Land: <span id="baseLand"></span></div>
+                    <div>Dry Land: <span id="land"></span></div>
+                    Dry land + water = soil, at a rate of (water / 1000)<br>
+                    .1% <img src='img/water.png' class='smallIcon'> goes to forest.<br>
+                    Slider allocates soil to farms (50 soil per farm).<br>
                     One farm makes .01 food/tick, using water.<br>
-                    .1% of water per tick goes back to the lake.<br>
                     <div>Farm Efficiency: <span id="efficiency"></span>%</div>
                 </div>
             </div>

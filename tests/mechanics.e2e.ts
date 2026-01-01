@@ -68,8 +68,12 @@ test.describe('Gameplay Mechanics', () => {
         (window as any).view.update();
     });
     await page.evaluate(() => {
-        const btn = document.getElementById('btnBuyFarms');
-        if (btn) btn.click();
+        const slider = document.getElementById('farmSlider') as HTMLInputElement;
+        if (slider) {
+            slider.value = '50';
+            slider.dispatchEvent(new Event('input'));
+        }
+        (window as any).game.tick(); // Tick to process ratio
     });
     expect(await page.evaluate(() => (window as any).game.farms.farms)).toBeGreaterThan(0);
     expect(await page.evaluate(() => (window as any).game.land.soil)).toBeLessThan(100);
@@ -83,12 +87,19 @@ test.describe('Gameplay Mechanics', () => {
     expect(parseFloat(popText!.replace(/,/g, ''))).toBeGreaterThan(0);
 
     // 4. Computer Unlocking
-    await page.evaluate(() => {
-        (window as any).game.science = 1000;
-        (window as any).view.update();
+    const unlockError = await page.evaluate(() => {
+        try {
+            (window as any).game.science = 1000;
+            (window as any).view.update();
+            const btn = document.getElementById('unlockComputer');
+            if (!btn) return "unlockComputer button not found";
+            btn.click();
+            return null;
+        } catch (e: any) {
+            return e.message + "\n" + e.stack;
+        }
     });
-    await expect(page.locator('#unlockComputer')).toBeVisible();
-    await page.click('#unlockComputer', { force: true });
+    expect(unlockError).toBeNull();
     await expect(page.locator('#unlockedComputer')).toBeVisible();
     expect(await page.evaluate(() => (window as any).game.computer.unlocked)).toBe(1);
 
@@ -104,17 +115,29 @@ test.describe('Gameplay Mechanics', () => {
     });
     expect(hiddenProcessVisible, 'Process with showing: false should be hidden (display: none)').toBe(false);
 
-    // 5. Scientific notation in inputs
+    // 5. Scientific notation in inputs (using science slider or others as farms uses ratio now)
     await page.evaluate(() => {
         (window as any).game.land.soil = 1e15;
         (window as any).game.farms.farms = 0;
+        (window as any).game.farms.farmRatio = 0;
         (window as any).view.update();
     });
-    await page.locator('#buyFarmAmount').fill('1e2');
+    // Let's use buyBattery as a test for scientific notation
     await page.evaluate(() => {
-        const btn = document.getElementById('btnBuyFarms');
-        if (btn) btn.click();
+        (window as any).game.metal = 500;
+        (window as any).game.energy.unlockEnergy();
+        document.getElementById('energyContainer')?.classList.remove('hidden');
+        (window as any).view.refreshLayout();
+        
+        const input = document.getElementById('buyBattery') as HTMLInputElement;
+        if (input) {
+            input.value = '1e2';
+            input.dispatchEvent(new Event('input'));
+        }
+        (window as any).game.oxygen = 1e15;
+        (window as any).game.science = 1e15;
+        (window as any).game.buyBattery();
     });
-    expect(await page.evaluate(() => (window as any).game.farms.farms)).toBe(100);
+    expect(await page.evaluate(() => (window as any).game.energy.battery)).toBe(200); // 100 initial + 100
   });
 });

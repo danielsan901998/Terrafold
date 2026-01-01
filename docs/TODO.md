@@ -1,8 +1,6 @@
 # TODO List
 
 ## Core Game Mechanics & Systems
-*   **Land/Farm**
-    *   Merge it and use a slider to select percentage of farms to allow reducing farms
 *   **Computer**
     *   Make showing a boolean instead of a function, use events to update visibility.
     *   Diferenciate done between repetable like Build Robots and Bigger Storms, only unassign threads for no repetible

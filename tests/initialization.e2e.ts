@@ -36,7 +36,6 @@ test.describe('Initialization', () => {
       '#cloudsContainer',
       '#landContainer',
       '#treesContainer',
-      '#foodContainer',
       '#populationContainer'
     ];
 

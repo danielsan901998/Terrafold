@@ -13,7 +13,7 @@ test.describe('Game Progression', () => {
     const initialContainers = [
       '#iceContainer', '#indoorWaterContainer', '#outdoorWaterContainer',
       '#cloudsContainer', '#landContainer', '#treesContainer',
-      '#foodContainer', '#populationContainer', '#computerContainer'
+      '#populationContainer', '#computerContainer'
     ];
 
     const lateGameContainers = [

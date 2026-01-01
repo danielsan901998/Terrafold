@@ -6,6 +6,7 @@ export default class Farms {
     food: number;
     foodCreated: number;
     efficiency: number;
+    farmRatio: number;
     transferred: number = 0;
 
     constructor() {
@@ -14,6 +15,7 @@ export default class Farms {
         this.food = 0;
         this.foodCreated = 0;
         this.efficiency = 1;
+        this.farmRatio = 0;
     }
 
     tick(gained: number) {
@@ -39,6 +41,18 @@ export default class Farms {
     addFarm(amount: number) {
         this.farms += amount;
         game?.events.emit('farms:updated');
+    }
+
+    updateFarms(soil: number): number {
+        const totalPotentialSoil = soil + (this.farms * 50);
+        const desiredFarms = Math.floor((totalPotentialSoil * this.farmRatio / 100) / 50);
+        const diff = desiredFarms - this.farms;
+        if (diff !== 0) {
+            this.farms = desiredFarms;
+            game?.events.emit('farms:updated');
+            return diff * 50;
+        }
+        return 0;
     }
 
     improve() {
