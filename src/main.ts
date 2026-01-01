@@ -120,7 +120,7 @@ class Game implements IGame {
             view?.computerView.addComputerRow(i);
             const proc = this.computer.processes[i];
             if (proc) {
-                proc.isMoving = 0;
+                proc.isMoving = false;
                 proc.completions = 0;
             }
         }

@@ -1,19 +1,32 @@
 import { game } from '../main';
 import { precision2, precision3 } from '../utils/utils';
 
-export interface Process {
+export class Process {
     text: string;
     tooltip: string;
-    currentTicks: number;
+    currentTicks: number = 0;
     ticksNeeded: number;
     threads: number;
     cost: number;
     costType: string;
-    completions?: number;
-    isMoving?: number | boolean;
+    completions: number = 0;
+    isMoving: boolean = false;
     finish: (this: Process) => void;
     showing: (this: Process) => boolean;
     done?: (this: Process) => boolean;
+
+    constructor(A: Partial<Process>) {
+        this.text = A.text || "";
+        this.tooltip = A.tooltip || "";
+        this.currentTicks = A.currentTicks || 0;
+        this.ticksNeeded = A.ticksNeeded || 0;
+        this.threads = A.threads || 0;
+        this.cost = A.cost || 0;
+        this.costType = A.costType || "";
+        this.finish = A.finish || (() => { });
+        this.showing = A.showing || (() => true);
+        this.done = A.done;
+    }
 }
 
 export default class Computer {
@@ -30,98 +43,63 @@ export default class Computer {
         this.speed = 1;
 
         this.processes = [
-            {
+            new Process({
                 // Optimize Land
                 text: "Optimize Land",
                 tooltip: "Improve 1% of unimproved land.<br>Max to improve to is ( 10 x base land )<br>Percent Optimized: <div id='landOptimized'></div>",
-                currentTicks: 0,
                 ticksNeeded: 600,
-                threads: 0,
-                cost: 0,
-                costType: "",
                 finish: function () {
                     if (game) game.land.improveLand();
                     if (game) this.ticksNeeded = Math.floor(game.land.baseLand);
                     game?.events.emit('computer:updated');
                 },
-                showing: function () {
-                    return true;
-                },
-            },
-            {
+            }),
+            new Process({
                 // Buy Ice
                 text: "Buy Ice",
                 tooltip: "Buy available ice",
-                currentTicks: 0,
                 ticksNeeded: 50,
-                threads: 0,
-                cost: 0,
-                costType: "",
                 finish: function () {
                     if (game) game.buyIce();
                 },
-                showing: function () {
-                    return true;
-                },
-            },
-            {
+            }),
+            new Process({
                 // Sell Water
                 text: "Sell Water",
                 tooltip: "Sells up to 50 water",
-                currentTicks: 0,
                 ticksNeeded: 50,
-                threads: 0,
-                cost: 0,
-                costType: "",
                 finish: function () {
                     if (game) game.water.sellWater(50);
                 },
-                showing: function () {
-                    return true;
-                },
-            },
-            {
+            }),
+            new Process({
                 // Improve Farms
                 text: "Improve Farms",
                 tooltip: "Farm efficiency increases by 2%",
-                currentTicks: 0,
                 ticksNeeded: 40,
-                threads: 0,
-                cost: 0,
-                costType: "",
                 finish: function () {
                     if (game) game.farms.improve();
                     this.ticksNeeded = precision3(
-                        20 * ((this.completions || 0) + 2) + Math.pow((this.completions || 0), 2) / 10,
+                        20 * (this.completions + 2) + Math.pow(this.completions, 2) / 10,
                     );
                 },
-                showing: function () {
-                    return true;
-                },
-            },
-            {
+            }),
+            new Process({
                 // Find more Ice Sellers
                 text: "Find more Ice Sellers",
                 tooltip: "Gain 200 buyable ice and 1 more per tick",
-                currentTicks: 0,
                 ticksNeeded: 2000,
-                threads: 0,
                 cost: 0.5,
                 costType: "cash",
                 finish: function () {
                     if (game) game.ice.findIceSeller(1);
                 },
-                showing: function () {
-                    return true;
-                },
-            },
-            {
+            }),
+            new Process({
                 // Bigger Storms
                 text: "Bigger Storms",
                 tooltip: "Storms last 5 more ticks. Max 300 duration.",
-                currentTicks: 0,
                 ticksNeeded: 600,
-                threads: 0,
                 cost: 2,
                 costType: "science",
                 finish: function () {
@@ -135,14 +113,12 @@ export default class Computer {
                 showing: function () {
                     return !this.done?.();
                 },
-            },
-            {
+            }),
+            new Process({
                 // Build Robots
                 text: "Build Robots",
                 tooltip: "Builds a robot",
-                currentTicks: 0,
                 ticksNeeded: 10000,
-                threads: 0,
                 cost: 0.01,
                 costType: "metal",
                 finish: function () {
@@ -154,14 +130,12 @@ export default class Computer {
                 done: function () {
                     return game ? game.robots.robots >= game.robots.robotMax : false;
                 },
-            },
-            {
+            }),
+            new Process({
                 // More Robot Storage
                 text: "More Robot Storage",
                 tooltip: "Can hold 5 more robots",
-                currentTicks: 0,
                 ticksNeeded: 20000,
-                threads: 0,
                 cost: 0.5,
                 costType: "wood",
                 finish: function () {
@@ -171,14 +145,12 @@ export default class Computer {
                 showing: function () {
                     return game ? game.robots.unlocked !== 0 : false;
                 },
-            },
-            {
+            }),
+            new Process({
                 // Improve House Design
                 text: "Improve House Design",
                 tooltip: "Improves base happiness modifier by .1",
-                currentTicks: 0,
                 ticksNeeded: 3000,
-                threads: 0,
                 cost: 10,
                 costType: "science",
                 finish: function () {
@@ -188,7 +160,7 @@ export default class Computer {
                 showing: function () {
                     return game ? game.robots.unlocked !== 0 : false;
                 },
-            },
+            }),
         ];
     }
 
@@ -201,33 +173,32 @@ export default class Computer {
 
     tickRow(row: Process, ticksGained: number) {
         if (ticksGained === 0) {
-            row.isMoving = 0;
+            row.isMoving = false;
             return;
         }
 
         if (row.done && row.done()) {
-            row.isMoving = 0;
+            row.isMoving = false;
             if (row.threads > 0) {
                 this.freeThreads += row.threads;
                 row.threads = 0;
             }
             return;
         }
-        row.isMoving = 1;
+        row.isMoving = true;
         const cost = ticksGained * row.cost;
         if (row.costType) {
             if (game && (game as any)[row.costType] < cost) {
-                row.isMoving = 0;
+                row.isMoving = false;
                 return;
             }
             if (game) (game as any)[row.costType] -= cost;
         }
         row.currentTicks += ticksGained;
-        row.isMoving = 1;
         while (row.currentTicks >= row.ticksNeeded) {
             const overflow = row.currentTicks - row.ticksNeeded;
             row.currentTicks = 0;
-            row.completions = (row.completions || 0) + 1;
+            row.completions++;
             row.finish();
             row.currentTicks = overflow; // Set currentTicks to the overflow for the next iteration
         }
