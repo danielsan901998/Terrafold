@@ -4,6 +4,7 @@ export default class Ice {
     gain: number;
     max: number;
     transferred: number;
+    buyIncome: number = 0;
 
     constructor() {
         this.ice = 0;
@@ -14,6 +15,7 @@ export default class Ice {
     }
 
     tick() {
+        this.buyIncome = 0;
         this.buyable += this.gain;
         if (this.buyable > this.max) {
             this.buyable = this.max;
@@ -32,6 +34,7 @@ export default class Ice {
         }
         this.buyable -= toBuy;
         this.ice += toBuy;
+        this.buyIncome += toBuy;
         return toBuy;
     }
 

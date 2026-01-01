@@ -76,6 +76,8 @@ class Game implements IGame {
     }
 
     tick() {
+        this.water.waterSpending = 0;
+        this.water.gain = 0;
         this.ice.tick();
         this.robots.tick();
         this.computer.tick();
@@ -283,7 +285,10 @@ const EXCLUDED_PROPERTIES = [
     'takeAmount', 'foodEaten', 'popGrowth', 'starving', 'scienceDelta', 'cashDelta',
     'happinessFromTrees', 'happinessFromOxygen', 'happiness', 'rotation',
     'fernsDelta', 'fernsWaterUse', 'smallTreesDelta', 'smallTreesWaterUse', 
-    'treesDelta', 'treesWaterUse', 'totalPlants', 'oxygenGain'
+    'treesDelta', 'treesWaterUse', 'totalPlants', 'oxygenGain',
+    'woodIncome', 'woodSpending', 'metalIncome', 'metalSpending', 'oxygenSpending',
+    'waterIncome', 'waterSpending',
+    'cashSpending', 'scienceSpending', 'waterFarms', 'waterTrees', 'buyIncome'
 ];
 
 function copyObject(object: any, toSave: any) {

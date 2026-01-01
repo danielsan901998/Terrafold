@@ -7,6 +7,7 @@ export default class Water {
     selling: number;
     excess: number;
     gain: number;
+    waterSpending: number = 0;
     transferred: number = 0;
 
     constructor() {
@@ -30,9 +31,11 @@ export default class Water {
         }
 
         this.selling = this.indoor / 100;
+        this.waterSpending += this.selling;
         this.indoor -= this.selling;
-        this.gain = this.selling * 2;
-        if (game) game.cash += this.gain;
+        const gain = this.selling * 2;
+        this.gain += gain;
+        if (game) game.cash += gain;
     }
 
     transferWater(): number {
@@ -46,7 +49,10 @@ export default class Water {
             toSell = this.indoor;
         }
         this.indoor -= toSell;
-        if (game) game.cash += this.getPrice(toSell);
+        this.waterSpending += toSell;
+        const gain = this.getPrice(toSell);
+        this.gain += gain;
+        if (game) game.cash += gain;
     }
 
     getPrice(toSell: number): number {

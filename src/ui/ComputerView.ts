@@ -3,7 +3,6 @@ import { intToString, getClickAmount, round2 } from '../utils/utils';
 import BaseView from './BaseView';
 
 export default class ComputerView extends BaseView {
-    private hoveredIndex: number | null = null;
 
     constructor() {
         super();
@@ -55,18 +54,15 @@ export default class ComputerView extends BaseView {
         pb.style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
         pb.style.backgroundColor = row.isMoving ? "yellow" : "red";
 
-        // Only update tooltip text if it's actually visible (hovered)
-        if (this.hoveredIndex === i) {
-            this.updateElementText(baseId + "CurrentTicks", intToString(row.currentTicks));
-            this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded));
-            const costContainer = this.getElement(baseId + "CostContainer");
-            if (row.cost !== 0) {
-                costContainer.classList.remove("hidden");
-                this.updateElementText(baseId + "Cost", intToString(row.cost));
-                this.updateElementText(baseId + "CostType", row.costType);
-            } else {
-                costContainer.classList.add("hidden");
-            }
+        this.updateElementText(baseId + "CurrentTicks", intToString(row.currentTicks));
+        this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded));
+        const costContainer = this.getElement(baseId + "CostContainer");
+        if (row.cost !== 0) {
+            costContainer.classList.remove("hidden");
+            this.updateElementText(baseId + "Cost", intToString(row.cost));
+            this.updateElementText(baseId + "CostType", row.costType);
+        } else {
+            costContainer.classList.add("hidden");
         }
     }
 
@@ -76,12 +72,6 @@ export default class ComputerView extends BaseView {
         rowContainer.className = "computerRow";
         const baseId = "computerRow" + dataPos;
         rowContainer.id = baseId + 'Container';
-
-        rowContainer.addEventListener('mouseenter', () => {
-            this.hoveredIndex = dataPos;
-            this.updateRowProgress(dataPos);
-        });
-        rowContainer.addEventListener('mouseleave', () => this.hoveredIndex = null);
 
         const plusButton = document.createElement("button");
         plusButton.id = baseId + "Plus";

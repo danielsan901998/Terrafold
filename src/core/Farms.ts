@@ -7,6 +7,7 @@ export default class Farms {
     foodCreated: number;
     efficiency: number;
     farmRatio: number;
+    waterSpending: number = 0;
     transferred: number = 0;
 
     constructor() {
@@ -19,6 +20,7 @@ export default class Farms {
     }
 
     tick(gained: number) {
+        this.waterSpending = 0;
         this.water += gained;
         this.gainFood();
     }
@@ -34,6 +36,7 @@ export default class Farms {
         if (this.foodCreated > this.water) {
             this.foodCreated = this.water;
         }
+        this.waterSpending += this.foodCreated;
         this.water -= this.foodCreated;
         this.food += this.foodCreated;
     }

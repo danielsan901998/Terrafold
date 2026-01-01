@@ -4,6 +4,7 @@ import { OrbitingResource } from '../types';
 export default class SpaceStation {
     unlocked: number;
     orbiting: OrbitingResource[];
+    waterIncome: number = 0;
 
     constructor() {
         this.unlocked = 0;
@@ -30,6 +31,7 @@ export default class SpaceStation {
     }
 
     tick() {
+        this.waterIncome = 0;
         if (!this.unlocked || !game) {
             return;
         }
@@ -40,6 +42,7 @@ export default class SpaceStation {
             const type = resource.type;
             if (type === "ice") {
                 game.ice.ice += take;
+                this.waterIncome += take;
             } else if (type === "dirt") {
                 game.land.addLand(take);
             }

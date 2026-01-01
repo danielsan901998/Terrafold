@@ -35,6 +35,10 @@ export default class Computer {
     freeThreads: number;
     speed: number;
     processes: Process[];
+    cashSpending: number = 0;
+    scienceSpending: number = 0;
+    metalSpending: number = 0;
+    woodSpending: number = 0;
 
     constructor() {
         this.unlocked = 0;
@@ -165,6 +169,10 @@ export default class Computer {
     }
 
     tick() {
+        this.cashSpending = 0;
+        this.scienceSpending = 0;
+        this.metalSpending = 0;
+        this.woodSpending = 0;
         for (let i = 0; i < this.processes.length; i++) {
             const process = this.processes[i]!;
             this.tickRow(process, this.speed * process.threads);
@@ -193,6 +201,10 @@ export default class Computer {
                 return;
             }
             if (game) (game as any)[row.costType] -= cost;
+            if (row.costType === "cash") this.cashSpending += cost;
+            if (row.costType === "science") this.scienceSpending += cost;
+            if (row.costType === "metal") this.metalSpending += cost;
+            if (row.costType === "wood") this.woodSpending += cost;
         }
         row.currentTicks += ticksGained;
         while (row.currentTicks >= row.ticksNeeded) {

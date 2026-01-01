@@ -37,6 +37,11 @@ export default class Robots {
     ore: number;
     mines: number;
     jobs: Job[];
+    woodIncome: number = 0;
+    woodSpending: number = 0;
+    metalIncome: number = 0;
+    metalSpending: number = 0;
+    oxygenSpending: number = 0;
 
     constructor() {
         this.robots = 0;
@@ -106,6 +111,11 @@ export default class Robots {
     }
 
     tick() {
+        this.woodIncome = 0;
+        this.woodSpending = 0;
+        this.metalIncome = 0;
+        this.metalSpending = 0;
+        this.oxygenSpending = 0;
         for (let i = 0; i < this.jobs.length; i++) {
             this.tickRow(this.jobs[i]!, this.jobs[i]!.workers);
         }
@@ -137,7 +147,10 @@ export default class Robots {
             }
             for (let i = 0; i < row.cost.length; i++) {
                 const costType = row.costType[i]!;
-                if (game) (game as any)[costType] -= ticksGained * row.cost[i]!;
+                const costAmount = ticksGained * row.cost[i]!;
+                if (game) (game as any)[costType] -= costAmount;
+                if (costType === "wood") this.woodSpending += costAmount;
+                if (costType === "metal") this.metalSpending += costAmount;
             }
         }
 
@@ -200,6 +213,7 @@ export default class Robots {
         if (game && game.trees.trees >= 2 * mult) {
             game.trees.trees -= 2 * mult;
             game.wood += mult;
+            this.woodIncome += mult;
         }
     }
 
@@ -213,6 +227,9 @@ export default class Robots {
             this.ore -= mult;
             game.oxygen -= 1000 * mult;
             game.metal += mult;
+            this.woodSpending += 5 * mult;
+            this.oxygenSpending += 1000 * mult;
+            this.metalIncome += mult;
         }
     }
 }

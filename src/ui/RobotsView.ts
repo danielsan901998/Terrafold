@@ -3,7 +3,6 @@ import { intToString, getClickAmount } from '../utils/utils';
 import BaseView from './BaseView';
 
 export default class RobotsView extends BaseView {
-    private hoveredIndex: number | null = null;
 
     constructor() {
         super();
@@ -72,19 +71,16 @@ export default class RobotsView extends BaseView {
         pb.style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
         pb.style.backgroundColor = row.isMoving ? "yellow" : "red";
 
-        // Only update tooltip text if it's actually visible (hovered)
-        if (this.hoveredIndex === i) {
-            this.updateElementText(baseId + "CurrentTicks", intToString(row.currentTicks));
-            this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded));
-            const costContainer = this.getElement(baseId + "CostContainer");
-            if (row.cost && row.costType) {
-                costContainer.classList.remove("hidden");
-                let costString = intToString(row.cost[0] || 0) + " " + (row.costType[0] || "");
-                costString += row.cost.length > 1 ? " and " + intToString(row.cost[1] || 0) + " " + (row.costType[1] || "") : "";
-                this.updateElementText(baseId + "Cost", costString);
-            } else {
-                costContainer.classList.add("hidden");
-            }
+        this.updateElementText(baseId + "CurrentTicks", intToString(row.currentTicks));
+        this.updateElementText(baseId + "TicksNeeded", intToString(row.ticksNeeded));
+        const costContainer = this.getElement(baseId + "CostContainer");
+        if (row.cost && row.costType) {
+            costContainer.classList.remove("hidden");
+            let costString = intToString(row.cost[0] || 0) + " " + (row.costType[0] || "");
+            costString += row.cost.length > 1 ? " and " + intToString(row.cost[1] || 0) + " " + (row.costType[1] || "") : "";
+            this.updateElementText(baseId + "Cost", costString);
+        } else {
+            costContainer.classList.add("hidden");
         }
     }
 
@@ -94,12 +90,6 @@ export default class RobotsView extends BaseView {
         rowContainer.className = "robotRow";
         const baseId = "robotRow" + dataPos;
         rowContainer.id = baseId + 'Container';
-
-        rowContainer.addEventListener('mouseenter', () => {
-            this.hoveredIndex = dataPos;
-            this.updateRowProgress(dataPos);
-        });
-        rowContainer.addEventListener('mouseleave', () => this.hoveredIndex = null);
 
         const plusButton = document.createElement("button");
         plusButton.id = baseId + "Plus";

@@ -13,6 +13,7 @@ export default class Trees {
     treesWaterUse: number;
     totalPlants: number;
     oxygenGain: number;
+    waterSpending: number = 0;
     transferred: number = 0;
 
     constructor() {
@@ -31,6 +32,7 @@ export default class Trees {
     }
 
     tick(gained: number) {
+        this.waterSpending = 0;
         this.water += gained;
         this.plantGrowth();
         this.oxygenGain = (this.ferns / 1000) + (3 * this.smallTrees / 1000) + (this.trees / 100);
@@ -69,6 +71,7 @@ export default class Trees {
         }
         this.trees += this.treesDelta;
         this.water -= this.treesWaterUse;
+        this.waterSpending += this.treesWaterUse;
 
         if (this.water < this.smallTreesWaterUse) {
             this.smallTreesDelta = this.smallTreesDelta > 0 ? this.water : this.smallTreesDelta;
@@ -76,6 +79,7 @@ export default class Trees {
         }
         this.smallTrees += this.smallTreesDelta;
         this.water -= this.smallTreesWaterUse;
+        this.waterSpending += this.smallTreesWaterUse;
 
         if (this.water < this.fernsWaterUse) {
             this.fernsDelta = this.fernsDelta > 0 ? this.water : this.fernsDelta;
@@ -83,6 +87,7 @@ export default class Trees {
         }
         this.ferns += this.fernsDelta;
         this.water -= this.fernsWaterUse;
+        this.waterSpending += this.fernsWaterUse;
     }
 
     transferWater(): number {

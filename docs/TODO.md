@@ -45,8 +45,6 @@
     *   Killing bosses give void crystals
 
 ## Balance, Economy & Design Philosophy
-*   **Resource View**
-    *   Show Total balance with each income/spending for each resource
 *   **Ore/Dirt Balance**
     *   400 ore per tick is reasonable to obtain.
     *   5 dirt in 500 ticks (1 in 10 ticks, or .1 per tick) is likely too low compared to space station supply (250 ticks for 5 dirt might be on par).

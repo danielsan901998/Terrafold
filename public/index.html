@@ -47,18 +47,58 @@
                             </div>
                         </div></div>
                         <div id="resources" class="infoText">
-                            <div class="showthat2 globalResourceInfo"> <img src='img/water.png' class='largeIcon'>: <span id="totalWater"></span><div class="showthis2">Total Water from anywhere</div></div>
-                            <div class="showthat2 globalResourceInfo"> <img src='img/cash.png' class='largeIcon'>: <span id="cash"></span><div class="showthis2">Cash</div></div>
-                            <div class="showthat2 globalResourceInfo"> <img src='img/oxygen.png' class='largeIcon'>: <span id="oxygen"></span>
-                                <div class="showthis2 small">
-                                    Oxygen<br>
-                                    .0001% of Oxygen leaks into space<br>
-                                    Oxygen Leaked: <span id="oxygenLeak"></span> per tick.<br>
+                            <div class="showthat2 globalResourceInfo"> <img src='img/water.png' class='largeIcon'>: <span id="totalWater"></span>
+                                <div class="showthis2 small" id="waterTooltip">
+                                    <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="waterNet"></span> / tick</b></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Orbiting:</span><span>+<span id="waterIncome"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Bought:</span><span>+<span id="waterBought"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Sold:</span><span>-<span id="waterSpending"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Farms:</span><span>-<span id="waterFarms"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Trees:</span><span>-<span id="waterTrees"></span></span></div>
                                 </div>
                             </div>
-                            <div class="showthat2 globalResourceInfo"> <img src='img/science.png' class='largeIcon'>: <span id="science"></span><div class="showthis2">Science</div></div>
-                            <div class="showthat2 globalResourceInfo hidden" id="woodContainer"> <img src='img/wood.png' class='largeIcon'>: <span id="wood"></span><div class="showthis2">Wood</div></div>
-                            <div class="showthat2 globalResourceInfo hidden" id="metalContainer"> <img src='img/metal.png' class='largeIcon'>: <span id="metal"></span><div class="showthis2">Metal</div></div>
+                            <div class="showthat2 globalResourceInfo"> <img src='img/cash.png' class='largeIcon'>: <span id="cash"></span>
+                                <div class="showthis2 small" id="cashTooltip">
+                                    <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="cashNet"></span> / tick</b></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Total Income:</span><span>+<span id="cashIncome"></span></span></div>
+                                    <div style="padding-left: 10px; font-size: 0.9em; color: #aaa;">
+                                        <div style="display: flex; justify-content: space-between;"><span>From People:</span><span>+<span id="cashFromPeople"></span></span></div>
+                                        <div style="display: flex; justify-content: space-between;"><span>From Water:</span><span>+<span id="cashFromWater"></span></span></div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Computer:</span><span>-<span id="cashComputer"></span></span></div>
+                                </div>
+                            </div>
+                            <div class="showthat2 globalResourceInfo"> <img src='img/oxygen.png' class='largeIcon'>: <span id="oxygen"></span>
+                                <div class="showthis2 small" id="oxygenTooltip">
+                                    <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="oxygenNet"></span> / tick</b></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Income:</span><span>+<span id="oxygenIncome"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Leaked:</span><span>-<span id="oxygenLeak"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Smelting:</span><span>-<span id="oxygenSmelting"></span></span></div>
+                                </div>
+                            </div>
+                            <div class="showthat2 globalResourceInfo"> <img src='img/science.png' class='largeIcon'>: <span id="science"></span>
+                                <div class="showthis2 small" id="scienceTooltip">
+                                    <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="scienceNet"></span> / tick</b></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Income:</span><span>+<span id="scienceIncome"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Computer:</span><span>-<span id="scienceComputer"></span></span></div>
+                                </div>
+                            </div>
+                            <div class="showthat2 globalResourceInfo hidden" id="woodContainer"> <img src='img/wood.png' class='largeIcon'>: <span id="wood"></span>
+                                <div class="showthis2 small" id="woodTooltip">
+                                    <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="woodNet"></span> / tick</b></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>From Trees:</span><span>+<span id="woodIncome"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>To Smelting:</span><span>-<span id="woodSpending"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Computer:</span><span>-<span id="woodComputer"></span></span></div>
+                                </div>
+                            </div>
+                            <div class="showthat2 globalResourceInfo hidden" id="metalContainer"> <img src='img/metal.png' class='largeIcon'>: <span id="metal"></span>
+                                <div class="showthis2 small" id="metalTooltip">
+                                    <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="metalNet"></span> / tick</b></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Income:</span><span>+<span id="metalIncome"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Robots:</span><span>-<span id="metalSpending"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Computer:</span><span>-<span id="metalComputer"></span></span></div>
+                                </div>
+                            </div>
                         </div>
         </div>
 
