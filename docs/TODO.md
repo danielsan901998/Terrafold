@@ -1,6 +1,8 @@
 # TODO List
 
 ## Core Game Mechanics & Systems
+*   **Land/Farm**
+    *   Merge it and use a slider to select percentage of farms to allow reducing farms
 *   **Computer**
     *   Make showing a boolean instead of a function, use events to update visibility.
     *   Diferenciate done between repetable like Build Robots and Bigger Storms, only unassign threads for no repetible
@@ -28,6 +30,7 @@
         *   Produces little dirt, littler gems
 *   **Space Station**
     *   Build solar panel, fixed energy production if energy less than battery, metal cost
+    *   Increase Hangar change to metal cost.
 *   **Potential Upgrades**
     *   Increase max # of mines per planet, make it choosable down to 1
 *   **Ice Upgrade Idea**
