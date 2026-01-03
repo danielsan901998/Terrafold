@@ -16,7 +16,7 @@ export default class Energy {
             this.unlocked = 1;
             game.events.emit('energy:unlocked');
         }
-        game?.events.emit('energy:updated');
+        game?.events.emit('energy:battery:updated');
     }
 
     tick() {
@@ -35,6 +35,6 @@ export default class Energy {
 
     buyBattery(amount: number) {
         this.battery += amount;
-        game?.events.emit('energy:updated');
+        game?.events.emit('energy:battery:updated');
     }
 }

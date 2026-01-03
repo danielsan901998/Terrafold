@@ -162,7 +162,7 @@ export default class Robots {
             row.currentTicks = 0;
             row.completions++;
             row.finish();
-            game?.events.emit('robots:updated');
+            game?.events.emit('robots:count:updated');
             this.tickRow(row, overflow); // recursive, but on the new cost
         }
     }
@@ -170,12 +170,12 @@ export default class Robots {
     gainRobots(amount: number) {
         this.robots += amount;
         this.robotsFree += amount;
-        game?.events.emit('robots:updated');
+        game?.events.emit('robots:count:updated');
     }
 
     gainStorage(amount: number) {
         this.robotMax += amount;
-        game?.events.emit('robots:updated');
+        game?.events.emit('robots:storage:updated');
     }
 
     unlockRobots() {
@@ -186,7 +186,8 @@ export default class Robots {
             game.events.emit('robots:unlocked');
             this.gainRobots(1);
         }
-        game.events.emit('robots:updated');
+        game.events.emit('robots:count:updated');
+        game.events.emit('robots:storage:updated');
     }
 
     addWorker(dataPos: number, numAdding: number) {
@@ -196,7 +197,7 @@ export default class Robots {
             job.workers += numAdding;
             this.robotsFree -= numAdding;
         }
-        game?.events.emit('robots:updated');
+        game?.events.emit('robots:count:updated');
     }
 
     removeWorker(dataPos: number, numRemoving: number) {
@@ -206,7 +207,7 @@ export default class Robots {
             job.workers -= numRemoving;
             this.robotsFree += numRemoving;
         }
-        game?.events.emit('robots:updated');
+        game?.events.emit('robots:count:updated');
     }
 
     cutTrees(mult: number) {

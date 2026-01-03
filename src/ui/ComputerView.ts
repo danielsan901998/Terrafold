@@ -8,7 +8,9 @@ export default class ComputerView extends BaseView {
         super();
         if (game) {
             game.events.on('computer:unlocked', () => this.checkUnlocked());
-            game.events.on('computer:updated', () => this.update());
+            game.events.on('computer:threads:updated', () => this.updateThreads());
+            game.events.on('computer:speed:updated', () => this.updateSpeed());
+            game.events.on('computer:optimize-land:updated', () => this.updateLandOptimized());
         }
     }
 
@@ -18,7 +20,8 @@ export default class ComputerView extends BaseView {
             this.setVisible('unlockedComputer', true);
             this.setVisible('unlockComputer', false);
             this.setVisible('robotsContainer', true);
-            this.update();
+            this.updateThreads();
+            this.updateSpeed();
         } else {
             this.setVisible('unlockedComputer', false);
             this.setVisible('unlockComputer', true);
@@ -26,20 +29,34 @@ export default class ComputerView extends BaseView {
         }
     }
 
-    update() {
+    updateLandOptimized() {
+        if (!game) return;
+        this.updateElementText('landOptimized', round2((game.land.optimizedLand / (game.land.baseLand * 10)) * 100) + "%");
+    }
+
+    updateThreads() {
         if (!game) return;
         this.updateElementText('freeThreads', intToString(game.computer.freeThreads));
         this.updateElementText('threads', intToString(game.computer.threads));
-        this.updateElementText('speed', intToString(game.computer.speed));
         this.updateElementText('threadCost', intToString(game.computer.getThreadCost()));
-        this.updateElementText('speedCost', intToString(game.computer.getSpeedCost()));
-        this.updateElementText('landOptimized', round2((game.land.optimizedLand / (game.land.baseLand * 10)) * 100) + "%");
         for (let i = 0; i < game.computer.processes.length; i++) {
             const row = game.computer.processes[i];
             if (!row) continue;
             this.updateElementText('computerRow' + i + 'Threads', intToString(row.threads));
             this.setVisible('computerRow' + i + 'Container', row.showing());
         }
+    }
+
+    updateSpeed() {
+        if (!game) return;
+        this.updateElementText('speed', intToString(game.computer.speed));
+        this.updateElementText('speedCost', intToString(game.computer.getSpeedCost()));
+    }
+
+    update() {
+        this.updateThreads();
+        this.updateSpeed();
+        this.updateLandOptimized();
     }
 
     updateRowProgress(i: number) {

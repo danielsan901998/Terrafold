@@ -99,7 +99,7 @@ export default class TractorBeam {
         }
         const typeRoll = Math.random();
         const amountRoll = Math.random() * 100 * game.space.sector + 200;
-        const durationRoll = Math.floor(Math.random() * 750 + 250);
+        const durationRoll = Math.floor(Math.random() * 800 + 400);
         const speedRoll = Math.random() * 2 + 1;
         let comet: Partial<Comet> = {};
 

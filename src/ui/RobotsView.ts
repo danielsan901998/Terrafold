@@ -9,9 +9,11 @@ export default class RobotsView extends BaseView {
         if (game) {
             game.events.on('robots:unlocked', () => {
                 this.checkUnlocked();
-                this.updateFull();
+                this.updateCount();
+                this.updateStorage();
             });
-            game.events.on('robots:updated', () => this.updateFull());
+            game.events.on('robots:count:updated', () => this.updateCount());
+            game.events.on('robots:storage:updated', () => this.updateStorage());
         }
     }
 
@@ -25,7 +27,8 @@ export default class RobotsView extends BaseView {
             this.setVisible('energyContainer', true);
             this.setVisible('woodContainer', true);
             this.setVisible('metalContainer', true);
-            this.updateFull();
+            this.updateCount();
+            this.updateStorage();
         } else {
             this.setVisible('unlockedRobots', false);
             this.setVisible('unlockRobots', true);
@@ -42,11 +45,10 @@ export default class RobotsView extends BaseView {
         this.updateElementText('ore', intToString(game.robots.ore));
     }
 
-    updateFull() {
+    updateCount() {
         if (!game) return;
         this.updateElementText('robots', intToString(game.robots.robots));
         this.updateElementText('robotsFree', intToString(game.robots.robotsFree));
-        this.updateElementText('robotMax', intToString(game.robots.robotMax));
         if (game.robots.jobs[5]) {
             this.updateElementText('totalDirtFromOre', intToString(game.robots.jobs[5].completions * 5));
         }
@@ -57,6 +59,16 @@ export default class RobotsView extends BaseView {
             this.setVisible('robotRow' + i + 'Container', row.showing());
         }
         this.update();
+    }
+
+    updateStorage() {
+        if (!game) return;
+        this.updateElementText('robotMax', intToString(game.robots.robotMax));
+    }
+
+    updateFull() {
+        this.updateCount();
+        this.updateStorage();
     }
 
     updateRowProgress(i: number) {

@@ -34,7 +34,6 @@ export default class Space {
         }
 
         if (this.allEmpty && this.ships.length === 0) {
-            this.planets = [];
             this.sector++;
             this.newLevel();
         }
@@ -51,6 +50,7 @@ export default class Space {
 
     newLevel() {
         this.allEmpty = false;
+        this.planets = [];
         for (let i = 0; i < 10; i++) {
             const newPlanet = new Planet();
             this.planets.push(newPlanet);
