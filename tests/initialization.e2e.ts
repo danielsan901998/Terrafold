@@ -32,7 +32,6 @@ test.describe('Initialization', () => {
       '#cash',
       '#iceContainer',
       '#indoorWaterContainer',
-      '#outdoorWaterContainer',
       '#cloudsContainer',
       '#landContainer',
       '#treesContainer',

@@ -7,6 +7,11 @@ export default class LandView extends BaseView {
 
     update() {
         if (!game) return;
+        this.updateElementText('outdoorWater', intToString(game.water.outdoor));
+        this.updateElementText('lakeWaterFromStorage', intToString(game.water.excess, 4));
+        this.updateElementText('waterTransferred', intToString(game.water.transferred, 4));
+        this.updateElementText('cloudsReceived', intToString(game.water.transferred, 4));
+
         this.updateElementText('landWater', intToString(game.land.water));
         this.updateElementText('optimizedLand', intToString(game.land.optimizedLand));
         this.updateElementText('baseLand', intToString(game.land.baseLand));

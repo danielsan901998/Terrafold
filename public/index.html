@@ -153,23 +153,6 @@
                 </div>
             </div>
 
-            <div id="outdoorWaterContainer" class="container showthat">
-                <div class="title">Lake</div>
-                <div class="main-resource showthat2">
-                    <img src='img/water.png' class='largeIcon'>
-                    <span id="outdoorWater"></span>
-                    <div class="showthis2">
-                        <div>Receiving (Storage): <span id="lakeWaterFromStorage"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Receiving (Forest): <span id="lakeWaterFromForest"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Receiving (Farm): <span id="lakeWaterFromFarm"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Evaporating: <span id="waterTransferred"></span> <img src='img/water.png' class='smallIcon'></div>
-                    </div>
-                </div>
-                <div class="showthis">
-                    Lake <img src='img/water.png' class='smallIcon'> evaporates .1% per tick into cloud water.
-                </div>
-            </div>
-
             <div id="cloudsContainer" class="container showthat">
                 <div class="title">Clouds</div>
                 <div class="main-resource showthat2">
@@ -232,6 +215,17 @@
                 <div class="main-resource-row">
                     <div class="main-resource showthat2">
                         <img src='img/water.png' class='largeIcon'>
+                        <span id="outdoorWater"></span>
+                        <div class="showthis2">
+                            <div>Lake Water</div>
+                            <div>Receiving (Storage): <span id="lakeWaterFromStorage"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Receiving (Forest): <span id="lakeWaterFromForest"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Receiving (Farm): <span id="lakeWaterFromFarm"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Evaporating: <span id="waterTransferred"></span> <img src='img/water.png' class='smallIcon'></div>
+                        </div>
+                    </div>
+                    <div class="main-resource showthat2">
+                        <img src='img/water.png' class='largeIcon'>
                         <span id="landWater"></span>
                         <div class="showthis2">
                             <div>Land Water</div>
@@ -279,6 +273,7 @@
                     Slider allocates soil to farms (50 soil per farm).<br>
                     One farm makes .01 food/tick, using water.<br>
                     <div>Farm Efficiency: <span id="efficiency"></span>%</div>
+                    Lake <img src='img/water.png' class='smallIcon'> evaporates .1% per tick into cloud water.
                 </div>
             </div>
 

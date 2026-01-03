@@ -11,7 +11,7 @@ test.describe('Game Progression', () => {
     await page.setViewportSize({ width: 1280, height: 800 });
 
     const initialContainers = [
-      '#iceContainer', '#indoorWaterContainer', '#outdoorWaterContainer',
+      '#iceContainer', '#indoorWaterContainer',
       '#cloudsContainer', '#landContainer', '#treesContainer',
       '#populationContainer', '#computerContainer'
     ];
