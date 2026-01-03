@@ -8,33 +8,38 @@ export default class Space {
     planets: Planet[];
     ships: Ship[];
     sector: number;
+    allEmpty: boolean;
+
     constructor() {
         this.planets = [];
         this.ships = [];
         this.sector = 0;
+        this.allEmpty = false;
     }
 
     tick() {
-        let empty = true;
-
         const targetPlanet = this.planets[ShipManager.globalTargetIndex];
         if (!targetPlanet || PlanetManager.doneBuilding(targetPlanet)) {
             ShipManager.updateGlobalTarget();
         }
 
-        for (let i = 0; i < this.planets.length; i++) {
-            const planet = this.planets[i]!;
-            PlanetManager.tick(planet); // Use PlanetManager.tick
-            if (PlanetManager.empty(planet) === false) // Use PlanetManager.empty
-                empty = false;
+        if (!this.allEmpty) {
+            let empty = true;
+            for (let i = 0; i < this.planets.length; i++) {
+                PlanetManager.tick(this.planets[i]!);
+                if (empty && !PlanetManager.empty(this.planets[i]!))
+                    empty = false;
+            }
+            this.allEmpty = empty;
         }
-        if (empty && this.ships.length === 0) {
+
+        if (this.allEmpty && this.ships.length === 0) {
             this.planets = [];
             this.sector++;
             this.newLevel();
         }
         for (let i = 0; i < this.ships.length; i++) {
-            ShipManager.tick(this.ships[i]!); // Use ShipManager.tick
+            ShipManager.tick(this.ships[i]!);
         }
     }
 
@@ -45,6 +50,7 @@ export default class Space {
     }
 
     newLevel() {
+        this.allEmpty = false;
         for (let i = 0; i < 10; i++) {
             const newPlanet = new Planet();
             this.planets.push(newPlanet);

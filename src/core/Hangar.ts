@@ -19,7 +19,7 @@ export default class Hangar {
         this.y = game.canvasHeight * 0.5 - 25;
         this.timeRemaining--;
         if (this.timeRemaining < 0) {
-            if (game.spaceDock.battleships > 0) {
+            if (game.spaceDock.battleships > 0 && !game.space.allEmpty) {
                 const tosend = Math.min(this.sendRate, game.spaceDock.battleships);
                 const foodTaken = game.farms.food * .05; // Take 5% food per launch
                 game.farms.food -= foodTaken;
