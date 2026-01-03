@@ -108,7 +108,7 @@ function drawShip(ship: Ship) {
     ctx.save();
     ctx.translate(offsetX+25, ship.y+25);
     ctx.fillStyle = "white";
-    ctx.fillText(ship.count.toString(),-4,20);
+    ctx.fillText(intToString(ship.count),-4,20);
     ctx.fillText(intToString(ship.food / ship.count / 10,1),-4,30);
     ctx.restore();
 }
@@ -149,14 +149,14 @@ function drawPlanetTooltip(planet: any) {
     ctx.fillText("Health: "+intToString(planet.health),-15,size+20);
     ctx.fillText("Dirt: "+intToString(planet.dirt),-15,size+30);
     ctx.fillText("Ore: "+intToString(planet.ore),-15,size+40);
-    ctx.fillText("C.Bots: "+planet.bots+ " / " + planet.maxMines,-15,size+50);
-    ctx.fillText("Solar: "+planet.solar,-15,size+60);
-    ctx.fillText("Build Factory: "+planet.factoryTicks+" / " + PlanetManager.FACTORY_TICKS_MAX,-15,size+70);
-    ctx.fillText("Build Coilgun: "+planet.coilgunTicks+" / " + PlanetManager.COILGUN_TICKS_MAX,-15,size+80);
-    ctx.fillText("Coilgun Charge: "+intToString(planet.coilgunCharge)+" / " + PlanetManager.COILGUN_CHARGE_MAX,-15,size+90);
-    ctx.fillText("Build Solar: "+intToString(planet.solarTicks)+" / " + PlanetManager.SOLAR_TICKS_MAX,-15,size+100);
-    ctx.fillText("Mines: "+planet.mines+ " / " + planet.maxMines,-15,size+110);
-    ctx.fillText("Build Mine: "+planet.mineTicks+ " / " + PlanetManager.MINE_TICKS_MAX,-15,size+120);
+    ctx.fillText("C.Bots: "+intToString(planet.bots)+ " / " + intToString(planet.maxMines),-15,size+50);
+    ctx.fillText("Solar: "+intToString(planet.solar),-15,size+60);
+    ctx.fillText("Build Factory: "+intToString(planet.factoryTicks)+" / " + intToString(PlanetManager.FACTORY_TICKS_MAX),-15,size+70);
+    ctx.fillText("Build Coilgun: "+intToString(planet.coilgunTicks)+" / " + intToString(PlanetManager.COILGUN_TICKS_MAX),-15,size+80);
+    ctx.fillText("Coilgun Charge: "+intToString(planet.coilgunCharge)+" / " + intToString(PlanetManager.COILGUN_CHARGE_MAX),-15,size+90);
+    ctx.fillText("Build Solar: "+intToString(planet.solarTicks)+" / " + intToString(PlanetManager.SOLAR_TICKS_MAX),-15,size+100);
+    ctx.fillText("Mines: "+intToString(planet.mines)+ " / " + intToString(planet.maxMines),-15,size+110);
+    ctx.fillText("Build Mine: "+intToString(planet.mineTicks)+ " / " + intToString(PlanetManager.MINE_TICKS_MAX),-15,size+120);
 
     ctx.restore();
 }
@@ -245,9 +245,9 @@ function drawPlanetObjects(planet: any, size: number) {
     }
 
     // Mines: Progress arc (Inner)
-    if (planet.mines < planet.maxMines && (planet.mines > 0 || planet.mineTicks > 0)) {
-        const percentage = (planet.mines + Math.min(1, planet.mineTicks / PlanetManager.MINE_TICKS_MAX)) / planet.maxMines;
-        const endAngle = (2 * Math.min(1, percentage) * Math.PI) - quarterTurn;
+    if (planet.mines < planet.maxMines && planet.mineTicks > 0) {
+        const percentage = planet.mineTicks / PlanetManager.MINE_TICKS_MAX;
+        const endAngle = (2 * percentage * Math.PI) - quarterTurn;
         ctx.beginPath();
         ctx.strokeStyle = "#666666";
         ctx.lineWidth = 2;

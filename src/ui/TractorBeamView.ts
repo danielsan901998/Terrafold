@@ -1,9 +1,11 @@
 import { game, view } from '../main';
 import { intToString } from '../utils/utils';
+import { OrbitingResource } from '../types';
 import BaseView from './BaseView';
 
 export default class TractorBeamView extends BaseView {
     private cometRows: Map<number, HTMLElement> = new Map();
+    private takeAmountRows: Map<string, HTMLElement> = new Map();
 
     constructor() {
         super();
@@ -55,11 +57,43 @@ export default class TractorBeamView extends BaseView {
             }
 
             this.updateElementText(`comet-amount-${comet.id}`, intToString(comet.amount));
-            this.updateElementText(`comet-duration-${comet.id}`, String(comet.duration));
+            this.updateElementText(`comet-duration-${comet.id}`, intToString(comet.duration));
 
             view.drawComet(comet);
         }
 
-        this.updateElementText('takeAmount', String(game.tractorBeam.takeAmount));
+        this.updateTakeAmount();
+    }
+
+    updateTakeAmount() {
+        if (!game) return;
+        const container = this.getElement("takeAmountContainer");
+        const resources: OrbitingResource[] = game.tractorBeam.takeAmount;
+        const visibleResources = resources.filter((r) => r.amount > 0);
+
+        // Check if the set of visible resources changed to determine if we need to rebuild the structure
+        const visibleTypesKey = visibleResources.map((r) => r.type).join(',');
+        const currentTypesKey = Array.from(this.takeAmountRows.keys()).join(',');
+
+        if (visibleTypesKey !== currentTypesKey) {
+            container.innerHTML = '';
+            this.takeAmountRows.clear();
+
+            for (let i = 0; i < visibleResources.length; i++) {
+                const resource = visibleResources[i]!;
+                const row = document.createElement("span");
+                const isLast = i === visibleResources.length - 1;
+                
+                // Create structure once: value span + label + optional comma
+                row.innerHTML = `<span id="takeAmountVal-${resource.type}"></span> ${resource.type}${isLast ? "" : ", "}`;
+                container.appendChild(row);
+                this.takeAmountRows.set(resource.type, row);
+            }
+        }
+
+        // Update only the numerical values
+        for (const resource of visibleResources) {
+            this.updateElementText(`takeAmountVal-${resource.type}`, intToString(resource.amount, 3));
+        }
     }
 }

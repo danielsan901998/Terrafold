@@ -28,16 +28,16 @@ export default class ComputerView extends BaseView {
 
     update() {
         if (!game) return;
-        this.updateElementText('freeThreads', String(game.computer.freeThreads));
-        this.updateElementText('threads', String(game.computer.threads));
-        this.updateElementText('speed', String(game.computer.speed));
+        this.updateElementText('freeThreads', intToString(game.computer.freeThreads));
+        this.updateElementText('threads', intToString(game.computer.threads));
+        this.updateElementText('speed', intToString(game.computer.speed));
         this.updateElementText('threadCost', intToString(game.computer.getThreadCost()));
         this.updateElementText('speedCost', intToString(game.computer.getSpeedCost()));
         this.updateElementText('landOptimized', round2((game.land.optimizedLand / (game.land.baseLand * 10)) * 100) + "%");
         for (let i = 0; i < game.computer.processes.length; i++) {
             const row = game.computer.processes[i];
             if (!row) continue;
-            this.updateElementText('computerRow' + i + 'Threads', String(row.threads));
+            this.updateElementText('computerRow' + i + 'Threads', intToString(row.threads));
             this.setVisible('computerRow' + i + 'Container', row.showing());
         }
     }

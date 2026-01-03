@@ -1,19 +1,22 @@
 import { game, incrementCometId } from '../main';
-import { intToString } from '../utils/utils';
-import { Comet } from '../types';
+import { Comet, OrbitingResource } from '../types';
 
 export default class TractorBeam {
     unlocked: number;
     cometSpotChance: number;
-    takeAmount: string;
+    takeAmount: OrbitingResource[];
     comets: Comet[];
 
     constructor() {
         this.unlocked = 0;
         this.cometSpotChance = 0.006;
-        this.takeAmount = "";
+        this.takeAmount = [
+            { type: "ice", amount: 0 },
+            { type: "dirt", amount: 0 }
+        ];
         this.comets = [];
     }
+
 
     tick() {
         if (!this.unlocked || !game) {
@@ -45,7 +48,6 @@ export default class TractorBeam {
         if (!game) return 0;
         const maxtaken = energy / this.comets.length;
         let used = 0;
-        this.takeAmount = "";
         for (let j = 0; j < game.spaceStation.orbiting.length; j++) {
             const orbiting = game.spaceStation.orbiting[j]!;
             let totalAmount = 0;
@@ -59,9 +61,13 @@ export default class TractorBeam {
                 }
             }
             orbiting.amount += totalAmount;
-            this.takeAmount += intToString(totalAmount, 3) + " " + orbiting.type;
-            if (j < game.spaceStation.orbiting.length - 1) {
-                this.takeAmount += ", "
+            
+            // Update takeAmount tracking
+            const takenResource = this.takeAmount.find(r => r.type === orbiting.type);
+            if (takenResource) {
+                takenResource.amount = totalAmount;
+            } else {
+                this.takeAmount.push({ type: orbiting.type, amount: totalAmount });
             }
         }
         return used;

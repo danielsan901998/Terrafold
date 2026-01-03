@@ -44,16 +44,16 @@ export default class RobotsView extends BaseView {
 
     updateFull() {
         if (!game) return;
-        this.updateElementText('robots', String(game.robots.robots));
-        this.updateElementText('robotsFree', String(game.robots.robotsFree));
-        this.updateElementText('robotMax', String(game.robots.robotMax));
+        this.updateElementText('robots', intToString(game.robots.robots));
+        this.updateElementText('robotsFree', intToString(game.robots.robotsFree));
+        this.updateElementText('robotMax', intToString(game.robots.robotMax));
         if (game.robots.jobs[5]) {
             this.updateElementText('totalDirtFromOre', intToString(game.robots.jobs[5].completions * 5));
         }
         for (let i = 0; i < game.robots.jobs.length; i++) {
             const row = game.robots.jobs[i];
             if (!row) continue;
-            this.updateElementText('robotRow' + i + 'Workers', String(row.workers));
+            this.updateElementText('robotRow' + i + 'Workers', intToString(row.workers));
             this.setVisible('robotRow' + i + 'Container', row.showing());
         }
         this.update();
