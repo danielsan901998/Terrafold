@@ -184,13 +184,13 @@ class Game implements IGame {
         const cost = 1000000;
         const el = document.getElementById('buyHangarAmount') as HTMLInputElement;
         let toBuy = Number(el.value);
-        if (toBuy * cost > this.land.soil) {
-            toBuy = Math.floor(this.land.soil / cost);
+        if (toBuy * cost > this.metal) {
+            toBuy = Math.floor(this.metal / cost);
         }
         if (toBuy <= 0) {
             return;
         }
-        this.land.soil -= toBuy * cost;
+        this.metal -= toBuy * cost;
         this.hangar.sendRate += toBuy;
         this.events.emit('hangar:updated');
     }

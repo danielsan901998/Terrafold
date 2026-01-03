@@ -29,8 +29,7 @@
         *   Light on ticks, heavy on flat energy required
         *   Produces little dirt, littler gems
 *   **Space Station**
-    *   Build solar panel, fixed energy production if energy less than battery, metal cost
-    *   Increase Hangar change to metal cost.
+    *   Build solar panel, fixed energy production, metal cost
 *   **Potential Upgrades**
     *   Increase max # of mines per planet, make it choosable down to 1
 *   **Ice Upgrade Idea**
