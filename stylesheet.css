@@ -443,7 +443,7 @@ body {
     white-space: nowrap; /* Keep icon and text together */
 }
 
-.button {
+button {
     background-color: var(--button-bg);
     color: white;
     padding: 6px 10px;
@@ -452,6 +452,7 @@ body {
     text-align: center;
     border: none;
     font-weight: bold;
+    font-family: inherit;
     transition: background-color 0.2s, transform 0.1s;
     margin: 5px 2px;
     display: inline-block;
@@ -462,22 +463,22 @@ body {
     vertical-align: middle;
 }
 
-.button div {
+button div {
     display: inline;
 }
 
-.computerRow .button, .robotRow .button {
+.computerRow button, .robotRow button {
     padding: 2px 8px;
     margin: 0 4px;
     min-width: 25px;
     white-space: nowrap;
 }
 
-.button:hover {
+button:hover {
     background-color: var(--button-hover);
 }
 
-.button:active {
+button:active {
     transform: scale(0.98);
 }
 
