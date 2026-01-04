@@ -34,13 +34,14 @@ export default class Robots {
     robotsFree: number;
     robotMax: number;
     unlocked: number;
-    ore: number;
     mines: number;
     jobs: Job[];
     woodIncome: number = 0;
     woodSpending: number = 0;
     metalIncome: number = 0;
     metalSpending: number = 0;
+    oreIncome: number = 0;
+    oreSpending: number = 0;
     oxygenSpending: number = 0;
 
     constructor() {
@@ -48,7 +49,6 @@ export default class Robots {
         this.robotsFree = 0;
         this.robotMax = 5;
         this.unlocked = 0;
-        this.ore = 0;
         this.mines = 0;
 
         this.jobs = [
@@ -97,9 +97,10 @@ export default class Robots {
                 tooltip: "Each tick costs 1 energy and 1000 ore<br>Gain 5 Base Land<br>Total land gained: <span id='totalDirtFromOre'></span>",
                 ticksNeeded: 1000,
                 during: function () {
-                    if (game && game.power >= 1 * this.workers && game.robots.ore >= this.workers * 1000) {
+                    if (game && game.power >= 1 * this.workers && game.ore >= this.workers * 1000) {
                         game.power -= 1 * this.workers;
-                        game.robots.ore -= this.workers * 1000;
+                        game.ore -= this.workers * 1000;
+                        game.robots.oreSpending += this.workers * 1000;
                         return true;
                     }
                     return false;
@@ -115,6 +116,8 @@ export default class Robots {
         this.woodSpending = 0;
         this.metalIncome = 0;
         this.metalSpending = 0;
+        this.oreIncome = 0;
+        this.oreSpending = 0;
         this.oxygenSpending = 0;
         for (let i = 0; i < this.jobs.length; i++) {
             this.tickRow(this.jobs[i]!, this.jobs[i]!.workers);
@@ -219,16 +222,21 @@ export default class Robots {
     }
 
     mineOre(mult: number) {
-        if (game) game.robots.ore += game.robots.mines / 100 * mult;
+        if (game) {
+            const gain = game.robots.mines / 100 * mult;
+            game.ore += gain;
+            this.oreIncome += gain;
+        }
     }
 
     smeltOre(mult: number) {
-        if (game && game.wood >= 5 * mult && this.ore >= mult && game.oxygen >= mult * 1000) {
+        if (game && game.wood >= 5 * mult && game.ore >= mult && game.oxygen >= mult * 1000) {
             game.wood -= 5 * mult;
-            this.ore -= mult;
+            game.ore -= mult;
             game.oxygen -= 1000 * mult;
             game.metal += mult;
             this.woodSpending += 5 * mult;
+            this.oreSpending += mult;
             this.oxygenSpending += 1000 * mult;
             this.metalIncome += mult;
         }

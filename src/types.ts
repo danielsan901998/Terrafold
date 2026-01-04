@@ -38,6 +38,7 @@ export interface Game {
     science: number;
     wood: number;
     metal: number;
+    ore: number;
     power: number;
     oxygenLeak: number;
     canvasWidth: number;

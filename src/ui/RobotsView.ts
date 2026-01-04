@@ -26,6 +26,7 @@ export default class RobotsView extends BaseView {
             this.setVisible('lightningTooltip', true);
             this.setVisible('energyContainer', true);
             this.setVisible('woodContainer', true);
+            this.setVisible('oreContainer', true);
             this.setVisible('metalContainer', true);
             this.updateCount();
             this.updateStorage();
@@ -36,13 +37,13 @@ export default class RobotsView extends BaseView {
             this.setVisible('lightningTooltip', false);
             this.setVisible('energyContainer', false);
             this.setVisible('woodContainer', false);
+            this.setVisible('oreContainer', false);
             this.setVisible('metalContainer', false);
         }
     }
 
     update() {
         if (!game) return;
-        this.updateElementText('ore', intToString(game.robots.ore));
     }
 
     updateCount() {

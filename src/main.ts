@@ -39,6 +39,7 @@ class Game implements IGame {
     science: number;
     wood: number;
     metal: number;
+    ore: number;
     power: number;
     oxygenLeak: number = 0;
     canvasWidth: number = 1200;
@@ -69,6 +70,7 @@ class Game implements IGame {
         this.science = 0; // Actual default: 0
         this.wood = 0;
         this.metal = 0;
+        this.ore = 0;
         this.power = 0;
         this.canvasWidth = 1200;
         this.canvasHeight = 600;
@@ -286,7 +288,7 @@ const EXCLUDED_PROPERTIES = [
     'happinessFromTrees', 'happinessFromOxygen', 'happiness', 'rotation',
     'fernsDelta', 'fernsWaterUse', 'smallTreesDelta', 'smallTreesWaterUse', 
     'treesDelta', 'treesWaterUse', 'totalPlants', 'oxygenGain',
-    'woodIncome', 'woodSpending', 'metalIncome', 'metalSpending', 'oxygenSpending',
+    'woodIncome', 'woodSpending', 'metalIncome', 'metalSpending', 'oreIncome', 'oreSpending', 'oxygenSpending',
     'waterIncome', 'waterSpending',
     'cashSpending', 'scienceSpending', 'waterFarms', 'waterTrees', 'buyIncome'
 ];

@@ -43,5 +43,10 @@ export default class ResourceView extends BaseView {
         this.updateElementText('metalSpending', intToString(game.robots.metalSpending, 4));
         this.updateElementText('metalComputer', intToString(game.computer.metalSpending, 4));
         this.updateElementText('metalNet', intToStringNegative(game.robots.metalIncome - game.robots.metalSpending - game.computer.metalSpending, 4));
+
+        this.updateElementText('ore', intToString(game.ore));
+        this.updateElementText('oreIncome', intToString(game.robots.oreIncome, 4));
+        this.updateElementText('oreSpending', intToString(game.robots.oreSpending, 4));
+        this.updateElementText('oreNet', intToStringNegative(game.robots.oreIncome - game.robots.oreSpending, 4));
     }
 }

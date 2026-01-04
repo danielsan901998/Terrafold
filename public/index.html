@@ -47,7 +47,7 @@
                             </div>
                         </div></div>
                         <div id="resources" class="infoText">
-                            <div class="showthat2 globalResourceInfo"> <img src='img/water.png' class='largeIcon'>: <span id="totalWater"></span>
+                            <div class="showthat2 globalResourceInfo"> <img src='img/water.webp' class='largeIcon'>: <span id="totalWater"></span>
                                 <div class="showthis2 small" id="waterTooltip">
                                     <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="waterNet"></span> / tick</b></div>
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Orbiting:</span><span>+<span id="waterIncome"></span></span></div>
@@ -57,7 +57,7 @@
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Trees:</span><span>-<span id="waterTrees"></span></span></div>
                                 </div>
                             </div>
-                            <div class="showthat2 globalResourceInfo"> <img src='img/cash.png' class='largeIcon'>: <span id="cash"></span>
+                            <div class="showthat2 globalResourceInfo"> <img src='img/cash.webp' class='largeIcon'>: <span id="cash"></span>
                                 <div class="showthis2 small" id="cashTooltip">
                                     <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="cashNet"></span> / tick</b></div>
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Total Income:</span><span>+<span id="cashIncome"></span></span></div>
@@ -68,7 +68,7 @@
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Computer:</span><span>-<span id="cashComputer"></span></span></div>
                                 </div>
                             </div>
-                            <div class="showthat2 globalResourceInfo"> <img src='img/oxygen.png' class='largeIcon'>: <span id="oxygen"></span>
+                            <div class="showthat2 globalResourceInfo"> <img src='img/oxygen.webp' class='largeIcon'>: <span id="oxygen"></span>
                                 <div class="showthis2 small" id="oxygenTooltip">
                                     <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="oxygenNet"></span> / tick</b></div>
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Income:</span><span>+<span id="oxygenIncome"></span></span></div>
@@ -76,14 +76,14 @@
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Smelting:</span><span>-<span id="oxygenSmelting"></span></span></div>
                                 </div>
                             </div>
-                            <div class="showthat2 globalResourceInfo"> <img src='img/science.png' class='largeIcon'>: <span id="science"></span>
+                            <div class="showthat2 globalResourceInfo"> <img src='img/science.webp' class='largeIcon'>: <span id="science"></span>
                                 <div class="showthis2 small" id="scienceTooltip">
                                     <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="scienceNet"></span> / tick</b></div>
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Income:</span><span>+<span id="scienceIncome"></span></span></div>
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Computer:</span><span>-<span id="scienceComputer"></span></span></div>
                                 </div>
                             </div>
-                            <div class="showthat2 globalResourceInfo hidden" id="woodContainer"> <img src='img/wood.png' class='largeIcon'>: <span id="wood"></span>
+                            <div class="showthat2 globalResourceInfo hidden" id="woodContainer"> <img src='img/wood.webp' class='largeIcon'>: <span id="wood"></span>
                                 <div class="showthis2 small" id="woodTooltip">
                                     <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="woodNet"></span> / tick</b></div>
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>From Trees:</span><span>+<span id="woodIncome"></span></span></div>
@@ -91,7 +91,14 @@
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Computer:</span><span>-<span id="woodComputer"></span></span></div>
                                 </div>
                             </div>
-                            <div class="showthat2 globalResourceInfo hidden" id="metalContainer"> <img src='img/metal.png' class='largeIcon'>: <span id="metal"></span>
+                            <div class="showthat2 globalResourceInfo hidden" id="oreContainer"> <img src='img/ore.webp' class='largeIcon'>: <span id="ore"></span>
+                                <div class="showthis2 small" id="oreTooltip">
+                                    <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="oreNet"></span> / tick</b></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Mined:</span><span>+<span id="oreIncome"></span></span></div>
+                                    <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Smelted:</span><span>-<span id="oreSpending"></span></span></div>
+                                </div>
+                            </div>
+                            <div class="showthat2 globalResourceInfo hidden" id="metalContainer"> <img src='img/metal.webp' class='largeIcon'>: <span id="metal"></span>
                                 <div class="showthis2 small" id="metalTooltip">
                                     <div style="border-bottom: 1px solid #666; margin-bottom: 3px;"><b>Net: <span id="metalNet"></span> / tick</b></div>
                                     <div style="display: flex; justify-content: space-between; gap: 10px;"><span>Income:</span><span>+<span id="metalIncome"></span></span></div>
@@ -108,10 +115,10 @@
             <div id="iceContainer" class="container showthat">
                 <div class="title">Ice</div>
                 <div class="main-resource showthat2">
-                    <img src='img/water.png' class='largeIcon'>
+                    <img src='img/water.webp' class='largeIcon'>
                     <span id="ice"></span>
                     <div class="showthis2">
-                        <div>Melting: <span id="iceTransferred"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Melting: <span id="iceTransferred"></span> <img src='img/water.webp' class='smallIcon'></div>
                     </div>
                 </div>
                 <div class="stats-grid">
@@ -122,7 +129,7 @@
                 </div>
                 <button id="btnBuyIce">Buy Ice for $1</button>
                 <div class="showthis">
-                    Ice melts at a rate of .1% per tick and becomes <img src='img/water.png' class='smallIcon'>.<br>
+                    Ice melts at a rate of .1% per tick and becomes <img src='img/water.webp' class='smallIcon'>.<br>
                     You can buy up to the max at a time, and it comes back at <span id="iceBuyerAmount"></span> per tick.
                 </div>
             </div>
@@ -130,11 +137,11 @@
             <div id="indoorWaterContainer" class="container showthat">
                 <div class="title">Storage</div>
                 <div class="main-resource showthat2">
-                    <img src='img/water.png' class='largeIcon'>
+                    <img src='img/water.webp' class='largeIcon'>
                     <span><span id="indoorWater"></span> / <span id="indoorWaterMax"></span></span>
                     <div class="showthis2">
-                        <div>Receiving: <span id="indoorWaterReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Overflowing: <span id="excessWater"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Receiving: <span id="indoorWaterReceived"></span> <img src='img/water.webp' class='smallIcon'></div>
+                        <div>Overflowing: <span id="excessWater"></span> <img src='img/water.webp' class='smallIcon'></div>
                     </div>
                 </div>
                 <div class="stats-grid">
@@ -148,7 +155,7 @@
                     </div>
                 </div>
                 <div class="showthis">
-                    When <img src='img/water.png' class='smallIcon'> is at max, extra water spills into the lake.<br>
+                    When <img src='img/water.webp' class='smallIcon'> is at max, extra water spills into the lake.<br>
                     Sells 1% of max per tick. Sells for $2 per 1.<br>
                 </div>
             </div>
@@ -156,11 +163,11 @@
             <div id="cloudsContainer" class="container showthat">
                 <div class="title">Clouds</div>
                 <div class="main-resource showthat2">
-                    <img src='img/water.png' class='largeIcon'>
+                    <img src='img/water.webp' class='largeIcon'>
                     <span id="clouds"></span>
                     <div class="showthis2">
-                        <div>Receiving: <span id="cloudsReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Raining: <span id="rain"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Receiving: <span id="cloudsReceived"></span> <img src='img/water.webp' class='smallIcon'></div>
+                        <div>Raining: <span id="rain"></span> <img src='img/water.webp' class='smallIcon'></div>
                     </div>
                 </div>
                 
@@ -214,36 +221,36 @@
                 <div class="title">Land</div>
                 <div class="main-resource-row">
                     <div class="main-resource showthat2">
-                        <img src='img/water.png' class='largeIcon'>
+                        <img src='img/water.webp' class='largeIcon'>
                         <span id="outdoorWater"></span>
                         <div class="showthis2">
                             <div>Lake Water</div>
-                            <div>Receiving (Storage): <span id="lakeWaterFromStorage"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Receiving (Forest): <span id="lakeWaterFromForest"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Receiving (Farm): <span id="lakeWaterFromFarm"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Evaporating: <span id="waterTransferred"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Receiving (Storage): <span id="lakeWaterFromStorage"></span> <img src='img/water.webp' class='smallIcon'></div>
+                            <div>Receiving (Forest): <span id="lakeWaterFromForest"></span> <img src='img/water.webp' class='smallIcon'></div>
+                            <div>Receiving (Farm): <span id="lakeWaterFromFarm"></span> <img src='img/water.webp' class='smallIcon'></div>
+                            <div>Evaporating: <span id="waterTransferred"></span> <img src='img/water.webp' class='smallIcon'></div>
                         </div>
                     </div>
                     <div class="main-resource showthat2">
-                        <img src='img/water.png' class='largeIcon'>
+                        <img src='img/water.webp' class='largeIcon'>
                         <span id="landWater"></span>
                         <div class="showthis2">
                             <div>Land Water</div>
-                            <div>Receiving: <span id="landReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Dry Land to Soil: <span id="landConverted"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Flowing to Forest: <span id="landWaterToForest"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Flowing to Farm: <span id="landWaterToFarm"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Receiving: <span id="landReceived"></span> <img src='img/water.webp' class='smallIcon'></div>
+                            <div>Dry Land to Soil: <span id="landConverted"></span> <img src='img/water.webp' class='smallIcon'></div>
+                            <div>Flowing to Forest: <span id="landWaterToForest"></span> <img src='img/water.webp' class='smallIcon'></div>
+                            <div>Flowing to Farm: <span id="landWaterToFarm"></span> <img src='img/water.webp' class='smallIcon'></div>
                         </div>
                     </div>
                     <div class="main-resource showthat2">
-                        <img src='img/water.png' class='largeIcon'>
+                        <img src='img/water.webp' class='largeIcon'>
                         <span id="farmsWater"></span>
                         <div class="showthis2">
                             <div>Farm Water</div>
                             <div>Food Eaten: <span id="farmFoodEaten"></span></div>
-                            <div>Receiving: <span id="farmReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Water to Food: <span id="foodCreated"></span> <img src='img/water.png' class='smallIcon'></div>
-                            <div>Flowing to Lake: <span id="farmWaterToLake"></span> <img src='img/water.png' class='smallIcon'></div>
+                            <div>Receiving: <span id="farmReceived"></span> <img src='img/water.webp' class='smallIcon'></div>
+                            <div>Water to Food: <span id="foodCreated"></span> <img src='img/water.webp' class='smallIcon'></div>
+                            <div>Flowing to Lake: <span id="farmWaterToLake"></span> <img src='img/water.webp' class='smallIcon'></div>
                         </div>
                     </div>
                 </div>
@@ -269,31 +276,31 @@
                     <div>Base Land: <span id="baseLand"></span></div>
                     <div>Dry Land: <span id="land"></span></div>
                     Dry land + water = soil, at a rate of (water / 1000)<br>
-                    .1% <img src='img/water.png' class='smallIcon'> goes to forest.<br>
+                    .1% <img src='img/water.webp' class='smallIcon'> goes to forest.<br>
                     Slider allocates soil to farms (50 soil per farm).<br>
                     One farm makes .01 food/tick, using water.<br>
                     <div>Farm Efficiency: <span id="efficiency"></span>%</div>
-                    Lake <img src='img/water.png' class='smallIcon'> evaporates .1% per tick into cloud water.
+                    Lake <img src='img/water.webp' class='smallIcon'> evaporates .1% per tick into cloud water.
                 </div>
             </div>
 
             <div id="treesContainer" class="container showthat">
                 <div class="title">Forest</div>
                 <div class="main-resource showthat2">
-                    <img src='img/water.png' class='largeIcon'>
+                    <img src='img/water.webp' class='largeIcon'>
                     <span id="forestWater"></span>
                     <div class="showthis2">
-                        <div>Receiving: <span id="forestReceived"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Grow Ferns: <span id="fernWater"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Grow Small Trees: <span id="smallTreesWater"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Grow Trees: <span id="treesWater"></span> <img src='img/water.png' class='smallIcon'></div>
-                        <div>Flowing to Lake: <span id="forestWaterToLake"></span> <img src='img/water.png' class='smallIcon'></div>
+                        <div>Receiving: <span id="forestReceived"></span> <img src='img/water.webp' class='smallIcon'></div>
+                        <div>Grow Ferns: <span id="fernWater"></span> <img src='img/water.webp' class='smallIcon'></div>
+                        <div>Grow Small Trees: <span id="smallTreesWater"></span> <img src='img/water.webp' class='smallIcon'></div>
+                        <div>Grow Trees: <span id="treesWater"></span> <img src='img/water.webp' class='smallIcon'></div>
+                        <div>Flowing to Lake: <span id="forestWaterToLake"></span> <img src='img/water.webp' class='smallIcon'></div>
                     </div>
                 </div>
 
                 <div class="centered-flex-row forest-arrows">
                     <div class="forestIcon showthat2">
-                        <img src='img/fern.png' class='largeIcon'>
+                        <img src='img/fern.webp' class='largeIcon'>
                         <span id="ferns"></span>
                         <div class="showthis2">
                             Ferns<br>
@@ -315,7 +322,7 @@
                     </div>
                     <i class="fa fa-arrow-right arrow-icon"></i>
                     <div class="forestIcon showthat2">
-                        <img src='img/tree.png' class='largeIcon'>
+                        <img src='img/tree.webp' class='largeIcon'>
                         <span id="trees"></span>
                         <div class="showthis2">
                             Trees<br>
@@ -349,7 +356,7 @@
             <div id="populationContainer" class="container showthat">
                 <div class="title">City</div>
                 <div class="main-resource showthat2">
-                    <img src='img/happy.jpg' class='largeIcon happy-icon'>
+                    <img src='img/happy.webp' class='largeIcon happy-icon'>
                     <span id="population"></span>
                     <div class="showthis2">
                         <div>Food Eaten: <span id="foodEaten"></span></div>
@@ -416,10 +423,6 @@
                         <div class="stat-row">
                             <div class="stat-label">Max</div>
                             <div class="stat-value" id="robotMax"></div>
-                        </div>
-                        <div class="stat-row">
-                            <div class="stat-label">Ore</div>
-                            <div class="stat-value" id="ore"></div>
                         </div>
                     </div>
                     <div id="robotRows"></div>

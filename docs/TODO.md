@@ -36,6 +36,7 @@
     *   Each ice upgrade would be +1 + 0.1%, or something like that -- a small constant for the early game, and a percentage upgrade for late game
 *   **Factory/Orbital Factory**
     *   Unlocked after Grind Ore, use gems to build laser, new cost for Ship. Replace Targetted Sunlight research
+    *   Automated Assembly Lines: Allow the Factory to "queue" the construction of Solar Panels or Robots. This would use factory "slots" rather than requiring the player to manually trigger and wait for construction threads.                                
 
 ## Game Progression & Flow
 *   **Next Sector**
