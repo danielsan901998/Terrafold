@@ -140,4 +140,41 @@ test.describe('Gameplay Mechanics', () => {
     });
     expect(await page.evaluate(() => (window as any).game.energy.battery)).toBe(200); // 100 initial + 100
   });
+
+  test('should allow setting max mines globally', async ({ page }) => {
+    await page.evaluate(() => (window as any).pauseGame());
+
+    // Unlock hangar to see the max mines input
+    await page.evaluate(() => {
+        (window as any).game.hangarContainerVisible = true;
+        document.getElementById('hangarContainer')?.classList.remove('hidden');
+        (window as any).view.refreshLayout();
+    });
+
+    const maxMinesInput = page.locator('#maxMinesInput');
+    await expect(maxMinesInput).toBeVisible();
+
+    // Set max mines to 5
+    await maxMinesInput.fill('5');
+    await maxMinesInput.dispatchEvent('change');
+
+    expect(await page.evaluate(() => (window as any).game.hangar.maxMines)).toBe(5);
+
+    // Create a planet and check its max mines
+    await page.evaluate(() => {
+        (window as any).game.space.newLevel();
+        (window as any).game.tick(); // Tick to synchronize
+    });
+
+    const planetMaxMines = await page.evaluate(() => (window as any).game.space.planets[0].maxMines);
+    expect(planetMaxMines).toBe(5);
+
+    // Change max mines to 20 and check synchronization
+    await maxMinesInput.fill('20');
+    await maxMinesInput.dispatchEvent('change');
+    await page.evaluate(() => (window as any).game.tick());
+
+    const planetMaxMinesUpdated = await page.evaluate(() => (window as any).game.space.planets[0].maxMines);
+    expect(planetMaxMinesUpdated).toBe(20);
+  });
 });

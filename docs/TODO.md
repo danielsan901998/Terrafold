@@ -30,8 +30,6 @@
         *   Produces little dirt, littler gems
 *   **Space Station**
     *   Build solar panel, fixed energy production, metal cost
-*   **Potential Upgrades**
-    *   Increase max # of mines per planet, make it choosable down to 1
 *   **Ice Upgrade Idea**
     *   Each ice upgrade would be +1 + 0.1%, or something like that -- a small constant for the early game, and a percentage upgrade for late game
 *   **Factory/Orbital Factory**

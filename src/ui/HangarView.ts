@@ -11,6 +11,14 @@ export default class HangarView extends BaseView {
             game.events.on('hangar:updated', () => this.updateFull());
             const el = document.getElementById('buyHangarAmount');
             if (el) el.addEventListener('change', () => this.updateFull());
+            const maxMinesEl = document.getElementById('maxMinesInput') as HTMLInputElement;
+            if (maxMinesEl) {
+                maxMinesEl.addEventListener('change', () => {
+                    if (game) {
+                        game.hangar.maxMines = Math.max(1, Math.floor(Number(maxMinesEl.value)));
+                    }
+                });
+            }
         }
     }
 
@@ -24,6 +32,12 @@ export default class HangarView extends BaseView {
         const el = document.getElementById('buyHangarAmount') as HTMLInputElement;
         const amount = el ? Number(el.value) : 1;
         this.updateElementText('hangarCost', intToString(amount * 1000000));
+
+        const maxMinesEl = document.getElementById('maxMinesInput') as HTMLInputElement;
+        if (maxMinesEl) {
+            maxMinesEl.value = game.hangar.maxMines.toString();
+        }
+
         this.update();
     }
 }

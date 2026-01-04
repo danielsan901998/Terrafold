@@ -51,6 +51,8 @@ export default class PlanetManager {
     }
 
     static tick(planet: Planet) {
+        if (!game) return;
+        planet.maxMines = game.hangar.maxMines;
         PlanetManager.regenShields(planet);
         PlanetManager.tickResources(planet);
         rotatePlanet(planet);
@@ -96,11 +98,12 @@ export default class PlanetManager {
     }
 
     static calcPower(planet: Planet, difficulty: number) {
+        if (!game) return;
         planet.power = difficulty * (planet.isBoss ? 1.5 : 1);
         planet.atmo = planet.maxAtmo = Math.min(200, precision3((planet.power * 2) + 100));
         planet.health = planet.maxHealth = precision3((planet.power * 20) + 1000);
         planet.dirt = precision3((planet.power * 200) + 2000);
-        planet.maxMines = Math.floor((planet.dirt + .1) / 1000);
+        planet.maxMines = game.hangar.maxMines;
     }
 
     static workConstruction(planet: Planet, amount: number) {
@@ -134,7 +137,7 @@ export default class PlanetManager {
         planet.mineTicks += amount;
         if (planet.mineTicks >= PlanetManager.MINE_TICKS_MAX) {
             let toAdd = Math.floor(planet.mineTicks / PlanetManager.MINE_TICKS_MAX);
-            toAdd = Math.min(toAdd, planet.maxMines - planet.mines);
+            toAdd = Math.max(0, Math.min(toAdd, planet.maxMines - planet.mines));
             planet.mines += toAdd;
             planet.mineTicks -= toAdd * PlanetManager.MINE_TICKS_MAX;
         }

@@ -7,11 +7,13 @@ export default class Hangar {
     timeRemaining: number;
     totalTime: number;
     y: number;
+    maxMines: number;
 
     constructor() {
         this.sendRate = 1;
         this.timeRemaining = this.totalTime = 40;
         this.y = (game?.canvasHeight || 600) * 0.5 - 25;
+        this.maxMines = 10;
     }
 
     tick() {
