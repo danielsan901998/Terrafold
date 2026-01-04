@@ -256,13 +256,6 @@ function drawPlanetObjects(planet: any, size: number) {
     }
 }
 
-export function rotatePlanet(planet: any) { // Done on planet's tick
-    planet.view.rotation += planet.view.rotationSpeed/10+.01;
-    if(planet.view.rotation >= Math.PI * 2) {
-        planet.view.rotation -= Math.PI * 2;
-    }
-}
-
 function getPlanetSize(isBoss: boolean | number) {
     return isBoss ? 40 : 25;
 }

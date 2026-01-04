@@ -285,7 +285,7 @@ const EXCLUDED_PROPERTIES = [
     'text', 'tooltip', 'events', 'canvasWidth', 'canvasHeight', 
     'drawed', 'isMoving', 'transferred', 'foodCreated', 'convertedLand',
     'takeAmount', 'foodEaten', 'popGrowth', 'starving', 'scienceDelta', 'cashDelta',
-    'happinessFromTrees', 'happinessFromOxygen', 'happiness', 'rotation',
+    'happinessFromTrees', 'happinessFromOxygen', 'happiness',
     'fernsDelta', 'fernsWaterUse', 'smallTreesDelta', 'smallTreesWaterUse', 
     'treesDelta', 'treesWaterUse', 'totalPlants', 'oxygenGain',
     'woodIncome', 'woodSpending', 'metalIncome', 'metalSpending', 'oreIncome', 'oreSpending', 'oxygenSpending',

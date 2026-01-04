@@ -1,6 +1,5 @@
 import { game } from '../main';
 import { withinDistance, precision3 } from '../utils/utils';
-import { rotatePlanet } from '../ui/spaceView';
 import Planet from './Planet';
 
 export default class PlanetManager {
@@ -55,7 +54,6 @@ export default class PlanetManager {
         planet.maxMines = game.hangar.maxMines;
         PlanetManager.regenShields(planet);
         PlanetManager.tickResources(planet);
-        rotatePlanet(planet);
     }
 
     static empty(planet: Planet) {

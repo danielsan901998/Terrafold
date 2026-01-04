@@ -3,8 +3,6 @@ import PlanetManager from './PlanetManager';
 export default class Planet {
     isBoss: boolean | number = false;
     view: {
-        rotation: number;
-        rotationSpeed: number;
         color: number;
         light: number;
     };
@@ -32,8 +30,6 @@ export default class Planet {
 
     constructor() {
         this.view = {
-            rotation: 0,
-            rotationSpeed: Math.random(),
             color: Math.floor(Math.random() * 360),
             light: Math.floor(Math.random() * 15 + 40)
         };
