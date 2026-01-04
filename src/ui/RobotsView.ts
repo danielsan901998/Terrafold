@@ -56,8 +56,15 @@ export default class RobotsView extends BaseView {
         for (let i = 0; i < game.robots.jobs.length; i++) {
             const row = game.robots.jobs[i];
             if (!row) continue;
-            this.updateElementText('robotRow' + i + 'Workers', intToString(row.workers));
-            this.setVisible('robotRow' + i + 'Container', row.showing());
+            const baseId = 'robotRow' + i;
+            this.updateElementText(baseId + 'Workers', intToString(row.workers));
+            this.setVisible(baseId + 'Container', row.showing());
+
+            if (row.text.includes("Build Mines")) {
+                const landUnits = game.land.optimizedLand / 1000;
+                const limit = Math.floor(Math.pow(landUnits, 2) / 10);
+                this.updateElementHTML(baseId + "Description", `Build mines to get ore. Limit: ${limit}. Currently: ${game.robots.mines}`);
+            }
         }
         this.update();
     }
@@ -121,6 +128,7 @@ export default class RobotsView extends BaseView {
 
         const jobName = game?.robots.jobs[dataPos]?.text || "";
         const text = document.createElement("div");
+        text.id = baseId + "Text";
         text.innerHTML = jobName;
 
         const progressBar = document.createElement("div");
@@ -150,7 +158,7 @@ export default class RobotsView extends BaseView {
         }
 
         tooltipInner.innerHTML = `
-            <div class="tooltipDescription">${description}</div>
+            <div class="tooltipDescription" id="${baseId}Description">${description}</div>
             ${statsHtml}
         `;
         

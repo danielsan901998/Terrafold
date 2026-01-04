@@ -25,6 +25,13 @@ export default abstract class BaseView {
         this.textCache.set(id, value);
     }
 
+    protected updateElementHTML(id: string, value: string) {
+        if (this.textCache.get(id) === value) return;
+
+        this.getElement(id).innerHTML = value;
+        this.textCache.set(id, value);
+    }
+
     protected setVisible(id: string, visible: boolean) {
         const el = this.getElement(id);
         if (visible) {

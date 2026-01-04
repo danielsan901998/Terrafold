@@ -70,16 +70,19 @@ export default class Robots {
             }),
             new Job({ // Build Mines
                 text: "Build Mines",
-                tooltip: "Build up to (total land / 1000) mines",
+                tooltip: "Build mines to get ore. Limit: floor((land/1000)^2 / 10)",
                 ticksNeeded: 300,
                 cost: [1],
                 costType: ["wood"],
                 finish: function () {
                     if (game) game.robots.mines++;
-                    this.ticksNeeded += 100;
+                    this.ticksNeeded += 200 + this.completions * 50;
                 },
                 done: function () {
-                    return game ? game.robots.mines * 1000 >= game.land.optimizedLand : false;
+                    if (!game) return false;
+                    const landUnits = game.land.optimizedLand / 1000;
+                    const limit = Math.floor(Math.pow(landUnits, 2) / 10);
+                    return game.robots.mines >= limit;
                 }
             }),
             new Job({ // Mine Ore
