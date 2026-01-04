@@ -38,7 +38,7 @@ test.describe('Import/Export', () => {
     const computerRowsAfter = await page.locator('.computerRow').count();
     const robotRowsAfter = await page.locator('.robotRow').count();
 
-    expect(computerRowsAfter, 'Computer rows should not be duplicated').toBe(9);
+    expect(computerRowsAfter, 'Computer rows should not be duplicated').toBe(10);
     expect(robotRowsAfter, 'Robot rows should not be duplicated').toBe(6);
   });
 });

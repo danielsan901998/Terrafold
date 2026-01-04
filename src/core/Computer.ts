@@ -165,6 +165,25 @@ export default class Computer {
                     return game ? game.robots.unlocked !== 0 : false;
                 },
             }),
+            new Process({
+                // Improve Ship engines
+                text: "Improve Ship engines",
+                tooltip: "Ship speed increases by 0.1 and empty ship speed by 0.01",
+                ticksNeeded: 20000,
+                cost: 10000,
+                costType: "science",
+                finish: function () {
+                    if (game) game.spaceDock.improveEngines(0.1, 0.01);
+                    this.cost += 5000;
+                    this.ticksNeeded += 1000;
+                },
+                done: function () {
+                    return game ? game.spaceDock.defaultSpeed >= 1.0 : false;
+                },
+                showing: function () {
+                    return !this.done?.() && (game ? game.spaceDock.unlocked !== 0 : false);
+                },
+            }),
         ];
     }
 
@@ -180,6 +199,7 @@ export default class Computer {
     }
 
     tickRow(row: Process, ticksGained: number) {
+        if (!game) return;
         if (ticksGained === 0) {
             row.isMoving = false;
             return;
@@ -191,6 +211,7 @@ export default class Computer {
                 this.freeThreads += row.threads;
                 row.threads = 0;
             }
+            game.events.emit('computer:threads:updated');
             return;
         }
         row.isMoving = true;

@@ -9,8 +9,6 @@ export default class ShipManager {
     static foodPerShip = 20;
     static actionRate = 1;
     static actionSpeed = 40;
-    static defaultSpeed = 0.5;
-    static emptySpeed = 0.05;
     static globalTargetIndex = -1;
 
     static tick(ship: Ship) {
@@ -103,7 +101,10 @@ export default class ShipManager {
     }
 
     static getSpeed(ship: Ship) {
-        return ShipManager.isEmpty(ship) ? ShipManager.emptySpeed : ShipManager.defaultSpeed;
+        if (game) {
+            return ShipManager.isEmpty(ship) ? game.spaceDock.emptySpeed : game.spaceDock.defaultSpeed;
+        }
+        return ShipManager.isEmpty(ship) ? 0.05 : 0.5;
     }
 
     static moveToNearestTarget(ship: Ship) {

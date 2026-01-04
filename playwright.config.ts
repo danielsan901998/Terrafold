@@ -15,7 +15,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'PORT=3000 bun server.ts',
+    command: 'bun build.ts && PORT=3000 bun server.ts',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     stdout: 'pipe',
