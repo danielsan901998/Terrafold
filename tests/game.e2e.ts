@@ -93,6 +93,25 @@ test.describe('Core Game Systems', () => {
   });
 
   test('should maintain integrity after import', async ({ page }) => {
+    // 1. Setup existing state with comets
+    await page.evaluate(() => {
+        const g = (window as any).game;
+        const v = (window as any).view;
+        g.tractorBeam.unlocked = 1;
+        document.getElementById('tractorBeamContainer')?.classList.remove('hidden');
+        v.tractorBeamView.checkUnlocked();
+        g.tractorBeam.addComet();
+        g.power = 1e6;
+        g.tractorBeam.tick(); // Populate takeAmount
+        v.update();
+        v.refreshLayout();
+    });
+
+    await expect(page.locator('.comet-row').first()).toBeVisible();
+    await expect(page.locator('#cometsContainer div:not(.hidden)').first()).toBeVisible();
+    await expect(page.locator('#takeAmountContainer')).not.toBeEmpty();
+
+    // 2. Import new save
     const saveContent = JSON.stringify({
         "cash": 1000,
         "science": 1000,
@@ -104,6 +123,10 @@ test.describe('Core Game Systems', () => {
         "robots": {
             "unlocked": 1,
             "jobs": Array(6).fill({workers: 0})
+        },
+        "tractorBeam": {
+            "unlocked": 1,
+            "comets": []
         }
     });
 
@@ -114,8 +137,16 @@ test.describe('Core Game Systems', () => {
         if (btn) btn.click();
     }, saveContent);
 
+    // 3. Verify integrity
     await page.waitForSelector('.computerRow', { state: 'attached' });
     expect(await page.locator('.computerRow').count()).toBe(10);
     expect(await page.locator('.robotRow').count()).toBe(6);
+
+    // 4. Verify comet cleanup
+    await page.evaluate(() => (window as any).view.update());
+    await expect(page.locator('.comet-row')).not.toBeVisible();
+    await expect(page.locator('#cometsContainer div:not(.hidden)')).not.toBeVisible();
+    await expect(page.locator('#takeAmountContainer')).toBeEmpty();
+    expect(await page.evaluate(() => (window as any).game.tractorBeam.comets.length)).toBe(0);
   });
 });

@@ -9,6 +9,11 @@ export default class TractorBeamView extends BaseView {
 
     constructor() {
         super();
+        const allPassing = document.getElementById('allPassing');
+        if (allPassing) allPassing.innerHTML = '';
+        const takeAmountContainer = document.getElementById('takeAmountContainer');
+        if (takeAmountContainer) takeAmountContainer.innerHTML = '';
+        
         if (game) {
             game.events.on('tractorBeam:unlocked', () => this.checkUnlocked());
             game.events.on('tractorBeam:updated', () => this.update());

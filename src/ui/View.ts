@@ -18,6 +18,7 @@ import HangarView from './HangarView';
 import BaseView from './BaseView';
 // import { processesView } from '../core/Computer';
 import { Comet } from '../types';
+import { calculateCometTrajectory } from '../utils/cometUtils';
 
 export default class View extends BaseView {
     progressBar1: ProgressBar;
@@ -69,6 +70,10 @@ export default class View extends BaseView {
 
         this.allContainers = Array.from(main.querySelectorAll('.container')) as HTMLElement[];
         
+        // Clean up comets visual container
+        const cometsContainer = this.getElement('cometsContainer');
+        if (cometsContainer) cometsContainer.innerHTML = '';
+
         this.resizeHandler = () => this.refreshLayout();
         window.addEventListener('resize', this.resizeHandler);
 
@@ -233,13 +238,13 @@ export default class View extends BaseView {
             cometDiv.id = cometDivName;
             cometDiv.classList.remove('hidden');
 
-            const totalDistance = cometData.speed * cometData.duration;
-            cometData.startingY = Math.random() * (totalDistance * .4) + totalDistance * .1;
+            if (cometData.startingY === undefined) {
+                const trajectory = calculateCometTrajectory(cometData.speed, cometData.initialDuration, Math.random());
+                cometData.startingY = trajectory.startingY;
+                cometData.endingX = trajectory.endingX;
+                cometData.slope = trajectory.slope;
+            }
 
-            cometData.left = 0;
-            cometData.top = cometData.endingX = Math.pow(Math.pow(totalDistance, 2) - Math.pow(cometData.startingY, 2), .5); //c^2 = a^2 + b^2, a = sqrt(c^2 - b^2)
-            //y = mx + b, m = (y-b)/x
-            cometData.slope = (0 - cometData.startingY) / (cometData.endingX);
             this.getElement('cometsContainer').appendChild(cometDiv);
             cometData.drawed = true;
         }

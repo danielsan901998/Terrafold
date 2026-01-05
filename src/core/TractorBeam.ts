@@ -1,5 +1,6 @@
 import { game, incrementCometId } from '../main';
 import { Comet, OrbitingResource } from '../types';
+import { calculateCometTrajectory } from '../utils/cometUtils';
 
 export default class TractorBeam {
     unlocked: number;
@@ -126,6 +127,12 @@ export default class TractorBeam {
         }
         comet.id = incrementCometId();
         comet.drawed = false;
+
+        const trajectory = calculateCometTrajectory(comet.speed || 0, comet.duration || 0, Math.random());
+        comet.startingY = trajectory.startingY;
+        comet.endingX = trajectory.endingX;
+        comet.slope = trajectory.slope;
+        comet.left = 0;
 
         this.comets.push(comet as Comet);
     }
