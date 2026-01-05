@@ -118,7 +118,7 @@ test.describe('Core Game Systems', () => {
         "computer": {
             "unlocked": 1,
             "threads": 10,
-            "processes": Array(9).fill({threads: 0, currentTicks: 0, ticksNeeded: 100})
+            "processes": Array(9).fill({workers: 0, currentTicks: 0, ticksNeeded: 100})
         },
         "robots": {
             "unlocked": 1,

@@ -42,7 +42,7 @@ export default class ComputerView extends BaseView {
         for (let i = 0; i < game.computer.processes.length; i++) {
             const row = game.computer.processes[i];
             if (!row) continue;
-            this.updateElementText('computerRow' + i + 'Threads', intToString(row.threads));
+            this.updateElementText('computerRow' + i + 'Threads', intToString(row.workers));
             this.setVisible('computerRow' + i + 'Container', row.showing());
         }
     }
@@ -76,8 +76,10 @@ export default class ComputerView extends BaseView {
         const costContainer = this.getElement(baseId + "CostContainer");
         if (row.cost !== 0) {
             costContainer.classList.remove("hidden");
-            this.updateElementText(baseId + "Cost", intToString(row.cost));
-            this.updateElementText(baseId + "CostType", row.costType);
+            const cost = Array.isArray(row.cost) ? row.cost[0] || 0 : row.cost;
+            const costType = Array.isArray(row.costType) ? row.costType[0] || "" : row.costType;
+            this.updateElementText(baseId + "Cost", intToString(cost));
+            this.updateElementText(baseId + "CostType", costType);
         } else {
             costContainer.classList.add("hidden");
         }

@@ -96,8 +96,10 @@ export default class RobotsView extends BaseView {
         const costContainer = this.getElement(baseId + "CostContainer");
         if (row.cost && row.costType) {
             costContainer.classList.remove("hidden");
-            let costString = intToString(row.cost[0] || 0) + " " + (row.costType[0] || "");
-            costString += row.cost.length > 1 ? " and " + intToString(row.cost[1] || 0) + " " + (row.costType[1] || "") : "";
+            const costs = Array.isArray(row.cost) ? row.cost : [row.cost];
+            const costTypes = Array.isArray(row.costType) ? row.costType : [row.costType];
+            let costString = intToString(costs[0] || 0) + " " + (costTypes[0] || "");
+            costString += costs.length > 1 ? " and " + intToString(costs[1] || 0) + " " + (costTypes[1] || "") : "";
             this.updateElementText(baseId + "Cost", costString);
         } else {
             costContainer.classList.add("hidden");

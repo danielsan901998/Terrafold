@@ -1,33 +1,6 @@
 import { game } from '../main';
 import { precision2, precision3 } from '../utils/utils';
-
-export class Process {
-    text: string;
-    tooltip: string;
-    currentTicks: number = 0;
-    ticksNeeded: number;
-    threads: number;
-    cost: number;
-    costType: string;
-    completions: number = 0;
-    isMoving: boolean = false;
-    finish: (this: Process) => void;
-    showing: (this: Process) => boolean;
-    done?: (this: Process) => boolean;
-
-    constructor(A: Partial<Process>) {
-        this.text = A.text || "";
-        this.tooltip = A.tooltip || "";
-        this.currentTicks = A.currentTicks || 0;
-        this.ticksNeeded = A.ticksNeeded || 0;
-        this.threads = A.threads || 0;
-        this.cost = A.cost || 0;
-        this.costType = A.costType || "";
-        this.finish = A.finish || (() => { });
-        this.showing = A.showing || (() => true);
-        this.done = A.done;
-    }
-}
+import { Process } from './Process';
 
 export default class Computer {
     unlocked: number;
@@ -108,7 +81,7 @@ export default class Computer {
                 costType: "science",
                 finish: function () {
                     if (game) game.clouds.gainStormDuration(5);
-                    this.cost += 0.5;
+                    this.cost = (this.cost as number) + 0.5;
                     this.ticksNeeded += 50;
                 },
                 done: function () {
@@ -174,7 +147,7 @@ export default class Computer {
                 costType: "science",
                 finish: function () {
                     if (game) game.spaceDock.improveEngines(0.1, 0.01);
-                    this.cost += 5000;
+                    this.cost = (this.cost as number) + 5000;
                     this.ticksNeeded += 1000;
                 },
                 done: function () {
@@ -194,7 +167,7 @@ export default class Computer {
         this.woodSpending = 0;
         for (let i = 0; i < this.processes.length; i++) {
             const process = this.processes[i]!;
-            this.tickRow(process, this.speed * process.threads);
+            this.tickRow(process, this.speed * process.workers);
         }
     }
 
@@ -207,34 +180,20 @@ export default class Computer {
 
         if (row.done && row.done()) {
             row.isMoving = false;
-            if (row.threads > 0) {
-                this.freeThreads += row.threads;
-                row.threads = 0;
+            if (row.workers > 0) {
+                this.freeThreads += row.workers;
+                row.workers = 0;
             }
             game.events.emit('computer:threads:updated');
             return;
         }
-        row.isMoving = true;
-        const cost = ticksGained * row.cost;
-        if (row.costType) {
-            if (game && (game as any)[row.costType] < cost) {
-                row.isMoving = false;
-                return;
+
+        row.tick(ticksGained, 1, (type, amount) => {
+            const category = (row.spendingCategory?.[type] || (type + "Spending")) as keyof Computer;
+            if (this[category] !== undefined && typeof this[category] === 'number') {
+                (this[category] as number) += amount;
             }
-            if (game) (game as any)[row.costType] -= cost;
-            if (row.costType === "cash") this.cashSpending += cost;
-            if (row.costType === "science") this.scienceSpending += cost;
-            if (row.costType === "metal") this.metalSpending += cost;
-            if (row.costType === "wood") this.woodSpending += cost;
-        }
-        row.currentTicks += ticksGained;
-        while (row.currentTicks >= row.ticksNeeded) {
-            const overflow = row.currentTicks - row.ticksNeeded;
-            row.currentTicks = 0;
-            row.completions++;
-            row.finish();
-            row.currentTicks = overflow; // Set currentTicks to the overflow for the next iteration
-        }
+        });
     }
 
     unlockComputer() {
@@ -279,7 +238,7 @@ export default class Computer {
         numAdding = Math.min(numAdding, this.freeThreads);
         const proc = this.processes[dataPos];
         if (proc) {
-            proc.threads += numAdding;
+            proc.workers += numAdding;
             this.freeThreads -= numAdding;
             game?.events.emit('computer:threads:updated');
         }
@@ -288,8 +247,8 @@ export default class Computer {
     removeThread(dataPos: number, numRemoving: number) {
         const proc = this.processes[dataPos];
         if (proc) {
-            numRemoving = Math.min(numRemoving, proc.threads);
-            proc.threads -= numRemoving;
+            numRemoving = Math.min(numRemoving, proc.workers);
+            proc.workers -= numRemoving;
             this.freeThreads += numRemoving;
             game?.events.emit('computer:threads:updated');
         }

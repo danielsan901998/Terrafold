@@ -288,7 +288,7 @@ const EXCLUDED_PROPERTIES = [
     'happinessFromTrees', 'happinessFromOxygen', 'happiness',
     'fernsDelta', 'fernsWaterUse', 'smallTreesDelta', 'smallTreesWaterUse', 
     'treesDelta', 'treesWaterUse', 'totalPlants', 'oxygenGain',
-    'woodIncome', 'woodSpending', 'metalIncome', 'metalSpending', 'oreIncome', 'oreSpending', 'oxygenSpending',
+    'woodIncome', 'woodSpending', 'metalIncome', 'metalSpending', 'oreIncome', 'oreSpending', 'oreToDirtSpending', 'oxygenSpending',
     'waterIncome', 'waterSpending',
     'cashSpending', 'scienceSpending', 'waterFarms', 'waterTrees', 'buyIncome'
 ];

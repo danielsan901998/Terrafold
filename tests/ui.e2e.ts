@@ -46,7 +46,7 @@ test.describe('UI Interactions and Visibility', () => {
         (window as any).game.computer.unlockComputer();
         const proc = (window as any).game.computer.processes.find((p: any) => p.text === "Bigger Storms");
         (window as any).game.clouds.initialStormDuration = 300;
-        proc.threads = 1;
+        proc.workers = 1;
         (window as any).game.tick();
         (window as any).view.update();
     });
@@ -61,7 +61,7 @@ test.describe('UI Interactions and Visibility', () => {
         (window as any).game.spaceDock.unlocked = 1;
         (window as any).game.spaceDock.defaultSpeed = 1.0;
         const proc = (window as any).game.computer.processes.find((p: any) => p.text === "Improve Ship engines");
-        proc.threads = 1;
+        proc.workers = 1;
         (window as any).game.tick();
         (window as any).view.update();
     });

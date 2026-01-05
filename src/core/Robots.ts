@@ -1,33 +1,5 @@
 import { game } from '../main';
-
-export class Job {
-    text: string;
-    tooltip: string;
-    workers: number;
-    currentTicks: number = 0;
-    ticksNeeded: number = 0;
-    cost?: number[];
-    costType?: string[];
-    isMoving: boolean = false;
-    completions: number = 0;
-    finish: (this: Job) => void;
-    showing: (this: Job) => boolean;
-    done?: (this: Job) => boolean;
-    during?: (this: Job) => boolean;
-
-    constructor(A: Partial<Job>) {
-        this.text = A.text || "";
-        this.tooltip = A.tooltip || "";
-        this.workers = A.workers || 0;
-        this.ticksNeeded = A.ticksNeeded || 0;
-        this.cost = A.cost;
-        this.costType = A.costType;
-        this.finish = A.finish || (() => { });
-        this.showing = A.showing || (() => true);
-        this.done = A.done;
-        this.during = A.during;
-    }
-}
+import { Process } from './Process';
 
 export default class Robots {
     robots: number;
@@ -35,13 +7,14 @@ export default class Robots {
     robotMax: number;
     unlocked: number;
     mines: number;
-    jobs: Job[];
+    jobs: Process[];
     woodIncome: number = 0;
     woodSpending: number = 0;
     metalIncome: number = 0;
     metalSpending: number = 0;
     oreIncome: number = 0;
     oreSpending: number = 0;
+    oreToDirtSpending: number = 0;
     oxygenSpending: number = 0;
 
     constructor() {
@@ -52,12 +25,12 @@ export default class Robots {
         this.mines = 0;
 
         this.jobs = [
-            new Job({ // Cut Trees
+            new Process({ // Cut Trees
                 text: "Cut Trees",
                 tooltip: "Cut down 2 trees for 1 wood",
                 finish: function () { if (game) game.robots.cutTrees(this.workers); }
             }),
-            new Job({ // Expand indoor water storage
+            new Process({ // Expand indoor water storage
                 text: "Expand indoor water storage",
                 tooltip: "Gives 50 more max indoor water.<br>Cost increases by 1",
                 ticksNeeded: 3000,
@@ -68,7 +41,7 @@ export default class Robots {
                     if (game) game.water.maxIndoor += 50;
                 }
             }),
-            new Job({ // Build Mines
+            new Process({ // Build Mines
                 text: "Build Mines",
                 tooltip: "Build mines to get ore. Limit: floor((land/1000)^2 / 10)",
                 ticksNeeded: 300,
@@ -85,29 +58,23 @@ export default class Robots {
                     return game.robots.mines >= limit;
                 }
             }),
-            new Job({ // Mine Ore
+            new Process({ // Mine Ore
                 text: "Mine Ore",
                 tooltip: "Get (mines / 100) ore per tick",
                 finish: function () { if (game) game.robots.mineOre(this.workers); }
             }),
-            new Job({ // Smelt Ore
+            new Process({ // Smelt Ore
                 text: "Smelt Ore",
                 tooltip: "Each tick costs 5 wood, 1 ore, and 1000 oxygen<br>Gain 1 metal",
                 finish: function () { if (game) game.robots.smeltOre(this.workers); }
             }),
-            new Job({ // Turn ore into dirt
+            new Process({ // Turn ore into dirt
                 text: "Turn ore into dirt",
                 tooltip: "Each tick costs 1 energy and 1000 ore<br>Gain 5 Base Land<br>Total land gained: <span id='totalDirtFromOre'></span>",
                 ticksNeeded: 1000,
-                during: function () {
-                    if (game && game.power >= 1 * this.workers && game.ore >= this.workers * 1000) {
-                        game.power -= 1 * this.workers;
-                        game.ore -= this.workers * 1000;
-                        game.robots.oreSpending += this.workers * 1000;
-                        return true;
-                    }
-                    return false;
-                },
+                cost: [1, 1000],
+                costType: ["power", "ore"],
+                spendingCategory: { "ore": "oreToDirtSpending" },
                 finish: function () { if (game) game.land.addLand(50); },
                 showing: function () { return game ? game.energy.unlocked !== 0 : false; }
             })
@@ -121,55 +88,25 @@ export default class Robots {
         this.metalSpending = 0;
         this.oreIncome = 0;
         this.oreSpending = 0;
+        this.oreToDirtSpending = 0;
         this.oxygenSpending = 0;
         for (let i = 0; i < this.jobs.length; i++) {
             this.tickRow(this.jobs[i]!, this.jobs[i]!.workers);
         }
     }
 
-    tickRow(row: Job, ticksGained: number) {
-        if (ticksGained === 0 || (row.done && row.done())) {
-            row.isMoving = false;
-            return;
-        }
-        if (row.ticksNeeded === 0) { // No progress bar
-            row.finish();
-            return;
-        }
-        if (row.during && !row.during()) {
-            row.isMoving = false;
-            return;
-        }
-        if (row.cost && row.costType) {
-            for (let i = 0; i < row.cost.length; i++) {
-                const cost = ticksGained * row.cost[i]!;
-                const costType = row.costType[i];
-                if (costType) {
-                    if (game && (game as any)[costType] < cost) {
-                        row.isMoving = false;
-                        return;
-                    }
-                }
+    tickRow(row: Process, ticksGained: number) {
+        if (!game) return;
+        
+        const completions = row.tick(ticksGained, 1, (type, amount) => {
+            const category = (row.spendingCategory?.[type] || (type + "Spending")) as keyof Robots;
+            if (this[category] !== undefined && typeof this[category] === 'number') {
+                (this[category] as number) += amount;
             }
-            for (let i = 0; i < row.cost.length; i++) {
-                const costType = row.costType[i]!;
-                const costAmount = ticksGained * row.cost[i]!;
-                if (game) (game as any)[costType] -= costAmount;
-                if (costType === "wood") this.woodSpending += costAmount;
-                if (costType === "metal") this.metalSpending += costAmount;
-            }
-        }
+        });
 
-
-        row.currentTicks += ticksGained;
-        row.isMoving = true;
-        if (row.currentTicks >= row.ticksNeeded) {
-            const overflow = row.currentTicks - row.ticksNeeded;
-            row.currentTicks = 0;
-            row.completions++;
-            row.finish();
-            game?.events.emit('robots:count:updated');
-            this.tickRow(row, overflow); // recursive, but on the new cost
+        if (completions > 0) {
+            game.events.emit('robots:count:updated');
         }
     }
 
