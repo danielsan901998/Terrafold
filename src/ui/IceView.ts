@@ -10,7 +10,13 @@ export default class IceView extends BaseView {
         this.updateElementText('ice', intToString(game.ice.ice));
         this.updateElementText('buyableIce', intToString(game.ice.buyable));
         this.updateElementText('iceTransferred', intToString(game.ice.transferred, 4));
-        this.updateElementText('indoorWaterReceived', intToString(game.ice.transferred, 4));
+        this.updateElementText('indoorWaterReceived', intToString(Math.max(0, game.ice.transferred - game.water.excess), 4));
         this.updateElementText('iceBuyerAmount', intToString(game.ice.gain));
+
+        this.updateElementText('indoorWater', intToString(game.water.indoor));
+        this.updateElementText('indoorWaterMax', intToString(game.water.maxIndoor));
+        this.updateElementText('indoorWaterSelling', intToString(game.water.selling));
+        this.updateElementText('indoorWaterProfits', intToString(game.water.gain));
+        this.updateElementText('excessWater', intToString(game.water.excess, 4));
     }
 }

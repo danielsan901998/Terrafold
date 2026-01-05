@@ -119,32 +119,21 @@
                     <span id="ice"></span>
                     <div class="showthis2">
                         <div>Melting: <span id="iceTransferred"></span> <img src='img/water.webp' class='smallIcon'></div>
+                        <div style="padding-left: 10px; font-size: 0.9em; color: #aaa;">
+                            <div>To Storage: <span id="indoorWaterReceived"></span></div>
+                            <div>Overflowing to Lake: <span id="excessWater"></span></div>
+                        </div>
                     </div>
                 </div>
                 <div class="stats-grid">
                     <div class="stat-row">
+                        <div class="stat-label">Indoor Storage</div>
+                        <div class="stat-value"><span><span id="indoorWater"></span> / <span id="indoorWaterMax"></span></span></div>
+                    </div>
+                    <div class="stat-row">
                         <div class="stat-label">Buyable Ice</div>
                         <div class="stat-value" id="buyableIce"></div>
                     </div>
-                </div>
-                <button id="btnBuyIce">Buy Ice for $1</button>
-                <div class="showthis">
-                    Ice melts at a rate of .1% per tick and becomes <img src='img/water.webp' class='smallIcon'>.<br>
-                    You can buy up to the max at a time, and it comes back at <span id="iceBuyerAmount"></span> per tick.
-                </div>
-            </div>
-
-            <div id="indoorWaterContainer" class="container showthat">
-                <div class="title">Storage</div>
-                <div class="main-resource showthat2">
-                    <img src='img/water.webp' class='largeIcon'>
-                    <span><span id="indoorWater"></span> / <span id="indoorWaterMax"></span></span>
-                    <div class="showthis2">
-                        <div>Receiving: <span id="indoorWaterReceived"></span> <img src='img/water.webp' class='smallIcon'></div>
-                        <div>Overflowing: <span id="excessWater"></span> <img src='img/water.webp' class='smallIcon'></div>
-                    </div>
-                </div>
-                <div class="stats-grid">
                     <div class="stat-row">
                         <div class="stat-label">Selling</div>
                         <div class="stat-value" id="indoorWaterSelling"></div>
@@ -154,10 +143,15 @@
                         <div class="stat-value" id="indoorWaterProfits"></div>
                     </div>
                 </div>
+
                 <div class="showthis">
+                    Ice melts at a rate of .1% per tick and becomes <img src='img/water.webp' class='smallIcon'>.<br>
+                    You can buy up to the max at a time, and it comes back at <span id="iceBuyerAmount"></span> per tick.
+                    <br><br>
                     When <img src='img/water.webp' class='smallIcon'> is at max, extra water spills into the lake.<br>
                     Sells 1% of max per tick. Sells for $2 per 1.<br>
                 </div>
+                <button id="btnBuyIce">Buy Ice for $1</button>
             </div>
 
             <div id="cloudsContainer" class="container showthat">

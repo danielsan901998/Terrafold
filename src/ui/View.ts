@@ -6,7 +6,6 @@ import ComputerView from './ComputerView';
 import RobotsView from './RobotsView';
 import ResourceView from './ResourceView';
 import IceView from './IceView';
-import WaterView from './WaterView';
 import CloudsView from './CloudsView';
 import LandView from './LandView';
 import PopulationView from './PopulationView';
@@ -27,7 +26,6 @@ export default class View extends BaseView {
     robotsView: RobotsView;
     resourceView: ResourceView;
     iceView: IceView;
-    waterView: WaterView;
     cloudsView: CloudsView;
     landView: LandView;
     populationView: PopulationView;
@@ -53,7 +51,6 @@ export default class View extends BaseView {
         this.robotsView = new RobotsView();
         this.resourceView = new ResourceView();
         this.iceView = new IceView();
-        this.waterView = new WaterView();
         this.cloudsView = new CloudsView();
         this.landView = new LandView();
         this.populationView = new PopulationView();
@@ -99,7 +96,6 @@ export default class View extends BaseView {
         // should run no more than once per frame
         this.resourceView.update();
         this.iceView.update();
-        this.waterView.update();
         this.cloudsView.update();
         this.landView.update();
         this.treesView.update();

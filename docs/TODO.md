@@ -47,7 +47,6 @@
     *   Recommendation: 400 ore per tick, 250 ticks per 5 dirt.
     *   Planets only have a small amount of dirt to send. Mine enough ore for 2 construction bots, which build solar panels to power the coil gun.
 *   **Farming & Water Economy**
-    *   Merge Ice Storage container
     *   Happiness is a straight multiplier to production, without increasing water consumption.
     *   Improving farms increases production at the cost of increasing water consumption.
     *   Base farm behavior: 10 pop = 0.1 base production/tick, or 100 ticks to produce population. 0.01 food -> 0.01 output.
