@@ -85,11 +85,14 @@ export default class Computer {
                     this.ticksNeeded += 50;
                 },
                 done: function () {
-                    return game ? game.clouds.initialStormDuration >= 300 : false;
+                    if (game && game.clouds.initialStormDuration >= 300) {
+                        this.showing = false;
+                        game.events.emit('computer:visibility:updated');
+                        return true;
+                    }
+                    return false;
                 },
-                showing: function () {
-                    return !this.done?.();
-                },
+                showing: true,
             }),
             new Process({
                 // Build Robots
@@ -101,9 +104,7 @@ export default class Computer {
                 finish: function () {
                     if (game) game.robots.gainRobots(1);
                 },
-                showing: function () {
-                    return game ? game.robots.unlocked !== 0 : false;
-                },
+                showing: false,
                 done: function () {
                     return game ? game.robots.robots >= game.robots.robotMax : false;
                 },
@@ -119,9 +120,7 @@ export default class Computer {
                     if (game) game.robots.gainStorage(5);
                     this.ticksNeeded += 2000;
                 },
-                showing: function () {
-                    return game ? game.robots.unlocked !== 0 : false;
-                },
+                showing: false,
             }),
             new Process({
                 // Improve House Design
@@ -134,9 +133,7 @@ export default class Computer {
                     if (game) game.population.improveHouse();
                     this.ticksNeeded += 500;
                 },
-                showing: function () {
-                    return game ? game.robots.unlocked !== 0 : false;
-                },
+                showing: false,
             }),
             new Process({
                 // Improve Ship engines
@@ -151,13 +148,33 @@ export default class Computer {
                     this.ticksNeeded += 1000;
                 },
                 done: function () {
-                    return game ? game.spaceDock.defaultSpeed >= 1.0 : false;
+                    if (game && game.spaceDock.defaultSpeed >= 1.0) {
+                        this.showing = false;
+                        game.events.emit('computer:visibility:updated');
+                        return true;
+                    }
+                    return false;
                 },
-                showing: function () {
-                    return !this.done?.() && (game ? game.spaceDock.unlocked !== 0 : false);
-                },
+                showing: false,
             }),
         ];
+
+        if (game) {
+            game.events.on('computer:unlocked', () => {
+                const robotProcs = ["Build Robots", "More Robot Storage", "Improve House Design"];
+                if (game && game.robots.unlocked !== 0) {
+                    this.processes.filter(p => robotProcs.includes(p.text)).forEach(p => p.showing = true);
+                }
+            });
+            game.events.on('robots:unlocked', () => {
+                const robotProcs = ["Build Robots", "More Robot Storage", "Improve House Design"];
+                this.processes.filter(p => robotProcs.includes(p.text)).forEach(p => p.showing = true);
+            });
+            game.events.on('spaceDock:unlocked', () => {
+                const proc = this.processes.find(p => p.text === "Improve Ship engines");
+                if(proc) proc.showing = true;
+            });
+        }
     }
 
     tick() {

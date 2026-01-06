@@ -11,8 +11,9 @@ export default class ComputerView extends BaseView {
             game.events.on('computer:threads:updated', () => this.updateThreads());
             game.events.on('computer:speed:updated', () => this.updateSpeed());
             game.events.on('computer:optimize-land:updated', () => this.updateLandOptimized());
-            game.events.on('robots:unlocked', () => this.updateThreads());
-            game.events.on('spaceDock:unlocked', () => this.updateThreads());
+            game.events.on('robots:unlocked', () => this.updateVisibility());
+            game.events.on('spaceDock:unlocked', () => this.updateVisibility());
+            game.events.on('computer:visibility:updated', () => this.updateVisibility());
         }
     }
 
@@ -24,10 +25,20 @@ export default class ComputerView extends BaseView {
             this.setVisible('robotsContainer', true);
             this.updateThreads();
             this.updateSpeed();
+            this.updateVisibility();
         } else {
             this.setVisible('unlockedComputer', false);
             this.setVisible('unlockComputer', true);
             this.setVisible('robotsContainer', false);
+        }
+    }
+
+    updateVisibility() {
+        if (!game) return;
+        for (let i = 0; i < game.computer.processes.length; i++) {
+            const row = game.computer.processes[i];
+            if (!row) continue;
+            this.setVisible('computerRow' + i + 'Container', row.showing);
         }
     }
 
@@ -44,8 +55,10 @@ export default class ComputerView extends BaseView {
         for (let i = 0; i < game.computer.processes.length; i++) {
             const row = game.computer.processes[i];
             if (!row) continue;
-            this.updateElementText('computerRow' + i + 'Threads', intToString(row.workers));
-            this.setVisible('computerRow' + i + 'Container', row.showing());
+            
+            if (row.showing) {
+                this.updateElementText('computerRow' + i + 'Threads', intToString(row.workers));
+            }
         }
     }
 
@@ -55,18 +68,12 @@ export default class ComputerView extends BaseView {
         this.updateElementText('speedCost', intToString(game.computer.getSpeedCost()));
     }
 
-    update() {
-        this.updateThreads();
-        this.updateSpeed();
-        this.updateLandOptimized();
-    }
-
     updateRowProgress(i: number) {
         if (!game || !game.computer.unlocked) {
             return;
         }
         const row = game.computer.processes[i];
-        if (!row || !row.showing()) return;
+        if (!row || !row.showing) return;
 
         const baseId = "computerRow" + i;
         const pb = this.getElement(baseId + "PB");

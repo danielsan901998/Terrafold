@@ -2,7 +2,6 @@
 
 ## Core Game Mechanics & Systems
 *   **Computer**
-    *   Make showing a boolean instead of a function, use events to update visibility.
     *   Diferenciate done between repetable like Build Robots and Bigger Storms, only unassign threads for no repetible
     *   Modify Bigger Storms
         *   Unlocks Targetted Sunlight (Improves ice melting rate, 10% at a time up to 100%)

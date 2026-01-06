@@ -104,7 +104,7 @@ class Game implements IGame {
         this.events.emit('tick');
     }
 
-    initialize() {
+    initializeSystems() {
         this.space = new Space();
         this.ice = new Ice();
         this.water = new Water();
@@ -120,7 +120,9 @@ class Game implements IGame {
         this.tractorBeam = new TractorBeam();
         this.spaceDock = new SpaceDock();
         this.hangar = new Hangar();
+    }
 
+    initializeView() {
         view?.clearComputerRows();
         for (let i = 0; i < this.computer.processes.length; i++) {
             view?.computerView.addComputerRow(i);
@@ -239,8 +241,9 @@ function loadDefaults() {
         view.destroy();
     }
     game = new Game();
+    game.initializeSystems();
     view = new View();
-    game?.initialize();
+    game.initializeView();
     
     // @ts-ignore
     window.game = game;

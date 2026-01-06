@@ -11,10 +11,15 @@ export default class RobotsView extends BaseView {
                 this.checkUnlocked();
                 this.updateCount();
                 this.updateStorage();
+                this.updateVisibility();
             });
             game.events.on('robots:count:updated', () => this.updateCount());
             game.events.on('robots:storage:updated', () => this.updateStorage());
-            game.events.on('energy:unlocked', () => this.updateCount());
+            game.events.on('robots:mines:updated', () => this.updateMinesCount());
+            game.events.on('energy:unlocked', () => {
+                this.updateCount();
+                this.updateVisibility();
+            });
         }
     }
 
@@ -31,6 +36,8 @@ export default class RobotsView extends BaseView {
             this.setVisible('metalContainer', true);
             this.updateCount();
             this.updateStorage();
+            this.updateMinesCount();
+            this.updateVisibility();
         } else {
             this.setVisible('unlockedRobots', false);
             this.setVisible('unlockRobots', true);
@@ -43,31 +50,45 @@ export default class RobotsView extends BaseView {
         }
     }
 
-    update() {
+    updateVisibility() {
         if (!game) return;
+        for (let i = 0; i < game.robots.jobs.length; i++) {
+            const row = game.robots.jobs[i];
+            if (!row) continue;
+            this.setVisible('robotRow' + i + 'Container', row.showing);
+        }
     }
 
     updateCount() {
         if (!game) return;
         this.updateElementText('robots', intToString(game.robots.robots));
         this.updateElementText('robotsFree', intToString(game.robots.robotsFree));
+        
+        const buildMines = game.robots.jobs[2];
+        if (buildMines) {
+            const landUnits = game.land.optimizedLand / 1000;
+            const limit = Math.floor(Math.pow(landUnits, 2) / 10);
+            this.updateElementText("minesLimit", intToString(limit));
+        }
+
         if (game.robots.jobs[5]) {
             this.updateElementText('totalDirtFromOre', intToString(game.robots.jobs[5].completions * 5));
         }
+
         for (let i = 0; i < game.robots.jobs.length; i++) {
             const row = game.robots.jobs[i];
             if (!row) continue;
-            const baseId = 'robotRow' + i;
-            this.updateElementText(baseId + 'Workers', intToString(row.workers));
-            this.setVisible(baseId + 'Container', row.showing());
-
-            if (row.text.includes("Build Mines")) {
-                const landUnits = game.land.optimizedLand / 1000;
-                const limit = Math.floor(Math.pow(landUnits, 2) / 10);
-                this.updateElementHTML(baseId + "Description", `Build mines to get ore. Limit: ${limit}. Currently: ${game.robots.mines}`);
+            
+            if (row.showing) {
+                const baseId = 'robotRow' + i;
+                this.updateElementText(baseId + 'Workers', intToString(row.workers));
             }
         }
-        this.update();
+    }
+
+    updateMinesCount() {
+        if (!game) return;
+        this.updateElementText("minesCount", intToString(game.robots.mines));
     }
 
     updateStorage() {
@@ -75,15 +96,10 @@ export default class RobotsView extends BaseView {
         this.updateElementText('robotMax', intToString(game.robots.robotMax));
     }
 
-    updateFull() {
-        this.updateCount();
-        this.updateStorage();
-    }
-
     updateRowProgress(i: number) {
         if (!game) return;
         const row = game.robots.jobs[i];
-        if (!row || !row.showing() || row.ticksNeeded === 0) {
+        if (!row || !row.showing || row.ticksNeeded === 0) {
             return;
         }
         

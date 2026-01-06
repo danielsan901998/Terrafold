@@ -73,5 +73,6 @@ export default class Clouds {
     gainStormDuration(amount: number) {
         this.stormDuration += amount;
         this.initialStormDuration += amount;
+        game?.events.emit('clouds:stormDuration:updated');
     }
 }

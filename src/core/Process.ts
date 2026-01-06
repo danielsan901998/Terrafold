@@ -12,7 +12,7 @@ export class Process {
     isMoving: boolean = false;
     spendingCategory?: { [key: string]: string };
     finish: (this: Process) => void;
-    showing: (this: Process) => boolean;
+    showing: boolean;
     done?: (this: Process) => boolean;
 
     constructor(A: Partial<Process> & { threads?: number }) {
@@ -25,7 +25,7 @@ export class Process {
         this.costType = A.costType ?? "";
         this.spendingCategory = A.spendingCategory;
         this.finish = A.finish || (() => { });
-        this.showing = A.showing || (() => true);
+        this.showing = A.showing !== undefined ? A.showing : true;
         this.done = A.done;
     }
 

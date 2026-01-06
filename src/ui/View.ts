@@ -106,7 +106,6 @@ export default class View extends BaseView {
         this.treesView.update();
         this.populationView.update();
         this.updateComputerRowProgress();
-        this.robotsView.update();
         this.updateRobotsRowProgress();
         this.energyView.update();
         this.spaceStationView.update();

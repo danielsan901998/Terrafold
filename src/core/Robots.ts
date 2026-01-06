@@ -43,12 +43,15 @@ export default class Robots {
             }),
             new Process({ // Build Mines
                 text: "Build Mines",
-                tooltip: "Build mines to get ore. Limit: floor((land/1000)^2 / 10)",
+                tooltip: "Build mines to get ore. Limit: <span id='minesLimit'></span>. Currently: <span id='minesCount'></span>",
                 ticksNeeded: 300,
                 cost: [1],
                 costType: ["wood"],
                 finish: function () {
-                    if (game) game.robots.mines++;
+                    if (game) {
+                        game.robots.mines++;
+                        game.events.emit('robots:mines:updated');
+                    }
                     this.ticksNeeded += 200 + this.completions * 50;
                 },
                 done: function () {
@@ -76,9 +79,16 @@ export default class Robots {
                 costType: ["power", "ore"],
                 spendingCategory: { "ore": "oreToDirtSpending" },
                 finish: function () { if (game) game.land.addLand(50); },
-                showing: function () { return game ? game.energy.unlocked !== 0 : false; }
+                showing: false,
             })
         ];
+
+        if (game) {
+            game.events.on('energy:unlocked', () => {
+                const proc = this.jobs.find(p => p.text === "Turn ore into dirt");
+                if (proc) proc.showing = true;
+            });
+        }
     }
 
     tick() {
