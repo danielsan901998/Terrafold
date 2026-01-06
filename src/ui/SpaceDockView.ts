@@ -1,20 +1,18 @@
 import { game } from '../main';
 import { intToString } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class SpaceDockView extends BaseView {
 
     constructor() {
         super();
         if (game) {
-            game.events.on('spaceDock:unlocked', () => {
+            UIEvents.on(game.events, 'spaceDock:unlocked', () => {
                 this.checkUnlocked();
-                this.update();
+                this.updateFull();
             });
-            game.events.on('spaceDock:updated', () => this.update());
-            
-            const el = document.getElementById('buyBattleshipAmount');
-            if (el) el.addEventListener('change', () => this.update());
+            UIEvents.on(game.events, 'spaceDock:updated', () => this.update());
         }
     }
 

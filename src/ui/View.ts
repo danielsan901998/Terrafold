@@ -16,6 +16,7 @@ import TractorBeamView from './TractorBeamView';
 import SpaceDockView from './SpaceDockView';
 import HangarView from './HangarView';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 // import { processesView } from '../core/Computer';
 import { Comet } from '../types';
 import { calculateCometTrajectory } from '../utils/cometUtils';
@@ -78,17 +79,15 @@ export default class View extends BaseView {
         window.addEventListener('resize', this.resizeHandler);
 
         if (game) {
-            game.events.on('tick', () => {
-                if (!document.hidden) this.update();
-            });
+            UIEvents.on(game.events, 'tick', () => this.update());
 
             // Listen to all events that can change container visibility
-            game.events.on('computer:unlocked', () => this.refreshLayout());
-            game.events.on('robots:unlocked', () => this.refreshLayout());
-            game.events.on('energy:unlocked', () => this.refreshLayout());
-            game.events.on('spaceStation:unlocked', () => this.refreshLayout());
-            game.events.on('tractorBeam:unlocked', () => this.refreshLayout());
-            game.events.on('spaceDock:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'computer:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'robots:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'energy:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'spaceStation:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'tractorBeam:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'spaceDock:unlocked', () => this.refreshLayout());
         }
     }
 

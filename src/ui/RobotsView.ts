@@ -1,23 +1,22 @@
 import { game } from '../main';
 import { intToString, getClickAmount } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class RobotsView extends BaseView {
+    private rows: Map<number, HTMLElement> = new Map();
 
     constructor() {
         super();
         if (game) {
-            game.events.on('robots:unlocked', () => {
+            UIEvents.on(game.events, 'robots:unlocked', () => {
                 this.checkUnlocked();
-                this.updateCount();
-                this.updateStorage();
-                this.updateVisibility();
+                this.updateFull();
             });
-            game.events.on('robots:count:updated', () => this.updateCount());
-            game.events.on('robots:storage:updated', () => this.updateStorage());
-            game.events.on('robots:mines:updated', () => this.updateMinesCount());
-            game.events.on('energy:unlocked', () => {
-                this.updateCount();
+            UIEvents.on(game.events, 'robots:count:updated', () => this.updateCount());
+            UIEvents.on(game.events, 'robots:storage:updated', () => this.updateStorage());
+            UIEvents.on(game.events, 'robots:mines:updated', () => this.updateMinesCount());
+            UIEvents.on(game.events, 'energy:unlocked', () => {
                 this.updateVisibility();
             });
         }

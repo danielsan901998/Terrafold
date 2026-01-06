@@ -1,13 +1,15 @@
 import { game } from '../main';
 import { intToString } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class IceView extends BaseView {
+
     constructor() {
         super();
         if (game) {
-            game.events.on('water:maxIndoor:updated', () => {
-                this.updateElementText('indoorWaterMax', intToString(game!.water.maxIndoor));
+            UIEvents.on(game.events, 'water:maxIndoor:updated', () => {
+                this.updateFull();
             });
         }
     }

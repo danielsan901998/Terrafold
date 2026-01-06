@@ -1,22 +1,19 @@
 import { game } from '../main';
-import { round1, intToString } from '../utils/utils';
+import { intToString, round1 } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class HangarView extends BaseView {
-
 
     constructor() {
         super();
         if (game) {
-            game.events.on('hangar:updated', () => this.updateFull());
-            const el = document.getElementById('buyHangarAmount');
-            if (el) el.addEventListener('change', () => this.updateFull());
-            const maxMinesEl = document.getElementById('maxMinesInput') as HTMLInputElement;
+            UIEvents.on(game.events, 'hangar:updated', () => this.updateFull());
+
+            const maxMinesEl = document.getElementById('maxMinesInput');
             if (maxMinesEl) {
-                maxMinesEl.addEventListener('change', () => {
-                    if (game) {
-                        game.hangar.maxMines = Math.max(1, Math.floor(Number(maxMinesEl.value)));
-                    }
+                maxMinesEl.addEventListener('change', (e) => {
+                    if (game) game.hangar.maxMines = Number((e.target as HTMLInputElement).value);
                 });
             }
         }

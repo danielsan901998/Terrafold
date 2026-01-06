@@ -2,6 +2,7 @@ import { game, view } from '../main';
 import { intToString } from '../utils/utils';
 import { OrbitingResource } from '../types';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class TractorBeamView extends BaseView {
     private cometRows: Map<number, HTMLElement> = new Map();
@@ -15,9 +16,9 @@ export default class TractorBeamView extends BaseView {
         if (takeAmountContainer) takeAmountContainer.innerHTML = '';
         
         if (game) {
-            game.events.on('tractorBeam:unlocked', () => this.checkUnlocked());
-            game.events.on('tractorBeam:updated', () => this.update());
-            game.events.on('tractorBeam:removeComet', (comet: any) => {
+            UIEvents.on(game.events, 'tractorBeam:unlocked', () => this.checkUnlocked());
+            UIEvents.on(game.events, 'tractorBeam:updated', () => this.update());
+            UIEvents.on(game.events, 'tractorBeam:removeComet', (comet: any) => {
                 if (view) view.removeComet(comet);
             });
         }
