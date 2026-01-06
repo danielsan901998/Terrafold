@@ -5,7 +5,7 @@ import BaseView from './BaseView';
 export default class PopulationView extends BaseView {
 
 
-    update() {
+    override update() {
         if (!game) return;
         this.updateElementText('population', intToString(game.population.people));
         this.updateElementText('foodEaten', intToString(game.population.foodEaten, 4));

@@ -26,7 +26,6 @@ export default class EnergyView extends BaseView {
             if (this.getElement('spaceStationContainer').classList.contains("hidden")) {
                 this.getElement('spaceStationContainer').classList.remove("hidden");
             }
-            this.updateFull();
         } else {
             this.setVisible('unlockedEnergy', false);
             this.setVisible('unlockEnergy', true);
@@ -36,19 +35,22 @@ export default class EnergyView extends BaseView {
         }
     }
 
-    update() {
+    override update() {
         if (!game) return;
         this.updateElementText('energy', intToString(game.power));
         this.updateElementText('drain', intToString(game.energy.drain));
     }
 
-    updateFull() {
+    override updateFull() {
         if (!game) return;
-        this.updateElementText('battery', intToString(game.energy.battery));
+        this.checkUnlocked();
+        if (game.energy.unlocked) {
+            this.updateElementText('battery', intToString(game.energy.battery));
 
-        const el = document.getElementById('buyBattery') as HTMLInputElement;
-        const amount = el ? Number(el.value) : 1;
-        this.updateElementText('batteryCost', intToString(amount * 3e4) + " oxygen and " + intToString(amount * 2e4) + " science");
+            const el = document.getElementById('buyBattery') as HTMLInputElement;
+            const amount = el ? Number(el.value) : 1;
+            this.updateElementText('batteryCost', intToString(amount * 3e4) + " oxygen and " + intToString(amount * 2e4) + " science");
+        }
         this.update();
     }
 }

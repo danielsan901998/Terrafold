@@ -27,7 +27,15 @@ export default class SpaceStationView extends BaseView {
         }
     }
 
-    update() {
+    public override updateFull() {
+        if (!game) return;
+        this.checkUnlocked();
+        if (game.spaceStation.unlocked) {
+            this.update();
+        }
+    }
+
+    override update() {
         if (!game) return;
         let orbitString = "";
         let orbitSendString = "";

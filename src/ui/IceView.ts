@@ -9,11 +9,16 @@ export default class IceView extends BaseView {
             game.events.on('water:maxIndoor:updated', () => {
                 this.updateElementText('indoorWaterMax', intToString(game!.water.maxIndoor));
             });
-            this.updateElementText('indoorWaterMax', intToString(game.water.maxIndoor));
         }
     }
 
-    update() {
+    public override updateFull() {
+        if (!game) return;
+        this.updateElementText('indoorWaterMax', intToString(game.water.maxIndoor));
+        this.update();
+    }
+
+    override update() {
         if (!game) return;
         this.updateElementText('ice', intToString(game.ice.ice));
         this.updateElementText('buyableIce', intToString(game.ice.buyable));

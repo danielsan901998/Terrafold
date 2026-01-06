@@ -4,7 +4,7 @@ import BaseView from './BaseView';
 
 export default class ResourceView extends BaseView {
 
-    update() {
+    override update() {
         if (!game) return;
         this.updateElementText('totalWater', intToString(game.ice.ice + game.water.indoor + game.water.outdoor + game.clouds.water + game.land.water + game.trees.water + game.farms.water));
         this.updateElementText('waterIncome', intToString(game.spaceStation.waterIncome, 4));

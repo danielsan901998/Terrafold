@@ -56,8 +56,9 @@ export default class ComputerView extends BaseView {
             const row = game.computer.processes[i];
             if (!row) continue;
             
-            if (row.showing) {
-                this.updateElementText('computerRow' + i + 'Threads', intToString(row.workers));
+            const elementId = 'computerRow' + i + 'Threads';
+            if (row.showing && this.elementExists(elementId)) {
+                this.updateElementText(elementId, intToString(row.workers));
             }
         }
     }
@@ -76,6 +77,8 @@ export default class ComputerView extends BaseView {
         if (!row || !row.showing) return;
 
         const baseId = "computerRow" + i;
+        if (!this.elementExists(baseId + "PB")) return;
+
         const pb = this.getElement(baseId + "PB");
         pb.style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
         pb.style.backgroundColor = row.isMoving ? "yellow" : "red";
@@ -157,5 +160,20 @@ export default class ComputerView extends BaseView {
         rowContainer.appendChild(tooltipContainer);
 
         containerDiv.appendChild(rowContainer);
+    }
+
+    override update() {
+        // Progress updates are handled by View.updateComputerRowProgress()
+    }
+
+    public override updateFull() {
+        if (!game) return;
+        this.checkUnlocked();
+        if (game.computer.unlocked) {
+            this.updateLandOptimized();
+            this.updateVisibility();
+            this.updateThreads();
+            this.updateSpeed();
+        }
     }
 }

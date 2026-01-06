@@ -65,13 +65,13 @@ export default class RobotsView extends BaseView {
         this.updateElementText('robotsFree', intToString(game.robots.robotsFree));
         
         const buildMines = game.robots.jobs[2];
-        if (buildMines) {
+        if (buildMines && this.elementExists("minesLimit")) {
             const landUnits = game.land.optimizedLand / 1000;
             const limit = Math.floor(Math.pow(landUnits, 2) / 10);
             this.updateElementText("minesLimit", intToString(limit));
         }
 
-        if (game.robots.jobs[5]) {
+        if (game.robots.jobs[5] && this.elementExists('totalDirtFromOre')) {
             this.updateElementText('totalDirtFromOre', intToString(game.robots.jobs[5].completions * 5));
         }
 
@@ -79,8 +79,8 @@ export default class RobotsView extends BaseView {
             const row = game.robots.jobs[i];
             if (!row) continue;
             
-            if (row.showing) {
-                const baseId = 'robotRow' + i;
+            const baseId = 'robotRow' + i;
+            if (row.showing && this.elementExists(baseId + 'Workers')) {
                 this.updateElementText(baseId + 'Workers', intToString(row.workers));
             }
         }
@@ -88,7 +88,9 @@ export default class RobotsView extends BaseView {
 
     updateMinesCount() {
         if (!game) return;
-        this.updateElementText("minesCount", intToString(game.robots.mines));
+        if (this.elementExists("minesCount")) {
+            this.updateElementText("minesCount", intToString(game.robots.mines));
+        }
     }
 
     updateStorage() {
@@ -104,6 +106,8 @@ export default class RobotsView extends BaseView {
         }
         
         const baseId = "robotRow" + i;
+        if (!this.elementExists(baseId + "PB")) return;
+
         const pb = this.getElement(baseId + "PB");
         pb.style.width = (row.currentTicks / row.ticksNeeded) * 100 + "%";
         pb.style.backgroundColor = row.isMoving ? "yellow" : "red";
@@ -196,5 +200,20 @@ export default class RobotsView extends BaseView {
         rowContainer.appendChild(tooltipContainer);
 
         containerDiv.appendChild(rowContainer);
+    }
+
+    override update() {
+        // Progress updates are handled by View.updateRobotsRowProgress()
+    }
+
+    public override updateFull() {
+        if (!game) return;
+        this.checkUnlocked();
+        if (game.robots.unlocked) {
+            this.updateCount();
+            this.updateStorage();
+            this.updateMinesCount();
+            this.updateVisibility();
+        }
     }
 }

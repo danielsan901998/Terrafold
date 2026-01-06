@@ -34,7 +34,15 @@ export default class TractorBeamView extends BaseView {
         }
     }
 
-    update() {
+    public override updateFull() {
+        if (!game) return;
+        this.checkUnlocked();
+        if (game.tractorBeam.unlocked) {
+            this.update();
+        }
+    }
+
+    override update() {
         if (!game || !view) return;
         const container = this.getElement("allPassing");
         const comets = game.tractorBeam.comets;

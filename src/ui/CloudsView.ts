@@ -5,7 +5,7 @@ import BaseView from './BaseView';
 export default class CloudsView extends BaseView {
 
 
-    update() {
+    override update() {
         if (!game) return;
         this.updateElementText('clouds', intToString(game.clouds.water));
         this.updateElementText('stormTimer', intToString(game.clouds.stormTimer));

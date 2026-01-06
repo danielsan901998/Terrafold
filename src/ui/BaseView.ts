@@ -32,12 +32,23 @@ export default abstract class BaseView {
         this.textCache.set(id, value);
     }
 
+    protected elementExists(id: string): boolean {
+        return this.elementCache.has(id) || document.getElementById(id) !== null;
+    }
+
     protected setVisible(id: string, visible: boolean) {
+        if (!this.elementExists(id)) return;
         const el = this.getElement(id);
         if (visible) {
             el.classList.remove('hidden');
         } else {
             el.classList.add('hidden');
         }
+    }
+
+    public abstract update(): void;
+
+    public updateFull() {
+        this.update();
     }
 }

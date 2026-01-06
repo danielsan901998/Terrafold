@@ -5,7 +5,7 @@ import BaseView from './BaseView';
 export default class TreesView extends BaseView {
 
 
-    update() {
+    override update() {
         if (!game) return;
         this.updateElementText('forestWater', intToString(game.trees.water));
         this.updateElementText('ferns', intToString(game.trees.ferns));

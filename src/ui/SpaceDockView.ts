@@ -34,7 +34,15 @@ export default class SpaceDockView extends BaseView {
         }
     }
 
-    update() {
+    public override updateFull() {
+        if (!game) return;
+        this.checkUnlocked();
+        if (game.spaceDock.unlocked) {
+            this.update();
+        }
+    }
+
+    override update() {
         if (!game) return;
         this.updateElementText('battleships', intToString(game.spaceDock.battleships));
         this.updateElementText('totalBattleships', intToString(game.spaceDock.battleships + game.spaceDock.sended));

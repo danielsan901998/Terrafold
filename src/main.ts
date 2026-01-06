@@ -257,15 +257,8 @@ function loadDefaults() {
 
 function setInitialView() {
     if (!view) return;
-    view.hangarView.updateFull();
-    view.spaceDockView.checkUnlocked();
-    view.tractorBeamView.checkUnlocked();
-    view.spaceStationView.checkUnlocked();
-    view.energyView.checkUnlocked();
-    view.computerView.checkUnlocked();
-    view.robotsView.checkUnlocked();
-    game?.events.emit('water:maxIndoor:updated');
-    view.update();
+    view.updateFull();
+    view.refreshLayout();
 }
 
 

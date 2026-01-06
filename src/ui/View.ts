@@ -96,7 +96,7 @@ export default class View extends BaseView {
         window.removeEventListener('resize', this.resizeHandler);
     }
 
-    update() {
+    override update() {
         if (!game) return;
         // should run no more than once per frame
         this.resourceView.update();
@@ -114,6 +114,23 @@ export default class View extends BaseView {
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
         updateSpace();
+    }
+
+    public override updateFull() {
+        if (!game) return;
+        this.resourceView.updateFull();
+        this.iceView.updateFull();
+        this.cloudsView.updateFull();
+        this.landView.updateFull();
+        this.treesView.updateFull();
+        this.populationView.updateFull();
+        this.computerView.updateFull();
+        this.robotsView.updateFull();
+        this.energyView.updateFull();
+        this.spaceStationView.updateFull();
+        this.tractorBeamView.updateFull();
+        this.spaceDockView.updateFull();
+        this.hangarView.updateFull();
     }
 
     refreshLayout() {

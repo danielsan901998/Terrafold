@@ -5,7 +5,7 @@ import BaseView from './BaseView';
 export default class LandView extends BaseView {
 
 
-    update() {
+    override update() {
         if (!game) return;
         this.updateElementText('outdoorWater', intToString(game.water.outdoor));
         this.updateElementText('lakeWaterFromStorage', intToString(game.water.excess, 4));
