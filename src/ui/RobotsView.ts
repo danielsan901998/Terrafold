@@ -13,9 +13,9 @@ export default class RobotsView extends BaseView {
                 this.checkUnlocked();
                 this.updateFull();
             });
-            UIEvents.on(game.events, 'robots:count:updated', () => this.updateCount());
-            UIEvents.on(game.events, 'robots:storage:updated', () => this.updateStorage());
-            UIEvents.on(game.events, 'robots:mines:updated', () => this.updateMinesCount());
+            UIEvents.on(game.events, 'robots:count:updated', () => UIEvents.notifyOnlyOnce(() => this.updateCount()));
+            UIEvents.on(game.events, 'robots:storage:updated', () => UIEvents.notifyOnlyOnce(() => this.updateStorage()));
+            UIEvents.on(game.events, 'robots:mines:updated', () => UIEvents.notifyOnlyOnce(() => this.updateMinesCount()));
             UIEvents.on(game.events, 'energy:unlocked', () => {
                 this.updateVisibility();
             });

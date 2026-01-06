@@ -16,6 +16,7 @@ export default class Robots {
     oreSpending: number = 0;
     oreToDirtSpending: number = 0;
     oxygenSpending: number = 0;
+    powerSpending: number = 0;
 
     constructor() {
         this.robots = 0;
@@ -103,6 +104,7 @@ export default class Robots {
         this.oreSpending = 0;
         this.oreToDirtSpending = 0;
         this.oxygenSpending = 0;
+        this.powerSpending = 0;
         for (let i = 0; i < this.jobs.length; i++) {
             this.tickRow(this.jobs[i]!, this.jobs[i]!.workers);
         }

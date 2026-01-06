@@ -1,9 +1,16 @@
 import { game } from '../main';
 import { intToString, intToStringNegative } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class PopulationView extends BaseView {
 
+    constructor() {
+        super();
+        if (game) {
+            UIEvents.on(game.events, 'population:updated', () => UIEvents.notifyOnlyOnce(() => this.update()));
+        }
+    }
 
     override update() {
         if (!game) return;

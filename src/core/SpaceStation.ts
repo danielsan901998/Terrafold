@@ -5,6 +5,7 @@ export default class SpaceStation {
     unlocked: number;
     orbiting: OrbitingResource[];
     waterIncome: number = 0;
+    powerSpending: number = 0;
 
     constructor() {
         this.unlocked = 0;

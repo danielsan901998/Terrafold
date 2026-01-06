@@ -1,3 +1,5 @@
+import { game } from '../main';
+
 export default class Land {
     land: number;
     baseLand: number;
@@ -17,8 +19,10 @@ export default class Land {
     }
 
     tick(amount: number) {
+        this.transferred = 0;
         this.water += amount;
         this.turnLandToSoil();
+        game?.events.emit('land:updated');
     }
 
     turnLandToSoil() {

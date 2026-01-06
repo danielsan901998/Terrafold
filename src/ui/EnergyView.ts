@@ -13,6 +13,7 @@ export default class EnergyView extends BaseView {
                 this.updateFull();
             });
             UIEvents.on(game.events, 'energy:battery:updated', () => this.updateFull());
+            UIEvents.on(game.events, 'energy:updated', () => UIEvents.notifyOnlyOnce(() => this.update()));
 
             const el = document.getElementById('buyBattery');
             if (el) el.addEventListener('change', () => this.updateFull());

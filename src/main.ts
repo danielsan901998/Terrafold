@@ -101,6 +101,7 @@ class Game implements IGame {
         this.oxygen -= this.oxygenLeak;
         this.hangar.tick();
 
+        this.events.emit('resources:updated');
         this.events.emit('tick');
     }
 

@@ -13,6 +13,8 @@ export default class Trees {
     treesWaterUse: number;
     totalPlants: number;
     oxygenGain: number;
+    woodIncome: number = 0;
+    woodSpending: number = 0;
     waterSpending: number = 0;
     transferred: number = 0;
 
@@ -31,12 +33,18 @@ export default class Trees {
         this.oxygenGain = 0;
     }
 
-    tick(gained: number) {
+    tick(amount: number) {
+        if (!game) return;
+        this.transferred = 0;
+        this.oxygenGain = 0;
+        this.woodIncome = 0;
+        this.woodSpending = 0;
         this.waterSpending = 0;
-        this.water += gained;
+        this.water += amount;
         this.plantGrowth();
         this.oxygenGain = (this.ferns / 1000) + (3 * this.smallTrees / 1000) + (this.trees / 100);
-        if (game) game.oxygen += this.oxygenGain;
+        game.oxygen += this.oxygenGain;
+        game.events.emit('trees:updated');
     }
 
     plantGrowth() {

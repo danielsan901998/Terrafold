@@ -12,6 +12,7 @@ export default class Computer {
     scienceSpending: number = 0;
     metalSpending: number = 0;
     woodSpending: number = 0;
+    powerSpending: number = 0;
 
     constructor() {
         this.unlocked = 0;
@@ -182,6 +183,7 @@ export default class Computer {
         this.scienceSpending = 0;
         this.metalSpending = 0;
         this.woodSpending = 0;
+        this.powerSpending = 0;
         for (let i = 0; i < this.processes.length; i++) {
             const process = this.processes[i]!;
             this.tickRow(process, this.speed * process.workers);

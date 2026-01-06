@@ -98,18 +98,18 @@ export default class View extends BaseView {
     override update() {
         if (!game) return;
         // should run no more than once per frame
-        this.resourceView.update();
-        this.iceView.update();
-        this.cloudsView.update();
-        this.landView.update();
-        this.treesView.update();
-        this.populationView.update();
+        UIEvents.notifyOnlyOnce(() => this.resourceView.update());
+        UIEvents.notifyOnlyOnce(() => this.iceView.update());
+        UIEvents.notifyOnlyOnce(() => this.cloudsView.update());
+        UIEvents.notifyOnlyOnce(() => this.landView.update());
+        UIEvents.notifyOnlyOnce(() => this.treesView.update());
+        UIEvents.notifyOnlyOnce(() => this.populationView.update());
         this.updateComputerRowProgress();
         this.updateRobotsRowProgress();
-        this.energyView.update();
-        this.spaceStationView.update();
-        this.tractorBeamView.update();
-        this.hangarView.update();
+        UIEvents.notifyOnlyOnce(() => this.energyView.update());
+        UIEvents.notifyOnlyOnce(() => this.spaceStationView.update());
+        UIEvents.notifyOnlyOnce(() => this.tractorBeamView.update());
+        UIEvents.notifyOnlyOnce(() => this.hangarView.update());
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
         updateSpace();

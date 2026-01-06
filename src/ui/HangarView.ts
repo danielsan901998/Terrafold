@@ -8,7 +8,7 @@ export default class HangarView extends BaseView {
     constructor() {
         super();
         if (game) {
-            UIEvents.on(game.events, 'hangar:updated', () => this.updateFull());
+            UIEvents.on(game.events, 'hangar:updated', () => UIEvents.notifyOnlyOnce(() => this.updateFull()));
 
             const maxMinesEl = document.getElementById('maxMinesInput');
             if (maxMinesEl) {

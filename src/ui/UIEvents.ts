@@ -42,6 +42,14 @@ export default class UIEvents {
         this.listeners.get(event)!.push(listener);
     }
 
+    private static notifiedThisCycle: Set<(...args: any[]) => void> = new Set();
+
+    public static notifyOnlyOnce(listener: (...args: any[]) => void) {
+        if (this.notifiedThisCycle.has(listener)) return;
+        this.notifiedThisCycle.add(listener);
+        listener();
+    }
+
     private static notify(event: string, args: any[]) {
         const eventListeners = this.listeners.get(event);
         if (eventListeners) {
@@ -55,8 +63,10 @@ export default class UIEvents {
         const toFlush = new Map(this.pendingEvents);
         this.pendingEvents.clear();
 
+        this.notifiedThisCycle.clear();
         toFlush.forEach((allArgs, event) => {
             allArgs.forEach(args => this.notify(event, args));
         });
+        this.notifiedThisCycle.clear();
     }
 }
