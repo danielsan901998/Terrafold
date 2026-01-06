@@ -104,6 +104,10 @@ class Game implements IGame {
         this.events.emit('tick');
     }
 
+    initialize() {
+        this.initializeSystems();
+    }
+
     initializeSystems() {
         this.space = new Space();
         this.ice = new Ice();
@@ -241,7 +245,7 @@ function loadDefaults() {
         view.destroy();
     }
     game = new Game();
-    game.initializeSystems();
+    game.initialize();
     view = new View();
     game.initializeView();
     
@@ -260,6 +264,7 @@ function setInitialView() {
     view.energyView.checkUnlocked();
     view.computerView.checkUnlocked();
     view.robotsView.checkUnlocked();
+    game?.events.emit('water:maxIndoor:updated');
     view.update();
 }
 

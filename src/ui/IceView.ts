@@ -3,7 +3,15 @@ import { intToString } from '../utils/utils';
 import BaseView from './BaseView';
 
 export default class IceView extends BaseView {
-
+    constructor() {
+        super();
+        if (game) {
+            game.events.on('water:maxIndoor:updated', () => {
+                this.updateElementText('indoorWaterMax', intToString(game!.water.maxIndoor));
+            });
+            this.updateElementText('indoorWaterMax', intToString(game.water.maxIndoor));
+        }
+    }
 
     update() {
         if (!game) return;
@@ -14,7 +22,6 @@ export default class IceView extends BaseView {
         this.updateElementText('iceBuyerAmount', intToString(game.ice.gain));
 
         this.updateElementText('indoorWater', intToString(game.water.indoor));
-        this.updateElementText('indoorWaterMax', intToString(game.water.maxIndoor));
         this.updateElementText('indoorWaterSelling', intToString(game.water.selling));
         this.updateElementText('indoorWaterProfits', intToString(game.water.gain));
         this.updateElementText('excessWater', intToString(game.water.excess, 4));

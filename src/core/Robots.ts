@@ -38,7 +38,10 @@ export default class Robots {
                 costType: ["metal"],
                 finish: function () {
                     this.ticksNeeded += 1000;
-                    if (game) game.water.maxIndoor += 50;
+                    if (game) {
+                        game.water.maxIndoor += 50;
+                        game.events.emit('water:maxIndoor:updated');
+                    }
                 }
             }),
             new Process({ // Build Mines
