@@ -14,6 +14,7 @@ export default class RobotsView extends BaseView {
             });
             game.events.on('robots:count:updated', () => this.updateCount());
             game.events.on('robots:storage:updated', () => this.updateStorage());
+            game.events.on('energy:unlocked', () => this.updateCount());
         }
     }
 

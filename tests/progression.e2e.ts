@@ -37,8 +37,20 @@ test.describe('Game Progression', () => {
       }
     };
 
+    const checkComputerRows = async (expected: number) => {
+      const count = await page.locator('.computerRow:visible').count();
+      expect(count).toBe(expected);
+    };
+
+    const checkRobotRows = async (expected: number) => {
+      const count = await page.locator('.robotRow:visible').count();
+      expect(count).toBe(expected);
+    };
+
     // Start: Initial containers should be visible, late game hidden
     await checkVisibility(0);
+    await checkComputerRows(0);
+    await checkRobotRows(0);
 
     // 1. Unlock Robots (via Computer)
     await page.evaluate(() => {
@@ -46,6 +58,8 @@ test.describe('Game Progression', () => {
       (window as any).game.computer.unlockComputer();
     });
     await checkVisibility(1);
+    await checkComputerRows(6);
+    await checkRobotRows(0);
 
     // 2. Unlock Energy (via Robots)
     await page.evaluate(() => {
@@ -55,6 +69,8 @@ test.describe('Game Progression', () => {
     await checkVisibility(2);
     await expect(page.locator('#woodContainer')).toBeVisible();
     await expect(page.locator('#metalContainer')).toBeVisible();
+    await checkComputerRows(9);
+    await checkRobotRows(5);
 
     // 3. Unlock Space Station (via Energy)
     await page.evaluate(() => {
@@ -62,6 +78,8 @@ test.describe('Game Progression', () => {
       (window as any).game.energy.unlockEnergy();
     });
     await checkVisibility(3);
+    await checkComputerRows(9);
+    await checkRobotRows(6);
 
     // 4. Unlock Tractor Beam (via Space Station)
     await page.evaluate(() => {
@@ -70,6 +88,8 @@ test.describe('Game Progression', () => {
       (window as any).game.spaceStation.unlockSpaceStation();
     });
     await checkVisibility(4);
+    await checkComputerRows(9);
+    await checkRobotRows(6);
 
     // 5. Unlock Space Dock & Hangar (via Tractor Beam)
     await page.evaluate(() => {
@@ -80,6 +100,8 @@ test.describe('Game Progression', () => {
     // Space Dock and Hangar are unlocked together
     await checkVisibility(6); 
     await expect(page.locator('#spaceContainer')).toBeVisible();
+    await checkComputerRows(10);
+    await checkRobotRows(6);
 
     // Final check: Verify they are all in columns
     const allMainContainers = [...initialContainers, ...lateGameContainers];

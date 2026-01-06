@@ -11,6 +11,8 @@ export default class ComputerView extends BaseView {
             game.events.on('computer:threads:updated', () => this.updateThreads());
             game.events.on('computer:speed:updated', () => this.updateSpeed());
             game.events.on('computer:optimize-land:updated', () => this.updateLandOptimized());
+            game.events.on('robots:unlocked', () => this.updateThreads());
+            game.events.on('spaceDock:unlocked', () => this.updateThreads());
         }
     }
 
