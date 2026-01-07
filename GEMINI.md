@@ -5,7 +5,7 @@ Incremental game ported to TypeScript using Bun.
 ## Tech Stack & Commands
 - **Core:** TypeScript, Bun (runtime/bundler/test).
 - **Testing:** Bun Test (unit), Playwright (E2E in `tests/`).
-- **Commands:** `bun install`, `bun run build`, `bun run start`, `bun run test`.
+- **Commands:** `bun install`, `bun run build`, `bun run start`, `bun run test`, `bunx tsc --build --noEmit`.
 
 ## Architecture
 - **Core (`src/core/`):** Logic for planets, resources, and population. Orchestrated by `Game` in `src/main.ts`.
