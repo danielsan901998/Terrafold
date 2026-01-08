@@ -9,7 +9,7 @@ export default class SpaceStationView extends BaseView {
         super();
         if (game) {
             UIEvents.on(game.events, 'spaceStation:unlocked', () => this.checkUnlocked());
-            UIEvents.on(game.events, 'spaceStation:updated', () => UIEvents.notifyOnlyOnce(() => this.update()));
+            UIEvents.on(game.events, 'spaceStation:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
         }
     }
 

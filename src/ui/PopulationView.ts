@@ -8,7 +8,7 @@ export default class PopulationView extends BaseView {
     constructor() {
         super();
         if (game) {
-            UIEvents.on(game.events, 'population:updated', () => UIEvents.notifyOnlyOnce(() => this.update()));
+            UIEvents.on(game.events, 'population:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
         }
     }
 

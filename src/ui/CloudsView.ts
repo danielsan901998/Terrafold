@@ -8,7 +8,7 @@ export default class CloudsView extends BaseView {
     constructor() {
         super();
         if (game) {
-            UIEvents.on(game.events, 'clouds:updated', () => UIEvents.notifyOnlyOnce(() => this.update()));
+            UIEvents.on(game.events, 'clouds:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
         }
     }
 

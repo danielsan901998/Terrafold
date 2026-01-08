@@ -17,7 +17,7 @@ export default class TractorBeamView extends BaseView {
         
         if (game) {
             UIEvents.on(game.events, 'tractorBeam:unlocked', () => this.checkUnlocked());
-            UIEvents.on(game.events, 'tractorBeam:updated', () => UIEvents.notifyOnlyOnce(() => this.update()));
+            UIEvents.on(game.events, 'tractorBeam:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
             UIEvents.on(game.events, 'tractorBeam:removeComet', (comet: any) => {
                 if (view) view.removeComet(comet);
             });

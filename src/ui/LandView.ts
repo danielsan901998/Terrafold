@@ -8,7 +8,7 @@ export default class LandView extends BaseView {
     constructor() {
         super();
         if (game) {
-            UIEvents.on(game.events, 'land:updated', () => UIEvents.notifyOnlyOnce(() => this.update()));
+            UIEvents.on(game.events, 'land:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
         }
     }
 

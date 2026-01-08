@@ -12,7 +12,7 @@ export default class SpaceDockView extends BaseView {
                 this.checkUnlocked();
                 this.updateFull();
             });
-            UIEvents.on(game.events, 'spaceDock:updated', () => UIEvents.notifyOnlyOnce(() => this.update()));
+            UIEvents.on(game.events, 'spaceDock:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
         }
     }
 

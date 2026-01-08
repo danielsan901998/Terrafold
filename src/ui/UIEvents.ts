@@ -1,9 +1,11 @@
 import EventEmitter from "../utils/EventEmitter";
 
 export default class UIEvents {
-    private static pendingEvents: Map<string, any[][]> = new Map();
-    private static listeners: Map<string, ((...args: any[]) => void)[]> = new Map();
+    private static pendingNotifications: Map<(...args: any[]) => void, any[]> = new Map();
+    private static specialEvents: { listener: (...args: any[]) => void, args: any[] }[] = [];
+    private static notifiedThisCycle: Set<any> = new Set();
     private static initialized = false;
+    private static isBatching = false;
 
     private static init() {
         if (this.initialized) return;
@@ -15,58 +17,67 @@ export default class UIEvents {
         this.initialized = true;
     }
 
+    public static startBatch() {
+        this.isBatching = true;
+        this.notifiedThisCycle.clear();
+    }
+
+    public static endBatch() {
+        this.isBatching = false;
+        if (!document.hidden)
+          this.flush();
+    }
+
     public static on(emitter: EventEmitter | undefined, event: string, listener: (...args: any[]) => void) {
         if (!emitter) return;
         this.init();
         
-        // We use a internal listener to the emitter to manage the queue
-        // But we need to keep track of ALL listeners for this event to call them
-        if (!this.listeners.has(event)) {
-            this.listeners.set(event, []);
-            emitter.on(event, (...args: any[]) => {
-                if (document.hidden) {
-                    // Accumulate events if hidden
-                    if (event === 'tractorBeam:removeComet') {
-                        // For comet removal, we might want all of them
-                        if (!this.pendingEvents.has(event)) this.pendingEvents.set(event, []);
-                        this.pendingEvents.get(event)!.push(args);
-                    } else {
-                        // For most UI updates, just keeping the last one is enough
-                        this.pendingEvents.set(event, [args]);
-                    }
+        emitter.on(event, (...args: any[]) => {
+            if (document.hidden || this.isBatching) {
+                if (event === 'tractorBeam:removeComet') {
+                    this.specialEvents.push({ listener, args });
                 } else {
-                    this.notify(event, args);
+                    // For most UI updates, deduplicating per listener is enough
+                    this.pendingNotifications.set(listener, args);
                 }
-            });
-        }
-        this.listeners.get(event)!.push(listener);
+            } else {
+                listener(...args);
+            }
+        });
     }
 
-    private static notifiedThisCycle: Set<(...args: any[]) => void> = new Set();
-
-    public static notifyOnlyOnce(listener: (...args: any[]) => void) {
-        if (this.notifiedThisCycle.has(listener)) return;
-        this.notifiedThisCycle.add(listener);
+    /**
+     * Ensures that a listener is only called once per batch/flush cycle.
+     * @param listener The function to call
+     * @param key Optional key for deduplication. If not provided, the listener function itself is used.
+     */
+    public static notifyOnlyOnce(listener: (...args: any[]) => void, key?: any) {
+        const id = key || listener;
+        if (this.notifiedThisCycle.has(id)) return;
+        this.notifiedThisCycle.add(id);
         listener();
     }
 
-    private static notify(event: string, args: any[]) {
-        const eventListeners = this.listeners.get(event);
-        if (eventListeners) {
-            // Use a copy to avoid issues if listeners are added/removed during notification
-            [...eventListeners].forEach(l => l(...args));
-        }
-    }
-
     private static flush() {
-        // Create a copy and clear to avoid recursion issues
-        const toFlush = new Map(this.pendingEvents);
-        this.pendingEvents.clear();
+        if (this.pendingNotifications.size === 0 && this.specialEvents.length === 0) {
+            this.notifiedThisCycle.clear();
+            return;
+        }
+
+        const notifications = new Map(this.pendingNotifications);
+        this.pendingNotifications.clear();
+        
+        const specials = [...this.specialEvents];
+        this.specialEvents = [];
 
         this.notifiedThisCycle.clear();
-        toFlush.forEach((allArgs, event) => {
-            allArgs.forEach(args => this.notify(event, args));
-        });
+        
+        // Call special events first (like removing comets)
+        specials.forEach(s => s.listener(...s.args));
+        
+        // Then call deduplicated UI updates
+        notifications.forEach((args, listener) => listener(...args));
+        
         this.notifiedThisCycle.clear();
     }
 }

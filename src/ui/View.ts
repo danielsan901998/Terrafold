@@ -98,18 +98,18 @@ export default class View extends BaseView {
     override update() {
         if (!game) return;
         // should run no more than once per frame
-        UIEvents.notifyOnlyOnce(() => this.resourceView.update());
-        UIEvents.notifyOnlyOnce(() => this.iceView.update());
-        UIEvents.notifyOnlyOnce(() => this.cloudsView.update());
-        UIEvents.notifyOnlyOnce(() => this.landView.update());
-        UIEvents.notifyOnlyOnce(() => this.treesView.update());
-        UIEvents.notifyOnlyOnce(() => this.populationView.update());
+        UIEvents.notifyOnlyOnce(() => this.resourceView.update(), this.resourceView);
+        UIEvents.notifyOnlyOnce(() => this.iceView.update(), this.iceView);
+        UIEvents.notifyOnlyOnce(() => this.cloudsView.update(), this.cloudsView);
+        UIEvents.notifyOnlyOnce(() => this.landView.update(), this.landView);
+        UIEvents.notifyOnlyOnce(() => this.treesView.update(), this.treesView);
+        UIEvents.notifyOnlyOnce(() => this.populationView.update(), this.populationView);
         this.updateComputerRowProgress();
         this.updateRobotsRowProgress();
-        UIEvents.notifyOnlyOnce(() => this.energyView.update());
-        UIEvents.notifyOnlyOnce(() => this.spaceStationView.update());
-        UIEvents.notifyOnlyOnce(() => this.tractorBeamView.update());
-        UIEvents.notifyOnlyOnce(() => this.hangarView.update());
+        UIEvents.notifyOnlyOnce(() => this.energyView.update(), this.energyView);
+        UIEvents.notifyOnlyOnce(() => this.spaceStationView.update(), this.spaceStationView);
+        UIEvents.notifyOnlyOnce(() => this.tractorBeamView.update(), this.tractorBeamView);
+        UIEvents.notifyOnlyOnce(() => this.hangarView.update(), this.hangarView);
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
         updateSpace();

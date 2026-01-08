@@ -8,7 +8,7 @@ export default class ResourceView extends BaseView {
     constructor() {
         super();
         if (game) {
-            const update = () => UIEvents.notifyOnlyOnce(() => this.update());
+            const update = () => UIEvents.notifyOnlyOnce(() => this.update(), this);
             UIEvents.on(game.events, 'ice:updated', update);
             UIEvents.on(game.events, 'water:updated', update);
             UIEvents.on(game.events, 'clouds:updated', update);

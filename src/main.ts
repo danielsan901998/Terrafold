@@ -16,6 +16,7 @@ import Hangar from './core/Hangar';
 import Planet from './core/Planet';
 
 import View from './ui/View';
+import UIEvents from './ui/UIEvents';
 import { decode, encode } from './utils/utils';
 import { Game as IGame } from './types';
 import EventEmitter from './utils/EventEmitter';
@@ -212,7 +213,9 @@ function tick() {
     }
     incrementTimer();
 
+    UIEvents.startBatch();
     game?.tick();
+    UIEvents.endBatch();
 
     if (timer % 100 === 0) {
         save();
