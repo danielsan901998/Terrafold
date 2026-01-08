@@ -61,7 +61,7 @@ export default class Robots {
                 done: function () {
                     if (!game) return false;
                     const landUnits = game.land.optimizedLand / 1000;
-                    const limit = Math.floor(Math.pow(landUnits, 2) / 10);
+                    const limit = Math.floor(Math.sqrt(landUnits) / 10)+1;
                     return game.robots.mines >= limit;
                 }
             }),
