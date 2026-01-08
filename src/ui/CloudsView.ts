@@ -1,8 +1,16 @@
 import { game } from '../main';
 import { intToString } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class CloudsView extends BaseView {
+
+    constructor() {
+        super();
+        if (game) {
+            UIEvents.on(game.events, 'clouds:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
+        }
+    }
 
 
     override update() {

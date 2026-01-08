@@ -4,6 +4,7 @@ export default class Energy {
     unlocked: number;
     battery: number;
     drain: number = 0;
+    powerPerTick: number = 0;
 
     constructor() {
         this.unlocked = 0;
@@ -21,12 +22,14 @@ export default class Energy {
 
     tick() {
         if (!game) return;
-        const excess = game.power - this.battery;
-        this.drain = 0;
-        if (excess > 0) {
-            this.drain = excess / 500;
-            game.power -= this.drain;
+        this.drain = game.computer.powerSpending + game.robots.powerSpending + game.spaceStation.powerSpending;
+        this.powerPerTick = this.battery / 100;
+        game.power += this.powerPerTick;
+        game.power -= this.drain;
+        if (game.power < 0) {
+            game.power = 0;
         }
+        game.events.emit('energy:updated');
     }
 
     gainEnergy(amount: number) {

@@ -1,19 +1,21 @@
 import { game } from '../main';
-import { intToString, getClickAmount, round2 } from '../utils/utils';
+import { intToString, round2, getClickAmount } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class ComputerView extends BaseView {
+    private rows: Map<number, HTMLElement> = new Map();
 
     constructor() {
         super();
         if (game) {
-            game.events.on('computer:unlocked', () => this.checkUnlocked());
-            game.events.on('computer:threads:updated', () => this.updateThreads());
-            game.events.on('computer:speed:updated', () => this.updateSpeed());
-            game.events.on('computer:optimize-land:updated', () => this.updateLandOptimized());
-            game.events.on('robots:unlocked', () => this.updateVisibility());
-            game.events.on('spaceDock:unlocked', () => this.updateVisibility());
-            game.events.on('computer:visibility:updated', () => this.updateVisibility());
+            UIEvents.on(game.events, 'computer:unlocked', () => this.checkUnlocked());
+            UIEvents.on(game.events, 'computer:threads:updated', () => this.updateThreads());
+            UIEvents.on(game.events, 'computer:speed:updated', () => this.updateSpeed());
+            UIEvents.on(game.events, 'computer:optimize-land:updated', () => this.updateLandOptimized());
+            UIEvents.on(game.events, 'robots:unlocked', () => this.updateVisibility());
+            UIEvents.on(game.events, 'spaceDock:unlocked', () => this.updateVisibility());
+            UIEvents.on(game.events, 'computer:visibility:updated', () => this.updateVisibility());
         }
     }
 

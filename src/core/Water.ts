@@ -36,6 +36,7 @@ export default class Water {
         const gain = this.selling * 2;
         this.gain += gain;
         if (game) game.cash += gain;
+        game?.events.emit('water:updated');
     }
 
     transferWater(): number {

@@ -1,3 +1,5 @@
+import { game } from '../main';
+
 export default class Ice {
     ice: number;
     buyable: number;
@@ -15,11 +17,13 @@ export default class Ice {
     }
 
     tick() {
+        this.transferred = 0;
         this.buyIncome = 0;
-        this.buyable += this.gain;
+        this.buyable += this.gain / 100;
         if (this.buyable > this.max) {
             this.buyable = this.max;
         }
+        game?.events.emit('ice:updated');
     }
 
     transferWater(): number {

@@ -1,14 +1,15 @@
 import { game } from '../main';
 import { intToString } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class SpaceStationView extends BaseView {
 
     constructor() {
         super();
         if (game) {
-            game.events.on('spaceStation:unlocked', () => this.checkUnlocked());
-            game.events.on('spaceStation:updated', () => this.update());
+            UIEvents.on(game.events, 'spaceStation:unlocked', () => this.checkUnlocked());
+            UIEvents.on(game.events, 'spaceStation:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
         }
     }
 

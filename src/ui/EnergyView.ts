@@ -1,17 +1,19 @@
 import { game } from '../main';
 import { intToString } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class EnergyView extends BaseView {
 
     constructor() {
         super();
         if (game) {
-            game.events.on('energy:unlocked', () => {
+            UIEvents.on(game.events, 'energy:unlocked', () => {
                 this.checkUnlocked();
                 this.updateFull();
             });
-            game.events.on('energy:battery:updated', () => this.updateFull());
+            UIEvents.on(game.events, 'energy:battery:updated', () => this.updateFull());
+            UIEvents.on(game.events, 'energy:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
 
             const el = document.getElementById('buyBattery');
             if (el) el.addEventListener('change', () => this.updateFull());

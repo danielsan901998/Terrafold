@@ -26,9 +26,11 @@ export default class Clouds {
     }
 
     tick(gained: number) {
+        this.transferred = 0;
         this.water += gained;
         this.nextStormTimer();
         this.tickLightning();
+        game?.events.emit('clouds:updated');
     }
 
     tickLightning() {

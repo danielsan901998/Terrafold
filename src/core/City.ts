@@ -39,6 +39,7 @@ export default class City {
         this.people += this.popGrowth;
         this.updateHappiness();
         this.tickRatio();
+        game.events.emit('population:updated');
     }
 
     updateHappiness() {

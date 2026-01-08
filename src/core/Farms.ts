@@ -19,10 +19,13 @@ export default class Farms {
         this.farmRatio = 0;
     }
 
-    tick(gained: number) {
+    tick(amount: number) {
+        this.transferred = 0;
+        this.foodCreated = 0;
         this.waterSpending = 0;
-        this.water += gained;
+        this.water += amount;
         this.gainFood();
+        game?.events.emit('farms:updated');
     }
 
     transferWater(): number {

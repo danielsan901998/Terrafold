@@ -1,8 +1,25 @@
 import { game } from '../main';
 import { intToString, intToStringNegative } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class ResourceView extends BaseView {
+
+    constructor() {
+        super();
+        if (game) {
+            const update = () => UIEvents.notifyOnlyOnce(() => this.update(), this);
+            UIEvents.on(game.events, 'ice:updated', update);
+            UIEvents.on(game.events, 'water:updated', update);
+            UIEvents.on(game.events, 'clouds:updated', update);
+            UIEvents.on(game.events, 'land:updated', update);
+            UIEvents.on(game.events, 'trees:updated', update);
+            UIEvents.on(game.events, 'farms:updated', update);
+            UIEvents.on(game.events, 'population:updated', update);
+            UIEvents.on(game.events, 'energy:updated', update);
+            UIEvents.on(game.events, 'resources:updated', update);
+        }
+    }
 
     override update() {
         if (!game) return;

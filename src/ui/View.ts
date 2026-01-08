@@ -16,6 +16,7 @@ import TractorBeamView from './TractorBeamView';
 import SpaceDockView from './SpaceDockView';
 import HangarView from './HangarView';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 // import { processesView } from '../core/Computer';
 import { Comet } from '../types';
 import { calculateCometTrajectory } from '../utils/cometUtils';
@@ -78,17 +79,15 @@ export default class View extends BaseView {
         window.addEventListener('resize', this.resizeHandler);
 
         if (game) {
-            game.events.on('tick', () => {
-                if (!document.hidden) this.update();
-            });
+            UIEvents.on(game.events, 'tick', () => this.update());
 
             // Listen to all events that can change container visibility
-            game.events.on('computer:unlocked', () => this.refreshLayout());
-            game.events.on('robots:unlocked', () => this.refreshLayout());
-            game.events.on('energy:unlocked', () => this.refreshLayout());
-            game.events.on('spaceStation:unlocked', () => this.refreshLayout());
-            game.events.on('tractorBeam:unlocked', () => this.refreshLayout());
-            game.events.on('spaceDock:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'computer:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'robots:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'energy:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'spaceStation:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'tractorBeam:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'spaceDock:unlocked', () => this.refreshLayout());
         }
     }
 
@@ -99,18 +98,18 @@ export default class View extends BaseView {
     override update() {
         if (!game) return;
         // should run no more than once per frame
-        this.resourceView.update();
-        this.iceView.update();
-        this.cloudsView.update();
-        this.landView.update();
-        this.treesView.update();
-        this.populationView.update();
+        UIEvents.notifyOnlyOnce(() => this.resourceView.update(), this.resourceView);
+        UIEvents.notifyOnlyOnce(() => this.iceView.update(), this.iceView);
+        UIEvents.notifyOnlyOnce(() => this.cloudsView.update(), this.cloudsView);
+        UIEvents.notifyOnlyOnce(() => this.landView.update(), this.landView);
+        UIEvents.notifyOnlyOnce(() => this.treesView.update(), this.treesView);
+        UIEvents.notifyOnlyOnce(() => this.populationView.update(), this.populationView);
         this.updateComputerRowProgress();
         this.updateRobotsRowProgress();
-        this.energyView.update();
-        this.spaceStationView.update();
-        this.tractorBeamView.update();
-        this.hangarView.update();
+        UIEvents.notifyOnlyOnce(() => this.energyView.update(), this.energyView);
+        UIEvents.notifyOnlyOnce(() => this.spaceStationView.update(), this.spaceStationView);
+        UIEvents.notifyOnlyOnce(() => this.tractorBeamView.update(), this.tractorBeamView);
+        UIEvents.notifyOnlyOnce(() => this.hangarView.update(), this.hangarView);
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
         updateSpace();

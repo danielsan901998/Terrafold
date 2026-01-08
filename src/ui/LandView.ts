@@ -1,9 +1,16 @@
 import { game } from '../main';
 import { intToString } from '../utils/utils';
 import BaseView from './BaseView';
+import UIEvents from './UIEvents';
 
 export default class LandView extends BaseView {
 
+    constructor() {
+        super();
+        if (game) {
+            UIEvents.on(game.events, 'land:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
+        }
+    }
 
     override update() {
         if (!game) return;
