@@ -201,18 +201,12 @@ export default class View extends BaseView {
             const container = visibleContainers[j]!;
             let shortestColumn = this.columns[0]!;
             
-            // Heuristic to avoid empty columns: first N items fill first N columns
-            if (j < this.columns.length) {
-                shortestColumn = this.columns[j]!;
-            }
-            else {
-                let minHeight = shortestColumn.offsetHeight;
-                for (let i = 1; i < this.columns.length; i++) {
-                    const col = this.columns[i]!;
-                    if (col.offsetHeight < minHeight) {
-                        shortestColumn = col;
-                        minHeight = col.offsetHeight;
-                    }
+            let minHeight = shortestColumn.offsetHeight;
+            for (let i = 1; i < this.columns.length; i++) {
+                const col = this.columns[i]!;
+                if (col.offsetHeight < minHeight) {
+                    shortestColumn = col;
+                    minHeight = col.offsetHeight;
                 }
             }
 
