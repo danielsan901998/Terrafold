@@ -58,6 +58,7 @@ export interface Game {
     spaceDock: any;
     hangar: any;
     space: any;
+    dysonSwarm: any;
     events: EventEmitter;
     tick(): void;
     initialize(): void;

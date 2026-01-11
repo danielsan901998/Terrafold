@@ -23,7 +23,7 @@ export default class Energy {
     tick() {
         if (!game) return;
         this.drain = game.computer.powerSpending + game.robots.powerSpending + game.spaceStation.powerSpending;
-        this.powerPerTick = this.battery / 100;
+        this.powerPerTick = (this.battery / 100) + game.dysonSwarm.getPowerProduction();
         game.power += this.powerPerTick;
         game.power -= this.drain;
         if (game.power < 0) {

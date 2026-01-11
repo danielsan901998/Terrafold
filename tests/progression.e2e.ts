@@ -18,7 +18,8 @@ test.describe('Game Progression', () => {
 
     const lateGameContainers = [
       '#robotsContainer', '#energyContainer', '#spaceStationContainer',
-      '#tractorBeamContainer', '#spaceDockContainer', '#hangarContainer'
+      '#tractorBeamContainer', '#spaceDockContainer', '#hangarContainer',
+      '#dysonSwarmContainer'
     ];
 
     const checkVisibility = async (unlockedCount: number) => {
@@ -102,6 +103,28 @@ test.describe('Game Progression', () => {
     await expect(page.locator('#spaceContainer')).toBeVisible();
     await checkComputerRows(10);
     await checkRobotRows(6);
+
+    // 6. Unlock Dyson Swarm (via Space Dock)
+    await page.evaluate(() => {
+      (window as any).game.science = 1e7;
+      (window as any).game.metal = 1e7;
+      (window as any).game.dysonSwarm.unlockDysonSwarm();
+    });
+    await checkVisibility(7);
+    await expect(page.locator('#unlockedDysonSwarm')).toBeVisible();
+
+    // 7. Build Dyson Satellites
+    await page.evaluate(() => {
+        (window as any).game.science = 2e7;
+        (window as any).game.metal = 2e7;
+    });
+    await page.fill('#buySatelliteAmount', '5');
+    await page.click('#btnBuySatellite');
+    await page.evaluate(() => (window as any).game.tick());
+    await page.evaluate(() => (window as any).view.update());
+    
+    const satelliteCount = await page.locator('#satellites').textContent();
+    expect(satelliteCount).toBe('5');
 
     // Final check: Verify they are all in columns
     const allMainContainers = [...initialContainers, ...lateGameContainers];

@@ -15,6 +15,7 @@ import SpaceStationView from './SpaceStationView';
 import TractorBeamView from './TractorBeamView';
 import SpaceDockView from './SpaceDockView';
 import HangarView from './HangarView';
+import DysonSwarmView from './DysonSwarmView';
 import BaseView from './BaseView';
 import UIEvents from './UIEvents';
 // import { processesView } from '../core/Computer';
@@ -37,6 +38,7 @@ export default class View extends BaseView {
     tractorBeamView: TractorBeamView;
     spaceDockView: SpaceDockView;
     hangarView: HangarView;
+    dysonSwarmView: DysonSwarmView;
     private cometPool: HTMLElement[] = [];
 
     private allContainers: HTMLElement[] = [];
@@ -62,6 +64,7 @@ export default class View extends BaseView {
         this.tractorBeamView = new TractorBeamView();
         this.spaceDockView = new SpaceDockView();
         this.hangarView = new HangarView();
+        this.dysonSwarmView = new DysonSwarmView();
 
         const main = this.getElement('mainContainer');
         // Move all containers back to main before removing columns to avoid losing them
@@ -88,6 +91,7 @@ export default class View extends BaseView {
             UIEvents.on(game.events, 'spaceStation:unlocked', () => this.refreshLayout());
             UIEvents.on(game.events, 'tractorBeam:unlocked', () => this.refreshLayout());
             UIEvents.on(game.events, 'spaceDock:unlocked', () => this.refreshLayout());
+            UIEvents.on(game.events, 'dysonSwarm:unlocked', () => this.refreshLayout());
         }
     }
 
@@ -110,6 +114,7 @@ export default class View extends BaseView {
         UIEvents.notifyOnlyOnce(() => this.spaceStationView.update(), this.spaceStationView);
         UIEvents.notifyOnlyOnce(() => this.tractorBeamView.update(), this.tractorBeamView);
         UIEvents.notifyOnlyOnce(() => this.hangarView.update(), this.hangarView);
+        UIEvents.notifyOnlyOnce(() => this.dysonSwarmView.update(), this.dysonSwarmView);
         this.progressBar1.tick(game.clouds.initialStormTimer - game.clouds.stormTimer, game.clouds.initialStormTimer);
         this.progressBar2.tick(game.clouds.stormDuration, game.clouds.initialStormDuration);
         updateSpace();
@@ -130,6 +135,7 @@ export default class View extends BaseView {
         this.tractorBeamView.updateFull();
         this.spaceDockView.updateFull();
         this.hangarView.updateFull();
+        this.dysonSwarmView.updateFull();
     }
 
     refreshLayout() {

@@ -14,6 +14,7 @@ import TractorBeam from './core/TractorBeam';
 import SpaceDock from './core/SpaceDock';
 import Hangar from './core/Hangar';
 import Planet from './core/Planet';
+import DysonSwarm from './core/DysonSwarm';
 
 import View from './ui/View';
 import UIEvents from './ui/UIEvents';
@@ -61,6 +62,7 @@ class Game implements IGame {
     tractorBeam!: TractorBeam;
     spaceDock!: SpaceDock;
     hangar!: Hangar;
+    dysonSwarm!: DysonSwarm;
 
     events: EventEmitter;
 
@@ -96,6 +98,7 @@ class Game implements IGame {
         this.water.tick(this.ice.transferWater());
         this.tractorBeam.tick();
         this.spaceStation.tick();
+        this.dysonSwarm.tick();
         this.space.tick();
 
         this.oxygenLeak = this.oxygen / 100000;
@@ -126,6 +129,7 @@ class Game implements IGame {
         this.tractorBeam = new TractorBeam();
         this.spaceDock = new SpaceDock();
         this.hangar = new Hangar();
+        this.dysonSwarm = new DysonSwarm();
     }
 
     initializeView() {

@@ -530,6 +530,31 @@
                 </div>
             </div>
 
+            <div id="dysonSwarmContainer" class="container showthat hidden">
+                <div class="title">Dyson Swarm</div>
+                <button id="unlockDysonSwarm">Unlock Dyson Swarm Research (10m Metal, 10m Science)</button>
+                <div id="unlockedDysonSwarm" class="hidden">
+                    <div class="stats-grid">
+                        <div class="stat-row">
+                            <div class="stat-label">Satellites</div>
+                            <div class="stat-value" id="satellites"></div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Power Production</div>
+                            <div class="stat-value" id="dysonPower"></div>
+                        </div>
+                    </div>
+                    <div class="centered-flex-row">
+                        <input id="buySatelliteAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
+                        <button id="btnBuySatellite">Build Satellites (<span id="satelliteCost"></span>)</button>
+                    </div>
+                </div>
+                <div class="showthis">
+                    A Dyson Swarm consists of thousands of solar satellites orbiting the sun to capture its energy.<br>
+                    Each satellite provides a permanent boost to power production.<br>
+                </div>
+            </div>
+
         </div>
             <div id="spaceContainer" class="hidden">
                 <canvas id="spaceCanvas" class="hidden" width="1200" height="600"></canvas>
