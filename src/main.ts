@@ -130,6 +130,8 @@ class Game implements IGame {
         this.spaceDock = new SpaceDock();
         this.hangar = new Hangar();
         this.dysonSwarm = new DysonSwarm();
+
+        this.robots.updateMinesLimit();
     }
 
     initializeView() {
@@ -299,7 +301,7 @@ const EXCLUDED_PROPERTIES = [
     'treesDelta', 'treesWaterUse', 'totalPlants', 'oxygenGain',
     'woodIncome', 'woodSpending', 'metalIncome', 'metalSpending', 'oreIncome', 'oreSpending', 'oreToDirtSpending', 'oxygenSpending',
     'waterIncome', 'waterSpending',
-    'cashSpending', 'scienceSpending', 'waterFarms', 'waterTrees', 'buyIncome'
+    'cashSpending', 'scienceSpending', 'waterFarms', 'waterTrees', 'buyIncome', 'minesLimit'
 ];
 
 function copyObject(object: any, toSave: any) {

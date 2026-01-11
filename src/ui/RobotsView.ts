@@ -14,6 +14,7 @@ export default class RobotsView extends BaseView {
             UIEvents.on(game.events, 'robots:count:updated', () => UIEvents.notifyOnlyOnce(() => this.updateCount(), this.updateCount));
             UIEvents.on(game.events, 'robots:storage:updated', () => UIEvents.notifyOnlyOnce(() => this.updateStorage(), this.updateStorage));
             UIEvents.on(game.events, 'robots:mines:updated', () => UIEvents.notifyOnlyOnce(() => this.updateMinesCount(), this.updateMinesCount));
+            UIEvents.on(game.events, 'robots:minesLimit:updated', () => UIEvents.notifyOnlyOnce(() => this.updateMinesLimit(), this.updateMinesLimit));
             UIEvents.on(game.events, 'energy:unlocked', () => {
                 if (game) {
                     const proc = game.robots.jobs.find(p => p.text === "Turn ore into dirt");
@@ -69,9 +70,7 @@ export default class RobotsView extends BaseView {
         
         const buildMines = game.robots.jobs[2];
         if (buildMines && this.elementExists("minesLimit")) {
-            const landUnits = game.land.optimizedLand / 1000;
-            const limit = Math.floor(Math.pow(landUnits, 2) / 10);
-            this.updateElementText("minesLimit", intToString(limit));
+            this.updateElementText("minesLimit", intToString(game.robots.minesLimit));
         }
 
         if (game.robots.jobs[5] && this.elementExists('totalDirtFromOre')) {
@@ -93,6 +92,13 @@ export default class RobotsView extends BaseView {
         if (!game) return;
         if (this.elementExists("minesCount")) {
             this.updateElementText("minesCount", intToString(game.robots.mines));
+        }
+    }
+
+    updateMinesLimit() {
+        if (!game) return;
+        if (this.elementExists("minesLimit")) {
+            this.updateElementText("minesLimit", intToString(game.robots.minesLimit));
         }
     }
 

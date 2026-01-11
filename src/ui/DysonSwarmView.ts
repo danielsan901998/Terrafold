@@ -66,7 +66,7 @@ export default class DysonSwarmView extends BaseView {
     override update() {
         if (!game) return;
         this.updateElementText('satellites', intToString(game.dysonSwarm.satellites));
-        this.updateElementText('dysonPower', intToString(game.dysonSwarm.getPowerProduction()) + " / tick");
+        this.updateElementText('dysonPower', intToString(game.dysonSwarm.getPowerProduction()));
         
         const amount = this.getAmount('buySatelliteAmount');
         this.updateCostSpans(amount, [

@@ -7,6 +7,7 @@ export default class Robots {
     robotMax: number;
     unlocked: boolean;
     mines: number;
+    minesLimit: number;
     jobs: Process[];
     woodIncome: number = 0;
     woodSpending: number = 0;
@@ -26,6 +27,7 @@ export default class Robots {
         this.robotMax = 5;
         this.unlocked = false;
         this.mines = 0;
+        this.minesLimit = 1;
 
         this.jobs = [
             new Process({ // Cut Trees
@@ -62,9 +64,7 @@ export default class Robots {
                 },
                 done: function () {
                     if (!game) return false;
-                    const landUnits = game.land.optimizedLand / 1000;
-                    const limit = Math.floor(Math.sqrt(landUnits) / 10)+1;
-                    return game.robots.mines >= limit;
+                    return game.robots.mines >= game.robots.minesLimit;
                 }
             }),
             new Process({ // Mine Ore
@@ -161,6 +161,16 @@ export default class Robots {
             this.robotsFree += numRemoving;
         }
         game?.events.emit('robots:count:updated');
+    }
+
+    updateMinesLimit() {
+        if (!game) return;
+        const landUnits = game.land.optimizedLand / 100;
+        const newLimit = Math.floor(Math.sqrt(landUnits)) + 1;
+        if (newLimit !== this.minesLimit) {
+            this.minesLimit = newLimit;
+            game.events.emit('robots:minesLimit:updated');
+        }
     }
 
     cutTrees(mult: number) {

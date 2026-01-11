@@ -45,11 +45,13 @@ export default class Land {
         const amount = (10 * this.baseLand - this.optimizedLand) / 100;
         this.optimizedLand += amount;
         this.land += amount;
+        game?.robots.updateMinesLimit();
     }
 
     addLand(amount: number) {
         this.optimizedLand += amount;
         this.land += amount;
         this.baseLand += amount;
+        game?.robots.updateMinesLimit();
     }
 }
