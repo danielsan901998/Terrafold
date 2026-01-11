@@ -388,7 +388,7 @@
 
             <div id="computerContainer" class="container">
                 <div class="title">Computer</div>
-                <button id="unlockComputer">Build Computer (1000 science)</button>
+                <button id="unlockComputer">Build Computer (<span id="unlockComputerCost"></span> science)</button>
                 <div id="unlockedComputer" class="hidden">
                     <div class="stats-grid">
                         <div class="stat-row">
@@ -408,7 +408,7 @@
 
             <div id="robotsContainer" class="container hidden">
                 <div class="title">Robots</div>
-                <button id="unlockRobots">Special deal! Buy first robot for $3000</button>
+                <button id="unlockRobots">Special deal! Buy first robot for $<span id="unlockRobotsCost"></span></button>
                 <div id="unlockedRobots" class="hidden">
                     <div class="stats-grid">
                         <div class="stat-row">
@@ -426,7 +426,7 @@
 
             <div id="energyContainer" class="container showthat hidden">
                 <div class="title">Power Plant</div>
-                <button id="unlockEnergy">Build lightning rod for 500 metal</button>
+                <button id="unlockEnergy">Build lightning rod for <span id="unlockEnergyCost"></span> metal</button>
                 <div id="unlockedEnergy" class="hidden">
                     <div class="stats-grid">
                         <div class="stat-row">
@@ -440,18 +440,19 @@
                     </div>
                     <div class="centered-flex-row">
                         <input id="buyBattery" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                        <button id="btnBuyBattery">Build Battery (<span id="batteryCost"></span>)</button>
+                        <button id="btnBuyBattery">Build Battery (<span id="batteryOxygenCost"></span> oxygen and <span id="batteryScienceCost"></span> science)</button>
                     </div>
                 </div>
                 <div class="showthis">
                     Loses 2% of energy past the battery per tick<br>
+                    <div>Production: <span id="energyProduction"></span></div>
                     <div>Draining: <span id="drain"></span></div><br>
                 </div>
             </div>
 
             <div id="spaceStationContainer" class="container showthat hidden">
                 <div class="title">Space Station</div>
-                <button id="unlockSpaceStation">Build Space Station for 2000 metal, 20k wood</button>
+                <button id="unlockSpaceStation">Build Space Station for <span id="unlockSpaceStationMetalCost"></span> metal, <span id="unlockSpaceStationWoodCost"></span> wood</button>
                 <div id="unlockedSpaceStation" class="hidden">
                     <div class="stats-grid">
                         <div class="stat-row">
@@ -472,7 +473,7 @@
 
             <div id="tractorBeamContainer" class="container showthat hidden">
                 <div class="title">Tractor Beam</div>
-                <button id="unlockTractorBeam">Build Tractor Beam for 5m oxygen, 500k science</button>
+                <button id="unlockTractorBeam">Build Tractor Beam for <span id="unlockTractorBeamOxygenCost"></span> oxygen, <span id="unlockTractorBeamScienceCost"></span> science</button>
                 <div id="unlockedTractorBeam" class="hidden">
                     <div id="allPassing"></div>
                 </div>
@@ -499,7 +500,7 @@
                 </div>
                 <div class="centered-flex-row">
                     <input id="buyBattleshipAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
-                    <button id="btnBuyBattleship">Build Battleship (<span id="battleshipCost"></span>)</button>
+                    <button id="btnBuyBattleship">Build Battleship (<span id="battleshipOxygenCost"></span> oxygen and <span id="battleshipScienceCost"></span> science)</button>
                 </div>
                 <div class="showthis">
                     <label for="buyBattleshipAmount">Set how much you want to buy with the input.</label><br>
@@ -527,6 +528,31 @@
                     When a ship is out of food it comes back to base.<br>
                     Ships destroy atmosphere, destroy health, and build buidings before moving on.<br>
                     The buildings add dirt directly to your space station.
+                </div>
+            </div>
+
+            <div id="dysonSwarmContainer" class="container showthat hidden">
+                <div class="title">Dyson Swarm</div>
+                <button id="unlockDysonSwarm">Unlock Dyson Swarm Research (<span id="unlockDysonSwarmMetalCost"></span> Metal, <span id="unlockDysonSwarmScienceCost"></span> Science)</button>
+                <div id="unlockedDysonSwarm" class="hidden">
+                    <div class="stats-grid">
+                        <div class="stat-row">
+                            <div class="stat-label">Satellites</div>
+                            <div class="stat-value" id="satellites"></div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Power Production</div>
+                            <div class="stat-value" id="dysonPower"></div>
+                        </div>
+                    </div>
+                    <div class="centered-flex-row">
+                        <input id="buySatelliteAmount" type="number" min="1" step="1" value="1" class="numeric-input-small">
+                        <button id="btnBuySatellite">Build Satellites (<span id="satMetalCost"></span> metal and <span id="satScienceCost"></span> science)</button>
+                    </div>
+                </div>
+                <div class="showthis">
+                    A Dyson Swarm consists of thousands of solar satellites orbiting the sun to capture its energy.<br>
+                    Each satellite provides a permanent boost to power production, up to the battery amount.<br>
                 </div>
             </div>
 
