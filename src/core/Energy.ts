@@ -1,20 +1,24 @@
 import { game } from '../main';
 
 export default class Energy {
-    unlocked: number;
+    unlocked: boolean;
     battery: number;
     drain: number = 0;
     powerPerTick: number = 0;
 
+    static readonly UNLOCK_METAL_COST = 500;
+    static readonly BATTERY_OXYGEN_COST = 3e4;
+    static readonly BATTERY_SCIENCE_COST = 2e4;
+
     constructor() {
-        this.unlocked = 0;
+        this.unlocked = false;
         this.battery = 100;
     }
 
     unlockEnergy() {
-        if (game && game.metal >= 500) {
-            game.metal -= 500;
-            this.unlocked = 1;
+        if (game && game.metal >= Energy.UNLOCK_METAL_COST) {
+            game.metal -= Energy.UNLOCK_METAL_COST;
+            this.unlocked = true;
             game.events.emit('energy:unlocked');
         }
         game?.events.emit('energy:battery:updated');

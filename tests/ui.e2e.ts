@@ -88,4 +88,65 @@ test.describe('UI Interactions and Visibility', () => {
     
     expect(await page.evaluate(() => (window as any).game.energy.battery)).toBe(200);
   });
+
+  test('should update dynamic costs on input change', async ({ page }) => {
+    await page.evaluate(() => {
+        const g = (window as any).game;
+        const v = (window as any).view;
+        g.energy.unlocked = 1;
+        g.spaceDock.unlocked = 1;
+        g.dysonSwarm.unlocked = 1;
+        g.tractorBeam.unlocked = 1;
+        g.hangarContainerVisible = true;
+        
+        v.energyView.setVisible('energyContainer', true);
+        v.spaceDockView.setVisible('spaceDockContainer', true);
+        v.hangarView.setVisible('hangarContainer', true);
+        v.dysonSwarmView.setVisible('dysonSwarmContainer', true);
+
+        // Also ensure inner containers are visible
+        v.energyView.setVisible('unlockedEnergy', true);
+        v.spaceDockView.setVisible('unlockedSpaceDock', true);
+        v.dysonSwarmView.setVisible('unlockedDysonSwarm', true);
+
+        v.updateFull();
+        v.refreshLayout();
+    });
+
+    // 1. Battery Cost
+    await page.evaluate(() => {
+        const el = document.getElementById('buyBattery') as HTMLInputElement;
+        el.value = '10';
+        el.dispatchEvent(new Event('input'));
+    });
+    const batteryOxygen = await page.textContent('#batteryOxygenCost');
+    expect(batteryOxygen).toBe("300K");
+
+    // 2. Battleship Cost
+    await page.evaluate(() => {
+        const el = document.getElementById('buyBattleshipAmount') as HTMLInputElement;
+        el.value = '10';
+        el.dispatchEvent(new Event('input'));
+    });
+    const shipOxygen = await page.textContent('#battleshipOxygenCost');
+    expect(shipOxygen).toBe("300M");
+
+    // 3. Hangar Cost
+    await page.evaluate(() => {
+        const el = document.getElementById('buyHangarAmount') as HTMLInputElement;
+        el.value = '10';
+        el.dispatchEvent(new Event('input'));
+    });
+    const hangarCost = await page.textContent('#hangarCost');
+    expect(hangarCost).toBe("10M");
+
+    // 4. Dyson Satellite Cost
+    await page.evaluate(() => {
+        const el = document.getElementById('buySatelliteAmount') as HTMLInputElement;
+        el.value = '10';
+        el.dispatchEvent(new Event('input'));
+    });
+    const satMetal = await page.textContent('#satMetalCost');
+    expect(satMetal).toBe("1M");
+  });
 });

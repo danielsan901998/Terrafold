@@ -5,7 +5,7 @@ export default class Robots {
     robots: number;
     robotsFree: number;
     robotMax: number;
-    unlocked: number;
+    unlocked: boolean;
     mines: number;
     jobs: Process[];
     woodIncome: number = 0;
@@ -18,11 +18,13 @@ export default class Robots {
     oxygenSpending: number = 0;
     powerSpending: number = 0;
 
+    static readonly UNLOCK_CASH_COST = 3000;
+
     constructor() {
         this.robots = 0;
         this.robotsFree = 0;
         this.robotMax = 5;
-        this.unlocked = 0;
+        this.unlocked = false;
         this.mines = 0;
 
         this.jobs = [
@@ -86,13 +88,6 @@ export default class Robots {
                 showing: false,
             })
         ];
-
-        if (game) {
-            game.events.on('energy:unlocked', () => {
-                const proc = this.jobs.find(p => p.text === "Turn ore into dirt");
-                if (proc) proc.showing = true;
-            });
-        }
     }
 
     tick() {
@@ -138,9 +133,9 @@ export default class Robots {
 
     unlockRobots() {
         if (!game) return;
-        if (game.cash >= 3000) {
-            game.cash -= 3000;
-            this.unlocked = 1;
+        if (game.cash >= Robots.UNLOCK_CASH_COST) {
+            game.cash -= Robots.UNLOCK_CASH_COST;
+            this.unlocked = true;
             game.events.emit('robots:unlocked');
             this.gainRobots(1);
         }

@@ -1,3 +1,5 @@
+import { intToString } from '../utils/utils';
+
 export default abstract class BaseView {
     protected textCache: Map<string, string> = new Map();
     protected elementCache: Map<string, HTMLElement> = new Map();
@@ -5,6 +7,31 @@ export default abstract class BaseView {
     public clearCache() {
         this.textCache.clear();
         this.elementCache.clear();
+    }
+
+    protected getAmount(id: string): number {
+        if (!this.elementExists(id)) return 1;
+        const el = this.getElement(id) as HTMLInputElement;
+        return Number(el.value) || 1;
+    }
+
+    protected setupAmountCostListener(inputId: string, mappings: { spanId: string, costPerUnit: number }[]) {
+        if (!this.elementExists(inputId)) return;
+        const el = this.getElement(inputId);
+        const update = () => {
+            const amount = this.getAmount(inputId);
+            this.updateCostSpans(amount, mappings);
+        };
+        el.addEventListener('change', update);
+        el.addEventListener('input', update);
+    }
+
+    protected updateCostSpans(amount: number, mappings: { spanId: string, costPerUnit: number }[]) {
+        for (const mapping of mappings) {
+            if (this.elementExists(mapping.spanId)) {
+                this.updateElementText(mapping.spanId, intToString(amount * mapping.costPerUnit));
+            }
+        }
     }
 
     protected getElement(id: string): HTMLElement {

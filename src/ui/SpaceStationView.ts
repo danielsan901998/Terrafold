@@ -2,6 +2,7 @@ import { game } from '../main';
 import { intToString } from '../utils/utils';
 import BaseView from './BaseView';
 import UIEvents from './UIEvents';
+import SpaceStation from '../core/SpaceStation';
 
 export default class SpaceStationView extends BaseView {
 
@@ -15,6 +16,8 @@ export default class SpaceStationView extends BaseView {
 
     checkUnlocked() {
         if (!game) return;
+        this.updateElementText('unlockSpaceStationMetalCost', intToString(SpaceStation.UNLOCK_METAL_COST));
+        this.updateElementText('unlockSpaceStationWoodCost', intToString(SpaceStation.UNLOCK_WOOD_COST));
         if (game.spaceStation.unlocked) {
             this.setVisible('spaceStationContainer', true);
             this.setVisible('unlockedSpaceStation', true);

@@ -2,6 +2,7 @@ import { game } from '../main';
 import { intToString, round1 } from '../utils/utils';
 import BaseView from './BaseView';
 import UIEvents from './UIEvents';
+import Hangar from '../core/Hangar';
 
 export default class HangarView extends BaseView {
 
@@ -16,6 +17,10 @@ export default class HangarView extends BaseView {
                     if (game) game.hangar.maxMines = Number((e.target as HTMLInputElement).value);
                 });
             }
+
+            this.setupAmountCostListener('buyHangarAmount', [
+                { spanId: 'hangarCost', costPerUnit: Hangar.METAL_COST_PER_RATE }
+            ]);
         }
     }
 
@@ -27,9 +32,10 @@ export default class HangarView extends BaseView {
     override updateFull() {
         if (!game) return;
         if (this.getElement('hangarContainer').classList.contains('hidden')) return;
-        const el = document.getElementById('buyHangarAmount') as HTMLInputElement;
-        const amount = el ? Number(el.value) : 1;
-        this.updateElementText('hangarCost', intToString(amount * 1000000));
+        const amount = this.getAmount('buyHangarAmount');
+        this.updateCostSpans(amount, [
+            { spanId: 'hangarCost', costPerUnit: Hangar.METAL_COST_PER_RATE }
+        ]);
 
         const maxMinesEl = document.getElementById('maxMinesInput') as HTMLInputElement;
         if (maxMinesEl) {

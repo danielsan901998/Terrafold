@@ -8,9 +8,7 @@ export default class IceView extends BaseView {
     constructor() {
         super();
         if (game) {
-            UIEvents.on(game.events, 'water:maxIndoor:updated', () => {
-                this.updateFull();
-            });
+            UIEvents.on(game.events, 'water:maxIndoor:updated', () => this.updateFull());
             UIEvents.on(game.events, 'ice:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
         }
     }

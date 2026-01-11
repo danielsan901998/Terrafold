@@ -3,13 +3,17 @@ import { Comet, OrbitingResource } from '../types';
 import { calculateCometTrajectory } from '../utils/cometUtils';
 
 export default class TractorBeam {
-    unlocked: number;
+    unlocked: boolean;
     cometSpotChance: number;
     takeAmount: OrbitingResource[];
     comets: Comet[];
 
+    static readonly UNLOCK_SCIENCE_COST = 5e5;
+    static readonly UNLOCK_OXYGEN_REQ = 5e6;
+    static readonly UNLOCK_OXYGEN_REDUCE = 2e6;
+
     constructor() {
-        this.unlocked = 0;
+        this.unlocked = false;
         this.cometSpotChance = 0.006;
         this.takeAmount = [
             { type: "ice", amount: 0 },
@@ -34,12 +38,12 @@ export default class TractorBeam {
 
     unlockTractorBeam() {
         if (!game) return;
-        if (game.science >= 5e5 && game.oxygen >= 5e6) {
-            game.science -= 5e5;
-            game.oxygen -= 2e6;
-            this.unlocked = 1;
+        if (game.science >= TractorBeam.UNLOCK_SCIENCE_COST && game.oxygen >= TractorBeam.UNLOCK_OXYGEN_REQ) {
+            game.science -= TractorBeam.UNLOCK_SCIENCE_COST;
+            game.oxygen -= TractorBeam.UNLOCK_OXYGEN_REDUCE;
+            this.unlocked = true;
             game.events.emit('tractorBeam:unlocked');
-            game.spaceDock.unlocked = 1;
+            game.spaceDock.unlocked = true;
             game.events.emit('spaceDock:unlocked');
         }
         game.events.emit('tractorBeam:updated');

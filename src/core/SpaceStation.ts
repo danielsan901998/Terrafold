@@ -2,13 +2,16 @@ import { game } from '../main';
 import { OrbitingResource } from '../types';
 
 export default class SpaceStation {
-    unlocked: number;
+    unlocked: boolean;
     orbiting: OrbitingResource[];
     waterIncome: number = 0;
     powerSpending: number = 0;
 
+    static readonly UNLOCK_METAL_COST = 2000;
+    static readonly UNLOCK_WOOD_COST = 20000;
+
     constructor() {
-        this.unlocked = 0;
+        this.unlocked = false;
         this.orbiting = [
             {
                 type: "ice",
@@ -22,10 +25,10 @@ export default class SpaceStation {
     }
 
     unlockSpaceStation() {
-        if (game && game.metal >= 2000 && game.wood >= 20000) {
-            game.metal -= 2000;
-            game.wood -= 20000;
-            this.unlocked = 1;
+        if (game && game.metal >= SpaceStation.UNLOCK_METAL_COST && game.wood >= SpaceStation.UNLOCK_WOOD_COST) {
+            game.metal -= SpaceStation.UNLOCK_METAL_COST;
+            game.wood -= SpaceStation.UNLOCK_WOOD_COST;
+            this.unlocked = true;
             game.events.emit('spaceStation:unlocked');
         }
         game?.events.emit('spaceStation:updated');

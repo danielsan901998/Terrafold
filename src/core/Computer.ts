@@ -3,7 +3,7 @@ import { precision2, precision3 } from '../utils/utils';
 import { Process } from './Process';
 
 export default class Computer {
-    unlocked: number;
+    unlocked: boolean;
     threads: number;
     freeThreads: number;
     speed: number;
@@ -14,8 +14,10 @@ export default class Computer {
     woodSpending: number = 0;
     powerSpending: number = 0;
 
+    static readonly UNLOCK_SCIENCE_COST = 1000;
+
     constructor() {
-        this.unlocked = 0;
+        this.unlocked = false;
         this.threads = 1;
         this.freeThreads = 1;
         this.speed = 1;
@@ -163,7 +165,7 @@ export default class Computer {
         if (game) {
             game.events.on('computer:unlocked', () => {
                 const robotProcs = ["Build Robots", "More Robot Storage", "Improve House Design"];
-                if (game && game.robots.unlocked !== 0) {
+                if (game && game.robots.unlocked) {
                     this.processes.filter(p => robotProcs.includes(p.text)).forEach(p => p.showing = true);
                 }
             });
@@ -217,9 +219,9 @@ export default class Computer {
 
     unlockComputer() {
         if (!game) return;
-        if (game.science >= 1000) {
-            game.science -= 1000;
-            this.unlocked = 1;
+        if (game.science >= Computer.UNLOCK_SCIENCE_COST) {
+            game.science -= Computer.UNLOCK_SCIENCE_COST;
+            this.unlocked = true;
             game.events.emit('computer:unlocked');
         }
     }

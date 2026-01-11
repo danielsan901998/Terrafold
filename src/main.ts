@@ -163,39 +163,39 @@ class Game implements IGame {
     buyBattery() {
         const el = document.getElementById('buyBattery') as HTMLInputElement;
         let toBuy = Number(el.value);
-        if (toBuy * 3e4 > this.oxygen) {
-            toBuy = Math.floor(this.oxygen / 3e4);
+        if (toBuy * Energy.BATTERY_OXYGEN_COST > this.oxygen) {
+            toBuy = Math.floor(this.oxygen / Energy.BATTERY_OXYGEN_COST);
         }
-        if (toBuy * 2e4 > this.science) {
-            toBuy = Math.floor(this.science / 2e4);
+        if (toBuy * Energy.BATTERY_SCIENCE_COST > this.science) {
+            toBuy = Math.floor(this.science / Energy.BATTERY_SCIENCE_COST);
         }
         if (toBuy <= 0) {
             return;
         }
-        this.oxygen -= toBuy * 3e4;
-        this.science -= toBuy * 2e4;
+        this.oxygen -= toBuy * Energy.BATTERY_OXYGEN_COST;
+        this.science -= toBuy * Energy.BATTERY_SCIENCE_COST;
         this.energy.buyBattery(toBuy);
     }
 
     buyBattleship() {
         const el = document.getElementById('buyBattleshipAmount') as HTMLInputElement;
         let toBuy = Number(el.value);
-        if (toBuy * 3e7 > this.oxygen) {
-            toBuy = Math.floor(this.oxygen / 3e7);
+        if (toBuy * SpaceDock.BATTLESHIP_OXYGEN_COST > this.oxygen) {
+            toBuy = Math.floor(this.oxygen / SpaceDock.BATTLESHIP_OXYGEN_COST);
         }
-        if (toBuy * 1.5e7 > this.science) {
-            toBuy = Math.floor(this.science / 1.5e7);
+        if (toBuy * SpaceDock.BATTLESHIP_SCIENCE_COST > this.science) {
+            toBuy = Math.floor(this.science / SpaceDock.BATTLESHIP_SCIENCE_COST);
         }
         if (toBuy <= 0) {
             return;
         }
-        this.oxygen -= 3e7 * toBuy;
-        this.science -= 1.5e7 * toBuy;
+        this.oxygen -= SpaceDock.BATTLESHIP_OXYGEN_COST * toBuy;
+        this.science -= SpaceDock.BATTLESHIP_SCIENCE_COST * toBuy;
         this.spaceDock.addBattleship(toBuy);
     }
 
     buyHangar() {
-        const cost = 1000000;
+        const cost = Hangar.METAL_COST_PER_RATE;
         const el = document.getElementById('buyHangarAmount') as HTMLInputElement;
         let toBuy = Number(el.value);
         if (toBuy * cost > this.metal) {

@@ -9,6 +9,8 @@ export default class Hangar {
     y: number;
     maxMines: number;
 
+    static readonly METAL_COST_PER_RATE = 1000000;
+
     constructor() {
         this.sendRate = 1;
         this.timeRemaining = this.totalTime = 40;

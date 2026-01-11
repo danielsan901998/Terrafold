@@ -2,26 +2,27 @@ import { game } from '../main';
 import { intToString } from '../utils/utils';
 import BaseView from './BaseView';
 import UIEvents from './UIEvents';
+import Energy from '../core/Energy';
 
 export default class EnergyView extends BaseView {
 
     constructor() {
         super();
         if (game) {
-            UIEvents.on(game.events, 'energy:unlocked', () => {
-                this.checkUnlocked();
-                this.updateFull();
-            });
+            UIEvents.on(game.events, 'energy:unlocked', () => this.updateFull());
             UIEvents.on(game.events, 'energy:battery:updated', () => this.updateFull());
             UIEvents.on(game.events, 'energy:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
 
-            const el = document.getElementById('buyBattery');
-            if (el) el.addEventListener('change', () => this.updateFull());
+            this.setupAmountCostListener('buyBattery', [
+                { spanId: 'batteryOxygenCost', costPerUnit: Energy.BATTERY_OXYGEN_COST },
+                { spanId: 'batteryScienceCost', costPerUnit: Energy.BATTERY_SCIENCE_COST }
+            ]);
         }
     }
 
     checkUnlocked() {
         if (!game) return;
+        this.updateElementText('unlockEnergyCost', intToString(Energy.UNLOCK_METAL_COST));
         if (game.energy.unlocked) {
             this.setVisible('unlockedEnergy', true);
             this.setVisible('unlockEnergy', false);
@@ -49,9 +50,11 @@ export default class EnergyView extends BaseView {
         if (game.energy.unlocked) {
             this.updateElementText('battery', intToString(game.energy.battery));
 
-            const el = document.getElementById('buyBattery') as HTMLInputElement;
-            const amount = el ? Number(el.value) : 1;
-            this.updateElementText('batteryCost', intToString(amount * 3e4) + " oxygen and " + intToString(amount * 2e4) + " science");
+            const amount = this.getAmount('buyBattery');
+            this.updateCostSpans(amount, [
+                { spanId: 'batteryOxygenCost', costPerUnit: Energy.BATTERY_OXYGEN_COST },
+                { spanId: 'batteryScienceCost', costPerUnit: Energy.BATTERY_SCIENCE_COST }
+            ]);
         }
         this.update();
     }

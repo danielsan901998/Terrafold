@@ -2,6 +2,7 @@ import { game } from '../main';
 import { intToString, getClickAmount } from '../utils/utils';
 import BaseView from './BaseView';
 import UIEvents from './UIEvents';
+import Robots from '../core/Robots';
 
 export default class RobotsView extends BaseView {
     private rows: Map<number, HTMLElement> = new Map();
@@ -9,14 +10,15 @@ export default class RobotsView extends BaseView {
     constructor() {
         super();
         if (game) {
-            UIEvents.on(game.events, 'robots:unlocked', () => {
-                this.checkUnlocked();
-                this.updateFull();
-            });
+            UIEvents.on(game.events, 'robots:unlocked', () => this.checkUnlocked());
             UIEvents.on(game.events, 'robots:count:updated', () => UIEvents.notifyOnlyOnce(() => this.updateCount(), this.updateCount));
             UIEvents.on(game.events, 'robots:storage:updated', () => UIEvents.notifyOnlyOnce(() => this.updateStorage(), this.updateStorage));
             UIEvents.on(game.events, 'robots:mines:updated', () => UIEvents.notifyOnlyOnce(() => this.updateMinesCount(), this.updateMinesCount));
             UIEvents.on(game.events, 'energy:unlocked', () => {
+                if (game) {
+                    const proc = game.robots.jobs.find(p => p.text === "Turn ore into dirt");
+                    if (proc) proc.showing = true;
+                }
                 this.updateVisibility();
             });
         }
@@ -24,6 +26,7 @@ export default class RobotsView extends BaseView {
 
     checkUnlocked() {
         if (!game) return;
+        this.updateElementText('unlockRobotsCost', intToString(Robots.UNLOCK_CASH_COST));
         if (game.robots.unlocked) {
             this.setVisible('unlockedRobots', true);
             this.setVisible('unlockRobots', false);
@@ -56,6 +59,7 @@ export default class RobotsView extends BaseView {
             if (!row) continue;
             this.setVisible('robotRow' + i + 'Container', row.showing);
         }
+				this.updateCount();
     }
 
     updateCount() {

@@ -3,6 +3,7 @@ import { intToString } from '../utils/utils';
 import { OrbitingResource } from '../types';
 import BaseView from './BaseView';
 import UIEvents from './UIEvents';
+import TractorBeam from '../core/TractorBeam';
 
 export default class TractorBeamView extends BaseView {
     private cometRows: Map<number, HTMLElement> = new Map();
@@ -26,6 +27,8 @@ export default class TractorBeamView extends BaseView {
 
     checkUnlocked() {
         if (!game) return;
+        this.updateElementText('unlockTractorBeamOxygenCost', intToString(TractorBeam.UNLOCK_OXYGEN_REQ));
+        this.updateElementText('unlockTractorBeamScienceCost', intToString(TractorBeam.UNLOCK_SCIENCE_COST));
         if (game.tractorBeam.unlocked) {
             this.setVisible('unlockedTractorBeam', true);
             this.setVisible('unlockTractorBeam', false);

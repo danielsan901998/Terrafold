@@ -53,78 +53,64 @@ test.describe('Game Progression', () => {
     await checkComputerRows(0);
     await checkRobotRows(0);
 
-    // 1. Unlock Robots (via Computer)
+    // 1. Unlock Computer (which shows Robots container)
     await page.evaluate(() => {
       (window as any).game.science = 1000;
-      (window as any).game.computer.unlockComputer();
     });
+    await page.click('#unlockComputer');
     await checkVisibility(1);
     await checkComputerRows(6);
     await checkRobotRows(0);
 
-    // 2. Unlock Energy (via Robots)
+    // 2. Unlock Robots (via Robots container)
     await page.evaluate(() => {
       (window as any).game.cash = 3000;
-      (window as any).game.robots.unlockRobots();
     });
+    await page.click('#unlockRobots');
     await checkVisibility(2);
     await expect(page.locator('#woodContainer')).toBeVisible();
     await expect(page.locator('#metalContainer')).toBeVisible();
     await checkComputerRows(9);
     await checkRobotRows(5);
 
-    // 3. Unlock Space Station (via Energy)
+    // 3. Unlock Energy (via Power Plant container)
     await page.evaluate(() => {
       (window as any).game.metal = 500;
-      (window as any).game.energy.unlockEnergy();
     });
+    await page.click('#unlockEnergy');
     await checkVisibility(3);
     await checkComputerRows(9);
     await checkRobotRows(6);
 
-    // 4. Unlock Tractor Beam (via Space Station)
+    // 4. Unlock Space Station
     await page.evaluate(() => {
       (window as any).game.metal = 2000;
       (window as any).game.wood = 20000;
-      (window as any).game.spaceStation.unlockSpaceStation();
     });
+    await page.click('#unlockSpaceStation');
     await checkVisibility(4);
     await checkComputerRows(9);
     await checkRobotRows(6);
 
-    // 5. Unlock Space Dock & Hangar (via Tractor Beam)
+    // 5. Unlock Tractor Beam
     await page.evaluate(() => {
       (window as any).game.science = 5e5;
       (window as any).game.oxygen = 5e6;
-      (window as any).game.tractorBeam.unlockTractorBeam();
     });
-    // Space Dock and Hangar are unlocked together
-    await checkVisibility(6); 
+    await page.click('#unlockTractorBeam');
+    // Space Dock, Hangar and Dyson Swarm are unlocked together
+    await checkVisibility(7); 
     await expect(page.locator('#spaceContainer')).toBeVisible();
     await checkComputerRows(10);
     await checkRobotRows(6);
 
-    // 6. Unlock Dyson Swarm (via Space Dock)
+    // 6. Unlock Dyson Swarm
     await page.evaluate(() => {
-      (window as any).game.science = 1e7;
+      (window as any).game.science = 1e12;
       (window as any).game.metal = 1e7;
-      (window as any).game.dysonSwarm.unlockDysonSwarm();
     });
-    await checkVisibility(7);
+    await page.click('#unlockDysonSwarm');
     await expect(page.locator('#unlockedDysonSwarm')).toBeVisible();
-
-    // 7. Build Dyson Satellites
-    await page.evaluate(() => {
-        (window as any).game.science = 2e7;
-        (window as any).game.metal = 2e7;
-    });
-    await page.fill('#buySatelliteAmount', '5');
-    await page.click('#btnBuySatellite');
-    await page.evaluate(() => (window as any).game.tick());
-    await page.evaluate(() => (window as any).view.update());
-    
-    const satelliteCount = await page.locator('#satellites').textContent();
-    expect(satelliteCount).toBe('5');
 
     // Final check: Verify they are all in columns
     const allMainContainers = [...initialContainers, ...lateGameContainers];

@@ -9,6 +9,7 @@ export default class DysonSwarmView extends BaseView {
     constructor() {
         super();
         if (game) {
+            UIEvents.on(game.events, 'spaceDock:unlocked', () => this.checkUnlocked());
             UIEvents.on(game.events, 'dysonSwarm:unlocked', () => this.checkUnlocked());
             UIEvents.on(game.events, 'dysonSwarm:updated', () => UIEvents.notifyOnlyOnce(() => this.update(), this));
             
@@ -27,13 +28,22 @@ export default class DysonSwarmView extends BaseView {
                     game?.dysonSwarm.buySatellites(amount);
                 };
             }
+
+            this.setupAmountCostListener('buySatelliteAmount', [
+                { spanId: 'satMetalCost', costPerUnit: DysonSwarm.SATELLITE_METAL_COST },
+                { spanId: 'satScienceCost', costPerUnit: DysonSwarm.SATELLITE_SCIENCE_COST }
+            ]);
         }
     }
 
     checkUnlocked() {
         if (!game) return;
+        this.updateElementText('unlockDysonSwarmMetalCost', intToString(DysonSwarm.UNLOCK_METAL_COST));
+        this.updateElementText('unlockDysonSwarmScienceCost', intToString(DysonSwarm.UNLOCK_SCIENCE_COST));
         if (game.spaceDock.unlocked) {
             this.setVisible('dysonSwarmContainer', true);
+        } else {
+            this.setVisible('dysonSwarmContainer', false);
         }
 
         if (game.dysonSwarm.unlocked) {
@@ -58,7 +68,10 @@ export default class DysonSwarmView extends BaseView {
         this.updateElementText('satellites', intToString(game.dysonSwarm.satellites));
         this.updateElementText('dysonPower', intToString(game.dysonSwarm.getPowerProduction()) + " / tick");
         
-        const satelliteCost = `Metal: ${intToString(DysonSwarm.SATELLITE_METAL_COST)}, Sci: ${intToString(DysonSwarm.SATELLITE_SCIENCE_COST)}`;
-        this.updateElementText('satelliteCost', satelliteCost);
+        const amount = this.getAmount('buySatelliteAmount');
+        this.updateCostSpans(amount, [
+            { spanId: 'satMetalCost', costPerUnit: DysonSwarm.SATELLITE_METAL_COST },
+            { spanId: 'satScienceCost', costPerUnit: DysonSwarm.SATELLITE_SCIENCE_COST }
+        ]);
     }
 }

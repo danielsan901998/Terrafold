@@ -2,6 +2,7 @@ import { game } from '../main';
 import { intToString, round2, getClickAmount } from '../utils/utils';
 import BaseView from './BaseView';
 import UIEvents from './UIEvents';
+import Computer from '../core/Computer';
 
 export default class ComputerView extends BaseView {
     private rows: Map<number, HTMLElement> = new Map();
@@ -21,6 +22,7 @@ export default class ComputerView extends BaseView {
 
     checkUnlocked() {
         if (!game) return;
+        this.updateElementText('unlockComputerCost', intToString(Computer.UNLOCK_SCIENCE_COST));
         if (game.computer.unlocked) {
             this.setVisible('unlockedComputer', true);
             this.setVisible('unlockComputer', false);
@@ -42,6 +44,7 @@ export default class ComputerView extends BaseView {
             if (!row) continue;
             this.setVisible('computerRow' + i + 'Container', row.showing);
         }
+				this.updateThreads();
     }
 
     updateLandOptimized() {

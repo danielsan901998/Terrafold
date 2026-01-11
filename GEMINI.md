@@ -14,6 +14,7 @@ Incremental game ported to TypeScript using Bun.
 - **State:** Saved to `localStorage` (encoded) every 100 ticks via `copyObject` serialization.
 
 ## Conventions
+- **Workflow:** Always run type-check (`bunx tsc --build --noEmit`) after any change and before running tests.
 - **OOP:** Logic and UI organized into classes.
 - **Updates:** UI refreshes on `tick` events or specific unlock triggers.
 - **Tests:** Unit tests in `src/utils/utils.test.ts`; E2E tests for progression and persistence.
