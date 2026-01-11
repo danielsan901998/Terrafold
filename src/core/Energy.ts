@@ -26,13 +26,37 @@ export default class Energy {
 
     tick() {
         if (!game) return;
-        this.drain = game.computer.powerSpending + game.robots.powerSpending + game.spaceStation.powerSpending;
-        this.powerPerTick = (this.battery / 100) + game.dysonSwarm.getPowerProduction();
-        game.power += this.powerPerTick;
+        
+        const computerDrain = game.computer.powerSpending;
+        const robotsDrain = game.robots.powerSpending;
+        const stationDrain = game.spaceStation.powerSpending;
+        const tractorDrain = game.tractorBeam.comets.length > 0 ? game.power / 1000 : 0;
+        
+        this.drain = computerDrain + robotsDrain + stationDrain + tractorDrain;
+        
+        const dysonProduction = game.dysonSwarm.getPowerProduction();
+        
+        // Dyson Swarm satellites only increase energy up to the battery amount
+        if (game.power < this.battery) {
+            game.power += Math.min(dysonProduction, this.battery - game.power);
+        }
+
+        // We handle tractor beam drain here instead of in TractorBeam.tick
+        // to avoid double counting or inconsistent state.
+        // But TractorBeam.pullIntoOrbit actually returns how much it USED.
+        // Let's look at TractorBeam.tick again.
+        
         game.power -= this.drain;
+
+        if (game.power > this.battery) {
+            game.power -= (game.power - this.battery) * 0.02;
+        }
+
         if (game.power < 0) {
             game.power = 0;
         }
+
+        this.powerPerTick = dysonProduction;
         game.events.emit('energy:updated');
     }
 

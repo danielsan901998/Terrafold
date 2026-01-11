@@ -41,6 +41,7 @@ export default class EnergyView extends BaseView {
     override update() {
         if (!game) return;
         this.updateElementText('energy', intToString(game.power));
+        this.updateElementText('energyProduction', intToString(game.energy.powerPerTick));
         this.updateElementText('drain', intToString(game.energy.drain));
     }
 

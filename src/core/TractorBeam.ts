@@ -31,7 +31,7 @@ export default class TractorBeam {
 
         if (this.comets.length) {
             const transferred = game.power / 1000;
-            game.power -= this.pullIntoOrbit(transferred);
+            this.pullIntoOrbit(transferred);
             this.removeAsteroidIfDone();
         }
     }
